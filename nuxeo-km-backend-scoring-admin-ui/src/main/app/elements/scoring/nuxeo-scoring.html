@@ -1,0 +1,91 @@
+<dom-module id="nuxeo-scoring" assetpath="nuxeo-scoring/">
+      <template>
+            <style>
+                  paper-button {
+                        background: #FFFFFF;
+                        color: black;
+                  }
+                  .scoringtable {
+                        margin : auto;
+                        width : 70%;
+                  }
+                  .tableinput {
+                        margin : auto;
+                        width : 4em;
+                  }
+                  .tablelabel {
+                        text-align: center;
+                  }
+            </style>
+            <nx-connection id="nx"></nx-connection>
+            <nuxeo-resource id="getScoringConfig" path="/path/CVS/SearchScoring" response="{{config}}"></nuxeo-resource>
+            <nuxeo-resource id="setScoringConfig" method="PUT" path="/path/CVS/SearchScoring" data=[[config]] response="{{config}}"></nuxeo-resource>
+
+            <template is="dom-if" if="[[config]]">
+                  <div class="bubbleBox">
+                        <div class="bubbleHeader">
+                              <table class="scoringtable">
+                                    <tr>
+                                          <td></td>
+                                          <td class="tablelabel">Boost Factor</td>
+                                    </tr>
+                                    <tr>
+                                          <td>
+                                                <paper-toggle-button checked="{{config.properties.searchscoringconfig:recent_boost}}">Recently Updated Content</paper-toggle-button>
+                                          </td>
+                                          <td>
+                                                <paper-input class="tableinput" type="number" value="{{config.properties.searchscoringconfig:recent_boost_value}}"></paper-input>
+                                          </td>
+                                    </tr>
+                                    <tr>
+                                          <td>
+                                                <paper-toggle-button checked="{{config.properties.searchscoringconfig:region_boost}}">Content From The User Region</paper-toggle-button>
+                                          </td>
+                                          <td>
+                                                <paper-input class="tableinput" type="number" value={{config.properties.searchscoringconfig:region_boost_value}}></paper-input>
+                                          </td>
+                                    </tr>
+                                    <tr>
+                                          <td>
+                                                <paper-toggle-button checked="{{config.properties.searchscoringconfig:important_boost}}">Content Marked as Important</paper-toggle-button>
+                                          </td>
+                                          <td>
+                                                <paper-input class="tableinput" type="number" value="{{config.properties.searchscoringconfig:important_boost_value}}"></paper-input>
+                                          </td>
+                                    </tr>
+                                    <tr>
+                                          <td>
+                                                <paper-toggle-button checked="{{config.properties.searchscoringconfig:vote_boost}}">Voted Content</paper-toggle-button>
+                                          </td>
+                                          <td>
+                                                <paper-input class="tableinput" type="number" value="{{config.properties.searchscoringconfig:vote_boost_value}}"></paper-input>
+                                          </td>
+                                    </tr>
+                              </tbody>
+                        </table>
+                        <paper-button raised on-tap="_save">Save</paper-button>
+                        <div>{{success}}</div>
+                  </div>
+            </div>
+            </template>
+      </template>
+      <script>
+            Polymer({
+                  is: 'nuxeo-scoring',
+                  created: function() {},
+                  properties: {
+                        config: {
+                              type: Object,
+                              notify: true
+                        }
+                  },
+                  ready: function() {
+                        this.$.getScoringConfig.execute();
+                  },
+
+                  _save: function() {
+                        this.$.setScoringConfig.execute();
+                  }
+            });
+      </script>
+</dom-module>

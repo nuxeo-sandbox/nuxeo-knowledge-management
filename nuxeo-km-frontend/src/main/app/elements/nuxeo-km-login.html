@@ -1,0 +1,146 @@
+<!--
+@license
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+@Contributors:
+Fred Vadon <fvadon@nuxeo.com>
+
+This is the login page of the app.
+Example: <nuxeo-km-login></nuxeo-km-login>
+@group Nuxeo Elements
+@element nuxeo-km-login
+@demo app/index.html
+-->
+
+<dom-module id="nuxeo-km-login">
+  <template>
+
+    <style is="custom-style" include="shared-styles">
+      .appheader {
+        margin: 2em;
+      }
+
+      .app-title {
+        color: var(--primary-title-color);
+        font-size: 400%;
+        margin-left: 10%;
+        margin-right: 5%;
+        margin-bottom: 0;
+        margin-top: 2em;
+        display: inline;
+      }
+
+      form {
+        font-size: 150%;
+        color: var(--primary-font-color);
+      }
+
+      .card-container {
+        width: 100%;
+      }
+
+      paper-card ::content .header.paper-card .title-text.paper-card {
+        color: var(--primary-font-color);
+        margin-left: 1em;
+      }
+
+      paper-card {
+        display: table;
+        margin: 0 auto;
+        margin-top: 10em;
+        width: 30%;
+      }
+
+      paper-button {
+        margin: 1em;
+        display: block;
+        text-align: center;
+        text-transform: capitalize;
+      }
+
+      paper-dropdown-menu {
+        margin-left: 10%;
+        margin-right: 10%;
+        text-align: center;
+        width: 80%
+      }
+
+      paper-card::content .header {
+        background: #ffe5de;
+        text-align: center;
+      }
+    </style>
+    <div class="appheader">
+      <div class="logologin">
+        <img src="http://cvs.cloud.nuxeo.com/nuxeo/img/cvscaremarklogo.png">
+        <span class='app-title'>Knowledge Base</span>
+      </div>
+      <div class="card-container" class="red-header">
+        <paper-card heading="Select Your Region" elevation="0">
+          <div class="card-content">
+            <form is="iron-form" id="formLogin" method="get" action="/" on-iron-form-submit="_login">
+              <paper-dropdown-menu label="Region" name="region" required>
+                <paper-menu class="dropdown-content" attr-for-selected="name" selected={{region}}>
+                  <paper-item name="Midatlantic">Midatlantic</paper-item>
+                  <paper-item name="Midwest">Midwest</paper-item>
+                  <paper-item name="Mountain">Mountain</paper-item>
+                  <paper-item name="Northeast">Northeast</paper-item>
+                  <paper-item name="Pacific">Pacific</paper-item>
+                  <paper-item name="Southeast">Southeast</paper-item>
+                </paper-menu>
+              </paper-dropdown-menu>
+              <paper-button raised on-tap="_submitHandler">Submit</paper-button>
+
+            </form>
+          </div>
+        </paper-card>
+      </div>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-km-login',
+      // Expose properties
+      properties: {
+        region: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        baseUrl: {
+          type: String,
+        },
+        page: {
+          type: String,
+          notify: true
+        }
+      },
+
+      ready: function() {
+        //When component is ready.
+
+      },
+      getRegionLabel: function(region) {
+        if (region === '') {
+          return 'Region';
+        } else {
+          return region;
+        }
+      },
+      _submitHandler: function(event) {
+        Polymer.dom(event).localTarget.parentElement.submit();
+      },
+      _login: function() {
+        this.page = 'home';
+      }
+
+    });
+  </script>
+</dom-module>

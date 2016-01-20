@@ -1,0 +1,128 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<script src="../bower_components/page/page.js"></script>
+<script>
+  window.addEventListener('WebComponentsReady', function() {
+
+    var app = document.querySelector('nuxeo-article-app');
+    var serverBase = '/nuxeo/km/';
+
+    // We use Page.js for routing. This is a Micro
+    // client-side router inspired by the Express router
+    // More info: https://visionmedia.github.io/page.js/
+
+    // Removes end / from app.baseUrl which page.base requires for production
+    page.base(app.baseUrl.replace(/\/$/, ''));
+
+
+    // Middleware
+    function scrollToTop(ctx, next) {
+      app.scrollPageToTop();
+      next();
+    }
+
+    //function closeDrawer(ctx, next) {
+    //  app.closeDrawer();
+    //  next();
+    //}
+
+    // Routes
+    page('*', scrollToTop, function(ctx, next) {
+      next();
+    });
+
+    page('/', function() {
+      app.page = 'login';
+      page.redirect('/login');
+    });
+
+    page(app.baseUrl, function() {
+      app.page = 'home';
+      page.redirect('/home');
+    });
+
+    page('/home', function() {
+      app.page = 'home';
+    });
+
+    page('/search', function() {
+      app.page = 'search';
+    });
+
+    page('/login', function() {
+      app.page = 'login';
+    });
+
+    page('/workinstructions', function() {
+      app.page = 'home';
+    });
+
+    page('/training', function() {
+      app.page = 'home';
+    });
+
+    page('/', function() {
+      app.page = 'login';
+      page.redirect('/login');
+    });
+
+    /* Routing from nuxeo server*/
+
+    page(serverBase, function() {
+      app.page = 'login';
+      page.redirect('/login');
+    });
+
+    page(serverBase+'home', function() {
+      app.page = 'home';
+    });
+
+    page(serverBase+'search', function() {
+      app.page = 'search';
+    });
+
+    page(serverBase+'login', function() {
+      app.page = 'login';
+    });
+
+    page(serverBase+'workinstructions', function() {
+      app.page = 'home';
+    });
+
+    page(serverBase+'training', function() {
+      app.page = 'home';
+    });
+
+
+    // /display/<id>
+    page(/^\/display\/([^@]*)/, function(data) {
+      app.docId = data.params[0];
+      // triggers the actual navigation thus must come last
+      app.page = 'display';
+    });
+
+    // 404
+    page('*', function(data) {
+      //app.$.toast.text = 'Can\'t find: ' + window.location.href  + '. Redirected you to Home Page';
+      //app.$.toast.show();
+      //page.redirect(app.baseUrl);
+      console.log('-- 404 unknow page called');
+      console.log('base url '+app.baseUrl);
+      console.log(data);
+    });
+
+    // add #! before urls
+    page({
+      hashbang: true
+    });
+
+  });
+</script>

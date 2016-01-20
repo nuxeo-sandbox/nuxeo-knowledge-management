@@ -1,0 +1,182 @@
+<!--
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+Contributors:
+	Fred Vadon <fvadon@nuxeo.com>
+	Josh Fletcher <jfletcher@nuxeo.com>
+-->
+<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-es-search.html">
+<link rel="import" href="html-echo.html">
+<!--
+A data element providing a search result layout. input a list of articles
+Example:
+
+	<nuxeo-article-search-results fulltext="{{fulltext}}"
+																articles="{{articles}}"
+																suggestions={{suggestions}}>
+	</nuxeo-article-search-results>
+
+@group Nuxeo Elements
+@element nuxeo-article-search-results
+@demo app/index.html
+-->
+<dom-module id="nuxeo-article-search-results" include="shared-styles">
+
+  <template>
+
+    <style is="custom-style">
+      a {
+        color: #000000;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 130%;
+      }
+
+      .sidecard {
+        width: 42%;
+        margin-left: 1%;
+        margin-top: 1%;
+        vertical-align: top;
+        color: #19204B;
+      }
+
+      .articleInfo {
+        color: #A9A9A9;
+        font-size: 80%;
+        margin-left: 0px;
+        margin-bottom: 5px;
+      }
+
+      .documentTitle {
+        margin-bottom: 5px;
+      }
+
+      .documentPills {
+        border-radius: 0.3em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        padding-bottom: 0.3em;
+        padding-top: 0.3em;
+        margin-bottom: 4px;
+        display: inline-flex;
+        font-size: 80%;
+      }
+
+      .documentCategory {
+        color: #fff;
+        background: #059EBD;
+      }
+
+      .documentRegion {
+        color: #fff;
+        background: #7C7C7C;
+      }
+
+      .documentHighlightContainer {
+        background: #f1f1f1;
+        padding: 0.5em;
+        margin-bottom: 5px;
+        border-radius: 0.3em;
+      }
+
+      .documentHighlight {
+        font-style: italic;
+        font-size: smaller;
+        line-height: 2.5ex;
+        height: 4.4ex;
+        color: black;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      paper-item {
+        margin-bottom: 1em;
+      }
+    </style>
+
+    <nuxeo-fulltext-suggester text={{fulltext}} suggestions={{suggestions}}></nuxeo-fulltext-suggester>
+
+    <template is="dom-repeat" items="[[articles.hits]]">
+      <paper-card class="sidecard">
+        <div class="card-content">
+          <div class="documentTitle"><a href$="[[_href(item)]]">[[item.fields.dc:title]]</a></div>
+          <template is="dom-if" if="{{item.highlight}}">
+            <div class="documentHighlightContainer">
+              <div class="documentHighlight">
+                <html-echo html-to-inject="[[_getHighlightedText(item.highlight)]]"></html-echo>
+              </div>
+            </div>
+          </template>
+          <div class="articleInfo"> Updated: [[_dateFormat(item.fields.dc:modified)]]</div>
+          <div secondary>
+            <div class="documentPills documentCategory">[[item.fields.article:category]]</div>
+            <template is="dom-repeat" items="[[item.fields.article:region]]">
+              <div class="documentPills documentRegion">[[item]]</div>
+            </template>
+          </div>
+        </div>
+      </paper-card>
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-article-search-results',
+
+      // Expose properties
+      properties: {
+        fulltext: {
+          type: String,
+          notify: true
+        },
+        articles: {
+          type: Object,
+          notify: true
+        },
+        suggestions: {
+          type: Object,
+          notify: true
+        }
+      },
+
+      _getHighlightedText: function(highlightObject) {
+        if (highlightObject !== undefined) {
+          if (highlightObject['article:plainTextContent'] !== undefined && highlightObject['article:plainTextContent'].length > 0) {
+            return highlightObject['article:plainTextContent'][0];
+          }
+        }
+        return '<p>No Text Highlight</p>';
+      },
+
+      ready: function() {
+        //When component is ready.
+        //console.log("--search result ready")
+      },
+
+      _href: function(doc) {
+        return page.base() + '/display/' + doc.fields['ecm:uuid'];
+      },
+
+      _dateFormat: function(ISOStringDate) {
+        var date = new Date(ISOStringDate);
+        return date.toDateString() + ' ' + date.toLocaleTimeString();
+      }
+    });
+  </script>
+
+</dom-module>

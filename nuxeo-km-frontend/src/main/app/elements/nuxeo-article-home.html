@@ -1,0 +1,165 @@
+<!--
+@license
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+@Contributors:
+Fred Vadon <fvadon@nuxeo.com>
+
+A element providing a home tab.
+Example: <nuxeo-article-home></nuxeo-article-home>
+@group Nuxeo Elements
+@element nuxeo-article-home
+@demo app/index.html
+-->
+
+<dom-module id="nuxeo-article-home">
+
+  <template>
+    <style is="custom-style" include="shared-styles">
+      .olive-background::content paper-card {
+        background: #d9eeda;
+      }
+
+      .olive-header::content paper-card .header {
+        background: #d9eeda;
+      }
+
+      .orange-background::content paper-card {
+        background: #ffe9c9;
+      }
+
+      .orange-header::content paper-card .header {
+        background: #ffe9c9;
+      }
+
+      .red-background::content paper-card {
+        background: #ffe5de;
+      }
+
+      .red-header::content paper-card .header {
+        background: #ffe5de;
+      }
+
+      .blue-background::content paper-card {
+        background: #d0e8fc;
+      }
+
+      .blue-header::content paper-card .header {
+        background: #d0e8fc;
+      }
+
+      ::content paper-card .header.paper-card .title-text.paper-card {
+        color: var(--primary-font-color);
+        margin-left: 0.6em;
+      }
+
+      .widget-container {
+        margin-top: 1%;
+        margin-left: 1%;
+        margin-right: 1%;
+      }
+
+      ::content paper-card {
+        width: 48.5%;
+        margin: 0.5%;
+        vertical-align: top;
+      }
+
+      ::content a {
+        color: var(--primary-font-color);
+        text-decoration: none;
+        font-size: 130%;
+      }
+
+      ::content paper-item {
+        margin-top: 0.5em;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding-top: 0.5em;
+      }
+
+      ::content paper-item:first-child {
+        border-top: 0;
+        margin-top: 0;
+      }
+
+      ::content paper-item-body {
+        width: 100%;
+      }
+    </style>
+
+    <div class="widget-container">
+      <nuxeo-article-home-widget id="RecentlyModified" class="olive-header" title="Recently Modified Articles" color="green-card" query="SELECT * FROM
+			Article WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
+			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' [[_addRegionClause(region,'article')]] ORDER BY dc:modified DESC">
+      </nuxeo-article-home-widget>
+
+      <nuxeo-article-home-widget id="MustRead" class="red-header" title="Must Read" query="SELECT * FROM
+      Article WHERE readConfirm:assigned = 1 AND readConfirm:usernames = '{{currentUser}}' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
+      ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' ORDER BY dc:created">
+      </nuxeo-article-home-widget>
+
+      <nuxeo-article-home-announcement-widget id="Announcements" class="orange-header" title="Announcements" query="SELECT * FROM
+			Announcement WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
+			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState != 'deleted' [[_addRegionClause(region,'announcement')]] ORDER BY announcement:priorityCode">
+      </nuxeo-article-home-announcement-widget>
+
+      <nuxeo-article-home-widget id="DrugDescription" class="blue-header" title="Drug Description Articles" color="green-card" query="SELECT * FROM
+			Article WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
+			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' AND
+			article:category='Drug Description' [[_addRegionClause(region,'article')]] ORDER BY dc:modified DESC">
+      </nuxeo-article-home-widget>
+    </div>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-article-home',
+      // Expose properties
+      properties: {
+        region: {
+          type: String,
+          notify: true,
+        },
+        currentUser: {
+          type: Object,
+          notify: true,
+          observer: '_addUserClause'
+        }
+      },
+      ready: function() {
+        //When component is ready.
+        //console.log("--search result ready")
+      },
+      _addRegionClause: function(region, type) {
+        region = region.replace('/', '');
+        if (region !== '') {
+          if (type === 'article') {
+            return 'AND article:region="' + region + '"';
+          } else if (type === 'announcement') {
+            return 'AND announcement:region="' + region + '"';
+          }
+        } else {
+          return '';
+        }
+      },
+      _addUserClause: function() {
+        if (this.currentUser) {
+          this.currentUser = this.currentUser.replace('/', '');
+          //console.log(this.currentUser);
+          return this.currentUser;
+        }
+      },
+      refreshWidgets: function() {
+        this.$.MustRead.refresh();
+      }
+
+    });
+  </script>
+</dom-module>

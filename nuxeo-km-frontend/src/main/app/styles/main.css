@@ -1,0 +1,80 @@
+/*
+	(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+	All rights reserved. This program and the accompanying materials
+	are made available under the terms of the GNU Lesser General Public License
+	(LGPL) version 2.1 which accompanies this distribution, and is available at
+	http://www.gnu.org/licenses/lgpl.html
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+	Lesser General Public License for more details.
+*/
+
+body {
+  background: #fafafa;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color:#25383C;
+}
+
+.articleDisplayDrawer {
+	color:#25383C;
+}
+
+paper-toolbar.articleDisplayHeader {
+	background:#007777;
+}
+paper-toolbar {
+	background:#fff;
+}
+
+paper-item.articleDisplay {
+	color:#25383C;
+	background:#eeffff;
+}
+
+paper-listbox.articleDisplay {
+	color:#25383C;
+	background:#fff;
+}
+
+paper-card.articleDisplay{
+	width:40%;
+	margin:1%;
+	vertical-align: top;
+}
+
+paper-card.articleFlyerDisplay{
+	width:90%;
+	margin:1%;
+	vertical-align: top;
+}
+
+img.articleImage {
+	max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+	margin-top: 1%;
+	margin-bottom:1%;
+}
+
+img.articleFlyerImage {
+	max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+	margin-top: 1%;
+}
+
+h1{
+	font-size: 40px;
+    font-weight: 300;
+	margin-left:5%;
+	margin-bottom:0;
+}
+
+paper-input {
+	margin-left:5px;
+	margin-right:5px;
+	color:#25383C;
+}

@@ -1,0 +1,9 @@
+nifest-Version: 1.0
+Bundle-Vendor: Nuxeo
+Nuxeo-RequiredBy: org.nuxeo.ecm.war
+Bundle-Version: 0.0.1
+Bundle-Name: Nuxeo scoring admin UI
+Bundle-ManifestVersion: 1
+Bundle-SymbolicName: nuxeo-km-scoring-admin-ui;singleton:=true
+Nuxeo-Component: OSGI-INF/extensions/auth-config.xml,
+    OSGI-INF/extensions/scoring-admin-action-contrib.xml

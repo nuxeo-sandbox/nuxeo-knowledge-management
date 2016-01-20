@@ -1,0 +1,222 @@
+<!--
+@license
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+@Contributors:
+Fred Vadon <fvadon@nuxeo.com>
+
+This is the main app.
+Example: <nuxeo-article-app></nuxeo-article-app>
+@group Nuxeo Elements
+@element nuxeo-article-app
+@demo app/index.html
+-->
+
+<dom-module id="nuxeo-article-app">
+  <template>
+    <style is="custom-style">
+      paper-toolbar {
+        background: #e4e4e4;
+      }
+
+      paper-drawer-panel {
+        overflow-y: visible;
+      }
+
+      .logo {
+        max-height: 40px;
+      }
+
+      .headerMenu {
+        color: #CC0000;
+        font-size: 130%;
+      }
+
+      .app-name {
+        color: #CC0000;
+        font-size: 180%;
+      }
+
+      .drawerTitle {
+        background: var(--primary-title-color);
+        color: var(--paper-menu-background-color);
+        height: 2em;
+        font-weight: bold;
+        font-size: 100%;
+        border-bottom: 2px solid var(--paper-menu-background-color);
+        ;
+      }
+
+      paper-toolbar a.drawerTitle {
+        border-bottom: none;
+      }
+      .drawerTitle paper-button {
+        padding: 0;
+        margin-left: 0;
+      }
+
+      paper-toolbar::content .toolbar-tools.paper-toolbar {
+        height: 2em;
+      }
+
+      .drawerInfo {
+        background: var(--paper-menu-background-color);
+        color: #A8A8A8;
+        padding-top: 2em;
+        padding-bottom: 2em;
+        text-align: center;
+      }
+    </style>
+    <!-- Main Content -->
+    <nuxeo-operation auto id="getCurrentUserName" op="javascript.getCurrentUserName" response="{{currentUserFromOpe}}"></nuxeo-operation>
+    <nuxeo-resource id="getCurrentUser" path="/user/{{currentUserName}}" response="{{currentUser}}"></nuxeo-resource>
+
+    <paper-drawer-panel id="drawerPanel" force-narrow="true" right-drawer>
+      <paper-header-panel drawer>
+        <paper-toolbar class="drawerTitle">
+          <div>Favorites</div>
+        </paper-toolbar>
+        <div class="drawerInfo">No Favorites</div>
+        <paper-toolbar class="drawerTitle">
+          <div>Notifications</div>
+        </paper-toolbar>
+        <div class="drawerInfo">No Notifications</div>
+        <paper-toolbar class="drawerTitle">
+          <div>My Settings</div>
+        </paper-toolbar>
+        <paper-toolbar class="drawerTitle">
+          <div>My Recommendations</div>
+        </paper-toolbar>
+        <paper-toolbar class="drawerTitle">
+          <div><paper-button on-tap="_refreshHome">Refresh Home</paper-button></div>
+        </paper-toolbar>
+        <paper-toolbar class="drawerTitle">
+          <div><a href="http://cvs.cloud.nuxeo.com/nuxeo/logout" class="drawerTitle" rel="external">Logout</a></div>
+        </paper-toolbar>
+      </paper-header-panel>
+      <paper-header-panel main>
+        <div>
+          <iron-pages selected="[[page]]" attr-for-selected="name">
+            <div name="home">
+              <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
+              <nuxeo-article-home id="articleHome" region={{region}} current-user=[[userID]]/>
+            </div>
+            <div name="search">
+              <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
+              <nuxeo-article-search region={{region}}/>
+            </div>
+            <div name="display">
+              <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
+              <nuxeo-article-display id="articleDisplay" userforarticle=[[currentUser]] document-id={{docId}}/>
+            </div>
+            <div name="login">
+              <nuxeo-km-login region={{region}} base-url=[[baseUrl]] page={{page}}></nuxeo-km-login>
+            </div>
+          </iron-pages>
+        </div>
+      </paper-header-panel>
+    </paper-drawer-panel>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-article-app',
+      // Expose properties
+      properties: {
+        baseUrl: {
+          type: String,
+          value: '/'
+        },
+        page: {
+          type: String,
+          not: true,
+          observer: '_navigate'
+        },
+        docId: {
+          type: String,
+          notify: true
+        },
+        region: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        currentUserFromOpe: {
+          type: Object,
+          notify: true,
+          observer: '_userInfo'
+        },
+        currentUserName: {
+          type: Object,
+          notify: true
+        },
+        currentUser: {
+          type: Object,
+          notify: true,
+          observer: '_printUser'
+        },
+        userID: {
+          type: String,
+          notify: true
+        }
+      },
+
+      scrollPageToTop: function() {
+        //this.$.selectedPage.scrollToTop(true);
+      },
+      ready: function() {
+        //When component is ready.
+      },
+      _navigate: function() {
+        // see nuxeo web ui app for info
+        var url = '/' + this.page;
+        page(url);
+        this.fire('navigation', {
+          page: this.page
+        });
+      },
+      _getRegionLabel: function(region) {
+        if (region === '') {
+          return 'Select Region';
+        } else {
+          return region;
+        }
+      },
+      _closeDrawer: function() {
+        var pdp = document.getElementById('drawerPanel');
+        this.region = '';
+        pdp.togglePanel();
+      },
+      _userInfo: function() {
+        if (this.currentUserFromOpe) {
+          this.currentUserName = this.currentUserFromOpe.value;
+          this.$.getCurrentUser.execute();
+        }
+      },
+      _printUser: function() {
+        //console.log('--print user');
+        //console.log(this.currentUser);
+        if (this.currentUser) {
+          this.userID = this.currentUser.id;
+        }
+      },
+      _printDocID: function() {
+        console.log('app print doc id');
+        console.log(this.docId);
+      },
+      _refreshHome: function() {
+        this.$.drawerPanel.togglePanel();
+        document.querySelector('#articleHome').refreshWidgets();
+        document.querySelector('#documentGetter').execute();
+      },
+    });
+  </script>
+</dom-module>

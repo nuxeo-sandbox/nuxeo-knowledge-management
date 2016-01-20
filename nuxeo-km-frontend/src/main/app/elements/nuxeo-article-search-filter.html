@@ -1,0 +1,390 @@
+<!--
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+Contributors:
+	Fred Vadon <fvadon@nuxeo.com>
+-->
+<!--
+A data element providing a search menu. Output a list of articles.
+Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-search-filter>
+@group Nuxeo Elements
+@element nuxeo-article-search
+@demo app/index.html
+-->
+<dom-module id="nuxeo-article-search-filter" include="shared-styles">
+
+  <template>
+
+    <style is="custom-style">
+      .filterItem {
+        margin-left: 0.5em;
+      }
+
+      .filterItemLabel {
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+      }
+    </style>
+
+    <!-- In order to generate audit data for searches, the query is passed to a
+		page provider. Note that the results of this query are not used, this is only to
+		generate audit data. -->
+    <nuxeo-page-provider id='articlePageProvider' page-size='1' provider='ArticlesSearch' params='[[articleSearchParams]]'>
+    </nuxeo-page-provider>
+
+    <paper-input id="searchFullTextInput" label="Full Text Search" class="filterItem" value="{{fulltext}}">
+    </paper-input>
+
+    <div class="filterItem">
+      <div class="filterItemLabel">Region</div>
+      <nuxeo-checkbox-aggregation name='article_region_agg' aggregations='[[aggregations]]' value="{{regionAgg}}"></nuxeo-checkbox-aggregation>
+      <div class="filterItemLabel">Category</div>
+      <nuxeo-checkbox-aggregation name='article_category_agg' aggregations='[[aggregations]]' value="{{categoAgg}}"></nuxeo-checkbox-aggregation>
+    </div>
+    <nuxeo-es-search id='articleProvider' fields=[[fields]] query=[[query]] size="20" highlight=[[highlight]] post_filter=[[post_filter]] aggregates=[[aggregates]] hits={{articles}} aggregations={{aggregations}} suggest=[[suggest]] suggestions={{suggestions}}>
+    </nuxeo-es-search>
+    <nuxeo-resource auto path="/path/CVS/SearchScoring" response="{{response}}"></nuxeo-resource>
+
+  </template>
+
+  <script>
+    Polymer({
+      /* ignoring jshint because naming is depending on ES and Nuxeo here*/
+      /* jshint ignore:start */
+      is: 'nuxeo-article-search-filter',
+      // Expose properties
+      properties: {
+        region: {
+          type: String,
+          notify: true
+        },
+        fulltext: {
+          type: String,
+          notify: true
+        },
+        articles: {
+          type: Object,
+          notify: true
+        },
+        query: {
+          type: Object,
+          notify: true
+        },
+        highlight: {
+          type: Object,
+          value: {}
+        },
+        fields: {
+          type: Array,
+          value: function() {
+            return ['_id', 'dc:title', 'dc:modified', 'article:region', 'article:category',
+              'ecm:uuid'
+            ];
+          }
+        },
+        aggregates: {
+          type: Object,
+          notify: true
+        },
+        post_filter: { // jshint ignore:line
+          type: Object,
+          notify: true
+        },
+        aggregations: {
+          type: Object,
+          notify: true
+        },
+        hits: {
+          type: Object,
+          notify: true
+        },
+        suggest: {
+          type: Object,
+          notify: true
+        },
+        suggestions: {
+          type: Object,
+          notify: true
+        },
+        parameter: {
+          type: Object,
+          value: {
+            region_boost: true,
+            region_boost_value: 1.2,
+            recent_boost: true,
+            recent_boost_value: 0.5,
+          }
+        },
+        response: {
+          type: Object,
+          notify: true
+        },
+        articleSearchParams: {
+          type: Object,
+          computed: '_buildArticleSearchParams(fulltext)',
+          notify: true
+        }
+      },
+
+      observers: [
+        'resetFacets(fulltext)',
+        'updateQuery(regionAgg,categoAgg,region)',
+        'updateParameter(response)',
+        '_execArticleSearchQuery(articleSearchParams)'
+      ],
+
+      resetFacets: function() {
+        this.regionAgg = [];
+        this.categoAgg = [];
+      },
+
+      updateQuery: function() {
+
+        var score_functions = [];
+
+        if (this.parameter.region_boost) {
+          score_functions.push({
+            script_score: {
+              script_file: 'region_boost',
+              params: {
+                my_region: this.region.replace('/', ''),
+                boost_value: this.parameter.region_boost_value
+              }
+            }
+          });
+        }
+
+        if (this.parameter.recent_boost) {
+          score_functions.push({
+            gauss: {
+              "dc:modified": {
+                scale: "10d",
+                offset: "5d",
+                decay: this.parameter.recent_boost_value
+              }
+            }
+          });
+        }
+
+        var fulltextQuery;
+        if (this.fulltext === undefined || this.fulltext.length == 0) {
+          fulltextQuery = {
+            match_all: {}
+          };
+        } else {
+          fulltextQuery = {
+            bool: {
+              must: [{
+                match: {
+                  _all: {
+                    query: this.fulltext,
+                    operator: "OR",
+                    analyzer: "en_search_analyzer",
+                    fuzziness: "AUTO"
+                  }
+                }
+              }],
+              should: [{
+                match: {
+                  _all: {
+                    query: this.fulltext,
+                    type: "phrase",
+                    analyzer: "en_search_analyzer"
+                  }
+                }
+              }]
+            }
+          };
+        }
+
+        this.query = {
+          function_score: {
+            query: {
+              filtered: {
+                query: fulltextQuery,
+                filter: {
+                  bool: {
+                    must: [{
+                      term: {
+                        "ecm:isVersion": "0"
+                      }
+                    }, {
+                      term: {
+                        "ecm:primaryType": "Article"
+                      }
+                    }, {
+                      term: {
+                        "ecm:currentLifeCycleState": "approved"
+                      }
+                    }, ],
+                    must_not: [{
+                      term: {
+                        "ecm:mixinType": "HiddenInNavigation"
+                      }
+                    }]
+                  }
+                }
+              }
+            },
+            functions: score_functions,
+            score_mode: "multiply"
+          }
+        };
+
+        this.highlight = {
+          pre_tags: ["<span style='background-color: lightgray;font-weight: bold;'>"],
+          post_tags: ["</span>"],
+          fields: {
+            'article:plainTextContent': {
+              fragment_size: 170,
+              number_of_fragments: 1,
+              index_options: "offsets"
+            }
+          }
+        };
+
+        var postFilters = [];
+        var regionAggFilter = {
+          match_all: {}
+        };
+        var categoryAggFilter = {
+          match_all: {}
+        };
+
+        if (this.categoAgg !== undefined && this.categoAgg.length > 0) {
+          postFilters.push({
+            terms: {
+              "article:category": this.categoAgg
+            }
+          });
+          regionAggFilter = {
+            and: {
+              filters: [{
+                terms: {
+                  "article:category": this.categoAgg
+                }
+              }]
+            }
+          };
+        }
+        if (this.regionAgg !== undefined && this.regionAgg.length > 0) {
+          postFilters.push({
+            terms: {
+              "article:region": this.regionAgg
+            }
+          });
+          categoryAggFilter = {
+            and: {
+              filters: [{
+                terms: {
+                  "article:region": this.regionAgg
+                }
+              }]
+            }
+          };
+        }
+        if (postFilters.length > 0) {
+          this.post_filter = {
+            and: {
+              filters: postFilters
+            }
+          };
+        } else {
+          this.post_filter = {
+            match_all: {}
+          };
+        }
+
+        this.aggregates = {
+          article_region_agg_filter: {
+            filter: regionAggFilter,
+            aggregations: {
+              article_region_agg: {
+                terms: {
+                  field: "article:region",
+                  order: {
+                    _count: "desc"
+                  }
+                }
+              }
+            }
+          },
+          article_category_agg_filter: {
+            filter: categoryAggFilter,
+            aggregations: {
+              article_category_agg: {
+                terms: {
+                  field: "article:category",
+                  order: {
+                    _count: "desc"
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        this.suggest = {
+          my_suggest: {
+            text: this.fulltext,
+            term: {
+              field: 'article:plainTextContent',
+              analyzer: 'fulltext'
+            }
+          }
+        };
+
+        this.debounce('autoQuery', function() {
+          this.$.articleProvider.execute();
+        }.bind(this), 200);
+      },
+
+
+      // This behind-the-scenes query runs in order to generate search audit data.
+      // Note the debounce is set high do the server isn't hammered.
+      _execArticleSearchQuery: function() {
+        this.debounce('pageProviderQuery', function() {
+          this.$.articlePageProvider.fetch();
+        }.bind(this), 600);
+      },
+
+      // For the moment only care about full text search.
+      _buildArticleSearchParams: function() {
+        var params = {};
+        if (this.fulltext) {
+          params['system_fulltext'] = this.fulltext;
+        }
+        return params;
+      },
+
+      ready: function() {
+        //When component is ready.
+        //console.log('-- searchReady');
+        //this.$.articlePageProvider.fetch();
+        this.updateQuery();
+      },
+
+
+      updateParameter: function() {
+          if (this.response !== null && this.response !== undefined) {
+            this.parameter = {};
+            this.parameter.region_boost = this.response.properties['searchscoringconfig:region_boost'];
+            this.parameter.region_boost_value = this.response.properties['searchscoringconfig:region_boost_value'];
+            this.parameter.recent_boost = this.response.properties['searchscoringconfig:recent_boost'];
+            this.parameter.recent_boost_value = this.response.properties['searchscoringconfig:recent_boost_value'];
+          }
+        }
+        /* jshint ignore:end */
+    });
+  </script>
+</dom-module>

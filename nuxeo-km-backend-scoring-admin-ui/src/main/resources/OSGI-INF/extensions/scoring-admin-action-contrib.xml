@@ -1,0 +1,11 @@
+<component name="org.nuxeo.km.contrib">
+<extension point="actions" target="org.nuxeo.ecm.platform.actions.ActionService">
+  <action id="ScoringConfigurationManager" label="Scoring" link="scoring-view/scoring.xhtml" order="50">
+    <category>ElasticSearch_sub_tab</category>
+    <filter-id>not_readonly</filter-id>
+    <properties>
+        <property name="ajaxSupport">false</property>
+    </properties>
+  </action>
+</extension>
+</component>

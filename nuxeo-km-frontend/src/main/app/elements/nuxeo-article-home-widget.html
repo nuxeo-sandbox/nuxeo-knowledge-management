@@ -1,0 +1,90 @@
+<!--
+@license
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+@Contributors:
+Fred Vadon <fvadon@nuxeo.com>
+
+A element providing a simplified listing of documents based on a query. 10 documents by default.
+Example: <nuxeo-article-home-widget></nuxeo-article-home-widget>
+@group Nuxeo Elements
+@element nuxeo-article-home-widget
+@demo app/index.html
+-->
+
+<dom-module id="nuxeo-article-home-widget">
+
+  <template>
+    <style is="custom-style" include="shared-styles">
+
+    </style>
+
+    <nuxeo-page-provider id="widgetPageProvider" auto pageSize="10" query="[[query]]" current-page="{{articles}}"></nuxeo-page-provider>
+
+    <paper-card heading="[[title]]" elevation="1">
+      <div class="card-content">
+        <template is="dom-repeat" items="[[articles]]">
+          <paper-item>
+            <paper-item-body two-line>
+              <div><a href$="[[_href(item)]]">[[item.title]]</a></div>
+              <div>
+                <span class="documentCatego">Category: [[item.properties.article:category]]</span>
+                <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
+              </div>
+            </paper-item-body>
+          </paper-item>
+        </template>
+
+      </div>
+    </paper-card>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-article-home-widget',
+      // Expose properties
+      properties: {
+        query: {
+          type: String,
+          notify: true
+        },
+        title: {
+          type: String,
+          notify: true
+        },
+        region: {
+          type: String,
+          notify: true,
+          value: 'Region'
+        },
+        color: {
+          type: String,
+          notify: true,
+        }
+
+      },
+      ready: function() {
+        //When component is ready.
+        //console.log("--search result ready")
+      },
+      _href: function(doc) {
+        return page.base() + '/display/' + doc.uid;
+      },
+      _dateFormat: function(ISOStringDate) {
+        var date = new Date(ISOStringDate);
+        return date.toDateString() + ' ' + date.toLocaleTimeString();
+      },
+      refresh: function() {
+        this.$.widgetPageProvider.fetch();
+      }
+
+    });
+  </script>
+</dom-module>

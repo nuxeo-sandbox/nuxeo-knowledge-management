@@ -1,0 +1,145 @@
+<!--
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+Contributors:
+  Nelson Silva <nsilva@nuxeo.com>
+  Josh Fletcher <jfletcher@nuxeo.com>
+-->
+<link rel="import" href="../bower_components/nuxeo-elements/nuxeo-page-provider.html">
+<link rel="import" href="../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+<!--
+An element for listing top downloads. At this point it's a semi-hard-coded,
+two column layout.
+
+The data passed it should be from the audit index (e.g. document UUID and
+count). This element will fetch the document metadata to display the title
+or binary name.
+
+Example:
+
+    <nuxeo-dam-dashboard-downloads-table columns='[{"key": "key", "title": "File"}, {"key": "value", "title": "Downloads"}]' 
+                                         data="[[_table(downloads)]]">
+    </nuxeo-dam-dashboard-downloads-table>
+
+@group Nuxeo Dashboards
+@element nuxeo-dam-dashboard-downloads-table
+-->
+<dom-module id="nuxeo-dam-dashboard-downloads-table">
+
+  <link rel="import" type="css" href="nuxeo-dam-dashboard-downloads-table.css" />
+
+  <template>
+
+    <!-- Headers -->
+    <div id="table">
+      <div class="thead">
+        <div class="tr horizontal layout">
+          <template is="dom-repeat" items="{{columns}}" as="column">
+            <div class="flex th" data-column$="[[column.key]]">
+              <span>[[column.title]]</span>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Get documents -->
+      <nuxeo-page-provider auto page-size="7" query="[[_docUUIDsQuery]]" current-page="{{topDownloadedDocs}}">
+      </nuxeo-page-provider>
+
+      <!-- Display data -->
+      <div class="tbody">
+        <template is="dom-repeat" items="{{topDownloadedDocs}}" as="downloadedDoc" sort="_sortDocs">
+          <div class="tr horizontal layout" index="[[index]]">
+            <div class="flex td">
+              <span>[[_getName(downloadedDoc)]]</span>
+            </div>
+            <div class="flex td">
+              <span>[[_numberOfDownloads(downloadedDoc)]]</span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'nuxeo-dam-dashboard-downloads-table',
+
+      properties: {
+        data: {
+          type: Array,
+          notify: true
+        },
+        columns: {
+          type: Array,
+          notify: true,
+          value: function () {
+            return [];
+          }
+        }
+      },
+
+      observers: [
+      '_recomputeQuery(data)'
+      ],
+
+      _recomputeQuery: function () {
+        this._docUUIDsQuery = this._convertUUIDsToQuery(this.data);
+      },
+
+      // Convert document UUID's into an NXL query.
+      _convertUUIDsToQuery: function (entries) {
+        if (entries.length > 0) {
+          var values = entries.map(function (entry) {
+            return "'" + entry.key + "'";
+          }).join(",");
+          return "select * from Document WHERE ecm:uuid IN (" + values + ")";
+        } else {
+          return "select * from Document WHERE ecm:uuid = '0'";
+        }
+      },
+
+      // Some Document types have a binary with a name, others don't, so use the Title.
+      _getName: function (doc) {
+        if (doc.properties["file:content"]) {
+          return doc.properties["file:content"].name;
+        }
+        return doc.title;
+      },
+
+      // Given a Document, locate the number of downloads; it was provided with the audit data.
+      _numberOfDownloads: function (doc) {
+        var count = this.data.find(function (entry) {
+          return entry.key === doc.uid;
+        }).value;
+        return count;
+      },
+
+      // Sort based on number of downloads.
+      _sortDocs: function (a, b) {
+        if (this._numberOfDownloads(a) > this._numberOfDownloads(b)) {
+          return -1;
+        }
+        if (this._numberOfDownloads(a) < this._numberOfDownloads(b)) {
+          return 1;
+        }
+        // a must be equal to b
+        return 0;
+      }
+
+    })
+  </script>
+</dom-module>

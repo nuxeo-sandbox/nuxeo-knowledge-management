@@ -1,0 +1,11 @@
+<component name="org.nuxeo.km.authentication.contrib">
+  <extension
+          point="startURL"
+          target="org.nuxeo.ecm.platform.ui.web.auth.service.PluggableAuthenticationService">
+    <startURLPattern>
+      <patterns>
+        <pattern>scoring/</pattern>
+      </patterns>
+    </startURLPattern>
+  </extension>
+</component>

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 1
+Bundle-Name: CVS Dashboard
+Bundle-SymbolicName: org.nuxeo.CVS.demo.cvs-dashboard-plugin;singleton:=true
+Bundle-Vendor: Nuxeo
+Bundle-Version: 1.0.0
+Nuxeo-RequiredBy: org.nuxeo.ecm.war
+Nuxeo-Component: OSGI-INF/authentication-contrib.xml

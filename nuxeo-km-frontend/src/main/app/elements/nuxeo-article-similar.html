@@ -1,0 +1,161 @@
+<!--
+@license
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+@Contributors:
+Fred Vadon <fvadon@nuxeo.com>
+
+A data element providing a search result layout. input a list of articles
+Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-search-results>
+@group Nuxeo Elements
+@element nuxeo-article-search-results
+@demo app/index.html
+-->
+
+<dom-module id='nuxeo-article-similar'>
+  <template>
+    <style is="custom-style">
+      a {
+        color: #7C7C7C;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 100%;
+      }
+
+      .sidecard {
+        width: 30%;
+        margin: 0.5em;
+        vertical-align: top;
+        color: #19204B;
+      }
+
+      .cardtop {
+        min-height: 4em;
+        max-height: 4em;
+      }
+
+      .articleInfo {
+        color: #A9A9A9;
+        font-size: 80%;
+        padding-top: 1%;
+      }
+
+      .documentPills {
+        border-radius: 0.3em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        padding-bottom: 0.3em;
+        padding-top: 0.3em;
+        display: inline-flex;
+        font-size: 80%;
+      }
+
+      .documentCatego {
+        margin-top: 1em;
+        color: #fff;
+        background: #059EBD;
+      }
+
+      .documentRegion {
+        margin-top: 1em;
+        color: #fff;
+        background: #7C7C7C;
+      }
+
+      .documentHighlight {
+        color: #A9A9A9;
+        font-size: 90%;
+        padding: 1em;
+        padding-bottom: 2em;
+        height: 8em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      paper-item {
+        margin-bottom: 1em;
+      }
+    </style>
+    <nuxeo-es-search auto=[[auto]] size="3" fields=[[fields]] query=[[query]] aggregates=[[aggregates]] hits={{myhits}}>
+    </nuxeo-es-search>
+    <template is="dom-repeat" items="[[myhits.hits]]">
+      <paper-card class="sidecard">
+        <div class="card-content cardtop">
+          <div><a href$="[[_href(item)]]">[[item.fields.dc:title]]</a></div>
+          <div class="articleInfo"> Updated: [[_dateFormat(item.fields.dc:modified)]]</div>
+          <div secondary>
+            <div class="documentPills documentCatego">[[item.fields.article:category]]</div>
+            <template is="dom-repeat" items="[[item.fields.article:region]]">
+              <div class="documentPills documentRegion">[[item]]</div>
+            </template>
+          </div>
+        </div>
+        <div class="documentHighlight">[[item.fields.article:plainTextContent]]</div>
+      </paper-card>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-article-similar',
+      // Expose properties
+      properties: {
+        auto: {
+          type: Boolean,
+          value: true
+        },
+        docId: String,
+        aggregates: {
+          type: Object,
+          value: {}
+        },
+        query: Object,
+        fields: {
+          type: Array,
+          value: function() {
+            return ['_id', 'dc:title', 'dc:modified', 'article:region', 'article:category', 'ecm:uuid', 'article:plainTextContent'];
+          }
+        },
+      },
+
+      observers: [
+        // update the query
+        'buildQuery(docId)'
+      ],
+
+      ready: function() {
+        //When component is ready.
+        console.log('--similar doc ready');
+        this.buildQuery();
+      },
+
+      buildQuery: function() {
+        this.query = {
+          more_like_this: { // jshint ignore:line
+            docs: [{
+              _index: 'nuxeo',
+              _type: 'doc',
+              _id: this.docId
+            }],
+            min_term_freq: 2, // jshint ignore:line
+            max_query_terms: 20 // jshint ignore:line
+          }
+        };
+      },
+
+      _href: function(item) {
+        return page.base() + '/display/' + item._id;
+      },
+      _dateFormat: function(ISOStringDate) {
+        var date = new Date(ISOStringDate);
+        return date.toDateString() + ' ' + date.toLocaleTimeString();
+      }
+    });
+  </script>
+</dom-module>

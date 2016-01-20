@@ -1,0 +1,172 @@
+<!--
+@license
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+@Contributors:
+Fred Vadon <fvadon@nuxeo.com>
+
+This is the main app toolbar.
+Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]></nuxeo-km-toolbar>
+@group Nuxeo Elements
+@element nuxeo-km-toolbar
+@demo app/index.html
+-->
+
+<dom-module id="nuxeo-km-toolbar">
+  <template>
+    <style is="custom-style">
+      paper-toolbar {
+        background: var(--paper-menu-background-color);
+      }
+
+      .logo {
+        max-height: 40px;
+        margin-top: 3%;
+        margin-right: 1em;
+      }
+
+      .headerMenu {
+        color: var(--primary-title-color);
+        font-size: 140%;
+        vertical-align: bottom;
+      }
+
+      .app-name {
+        color: var(--primary-title-color);
+        font-size: 180%;
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      .top-app {
+        margin-top: 1em;
+        display: inline;
+      }
+
+      ::content paper-button {
+        text-transform: capitalize;
+      }
+
+      .headerMenu paper-tab {
+        width: 47%;
+      }
+
+      app-drawer {
+        background-color: var(--paper-menu-background-color);
+        /* app-drawer has default size but one can change it to a different width/height value */
+        width: 30%;
+      }
+    </style>
+    <!-- Main Toolbar -->
+
+    <paper-toolbar id="mainToolbar">
+      <!-- Application name -->
+      <div class="app-name">
+        <a href="/login"><img class="logo" src="http://cvs.cloud.nuxeo.com/nuxeo/img/cvscaremarklogo.png"></a>
+      </div>
+      <paper-tabs class="headerMenu" selected="{{page}}" attr-for-selected="name">
+        <paper-tab name="home">Home</paper-tab>
+        <paper-tab name="training">Training</paper-tab>
+        <paper-tab name="workinstructions">Work</paper-tab>
+        <paper-tab name="search">Search</paper-tab>
+      </paper-tabs>
+      <div class="horizontal flex layout end-justified">
+        <!-- Profile -->
+        <!--template is="dom-if" if="[[_isHomeTab(page)]]"-->
+        <section class="headerMenu">
+          <paper-menu-button>
+            <paper-button class="dropdown-trigger">
+              <span>{{_getRegionLabel(region)}}</span>
+            </paper-button>
+            <paper-menu class="dropdown-content" attr-for-selected="name" selected={{region}}>
+              <paper-item name="Midatlantic">Midatlantic</paper-item>
+              <paper-item name="Midwest">Midwest</paper-item>
+              <paper-item name="Mountain">Mountain</paper-item>
+              <paper-item name="Northeast">Northeast</paper-item>
+              <paper-item name="Pacific">Pacific</paper-item>
+              <paper-item name="Southeast">Southeast</paper-item>
+            </paper-menu>
+          </paper-menu-button>
+          <paper-button on-tap="_toggleDrawerParent">[[currentUserLabel]]</paper-button>
+        </section>
+        <!--/template-->
+      </div>
+    </paper-toolbar>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-km-toolbar',
+      // Expose properties
+      properties: {
+        baseUrl: {
+          type: String,
+        },
+        page: {
+          type: String,
+          notify: true
+        },
+        region: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        currentUser: {
+          type: Object,
+          notify: true,
+          observer: '_setUserLabel'
+        },
+        currentUserLabel: {
+          type: String,
+          notify: true,
+          value: 'Menu'
+        }
+      },
+
+      ready: function() {
+        //When component is ready.
+
+      },
+      _getRegionLabel: function(region) {
+        if (region === '') {
+          return 'Region';
+        } else {
+          return region;
+        }
+      },
+      _isHomeTab: function(page) {
+        if (page === 'home') {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      _toggleDrawerParent: function() {
+        var pdp = document.getElementById('drawerPanel');
+        pdp.togglePanel();
+      },
+      _setUserLabel: function() {
+        if (this.currentUser) {
+          this.currentUserLabel = '';
+          if (this.currentUser.properties.firstName) {
+            this.currentUserLabel = this.currentUser.properties.firstName;
+          }
+          if (this.currentUser.properties.lastName) {
+            this.currentUserLabel += ' ' + this.currentUser.properties.lastName;
+          }
+          if (this.currentUserLabel === '') {
+            this.currentUserLabel = this.currentUser.id;
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>

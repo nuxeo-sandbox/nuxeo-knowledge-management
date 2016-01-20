@@ -1,0 +1,77 @@
+<!--
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+Contributors:
+	Fred Vadon <fvadon@nuxeo.com>
+-->
+<!--
+A data element providing a faceted search for articles.
+Example: <nuxeo-article-search></nuxeo-article-search>
+@group Nuxeo Elements
+@element nuxeo-article-search-results
+@demo app/index.html
+-->
+<dom-module id="nuxeo-article-search">
+
+	<template>
+
+		<style is="custom-style" include="shared-styles">
+			paper-drawer-panel{
+				margin-top: 5em;
+				overflow: visible;
+			}
+			paper-header-panel{
+				height: 100%;
+			}
+		</style>
+
+		<paper-drawer-panel>
+			<paper-header-panel drawer>
+				<div>
+					<nuxeo-article-search-filter fulltext={{fulltext}} articles={{articles}}
+						suggestions={{suggestions}} region={{region}}>
+					</nuxeo-article-search-filter>
+				</div>
+			</paper-header-panel>
+			<paper-header-panel main>
+				<div>
+					<nuxeo-article-search-results fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}}>
+					</nuxeo-article-search-results>
+				</div>
+			</paper-header-panel>
+		</paper-drawer-panel>
+
+	</template>
+
+	<script>
+	Polymer({
+		is: 'nuxeo-article-search',
+		// Expose properties
+		properties: {
+			fulltext: {
+				type: String,
+				notify: true
+			},
+			region: {
+				type: String,
+				notify: true
+			},
+		},
+		ready: function() {
+			//When component is ready.
+			//console.log("--search result ready")
+		}
+	});
+	</script>
+
+</dom-module>

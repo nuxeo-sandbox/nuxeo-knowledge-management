@@ -1,0 +1,90 @@
+<dom-module id='nuxeo-star-rating'>
+  <template>
+    <style>
+      #starRating {
+        display: inline-block;
+      }
+
+      .star {
+        display: inline-block;
+        width: 18px;
+        height: 17px;
+        margin-right: 5px;
+        background: url(../images/rating.png) no-repeat 0 -17px;
+      }
+
+      .star.check {
+        background-position: 0 0;
+      }
+    </style>
+    <div id="rating">
+      <template is="dom-if" if="{{_stars}}">
+        <template is="dom-repeat" items="{{_stars}}">
+          <span id={{index}} class$="{{item.value}}" on-click="handleClick"></span>
+        </template>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-star-rating',
+      // Expose properties
+      properties: {
+        readOnly: {
+          type: Boolean,
+          value: false
+        },
+        vote: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        starCount: {
+          type: Number,
+          value: 5,
+          notify: true
+        },
+        _stars: {
+          type: Array,
+          value: function() {
+            return [];
+          },
+          notify: true
+        }
+      },
+
+      observers: [
+        // update the suggestion
+        'updateStars(vote)'
+      ],
+
+      ready: function() {
+        console.log('--star rating ready');
+        this.updateStars();
+      },
+
+      handleClick: function(e) {
+        if (this.readOnly) {
+          return;
+        }
+        console.log('--handle click');
+        this.vote = parseInt(e.srcElement.id) + 1;
+      },
+
+      updateStars: function() {
+        if (this._stars === undefined) {
+          return;
+        }
+        this.splice('_stars', 0, 5);
+        for (var i = 1; i <= this.starCount; i++) {
+          this.push('_stars', {
+            value: i <= this.vote ? 'star check' : 'star'
+          });
+        }
+        this.set('_stars', this._stars);
+      }
+    });
+  </script>
+
+</dom-module>

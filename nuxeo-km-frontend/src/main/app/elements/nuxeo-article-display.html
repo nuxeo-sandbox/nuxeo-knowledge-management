@@ -1,0 +1,327 @@
+<!--
+@license
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+@Contributors:
+Fred Vadon <fvadon@nuxeo.com>
+
+A element providing a view of an article.
+Example: <nuxeo-article-display></nuxeo-article-display>
+@group Nuxeo Elements
+@element nuxeo-article-display
+@demo app/index.html
+-->
+
+<dom-module id="nuxeo-article-display">
+
+  <template>
+    <style is="custom-style">
+      paper-card {
+        width: 80%;
+        margin: 1em;
+      }
+
+      h1 {
+        padding-left: 0;
+        margin-left: 2%;
+        margin-bottom: 0.5em;
+        color: #414141;
+        font-size: 200%;
+        font-weight: 400;
+        font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+
+      .documentInfo {
+        color: #A9A9A9;
+        font-size: 80%;
+        margin-left: 2%;
+        margin-top: 0.5em;
+      }
+
+      .documentCatego {
+        color: #fff;
+        background: #059EBD;
+        border-radius: 0.3em;
+        margin-left: 2%;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        display: inline-block;
+      }
+
+      .documentRegion {
+        color: #fff;
+        background: #7C7C7C;
+        border-radius: 0.3em;
+        margin-left: 0.5%;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        display: inline-block;
+      }
+
+      .documentContent {
+        margin-top: 2em;
+        margin-left: 2%;
+      }
+
+      .rating {
+        display: inline-flex;
+        width: 45%
+      }
+
+      .label {
+        margin-right: 2em;
+      }
+
+      paper-card.mustread {
+        width: 15%;
+        display: inline-block;
+        position: fixed;
+      }
+
+      paper-button.mustread {
+        background: #ffe5de;
+      }
+
+      paper-button {
+        display: block;
+        text-align: center;
+        margin: 1em;
+      }
+
+      paper-card.mustread::content .header.paper-card .title-text.paper-card {
+        color: var(--primary-font-color);
+      }
+
+      #articleToast {
+        --paper-toast-background-color: #8cf491;
+        --paper-toast-color: var(--primary-font-color);
+      }
+
+      paper-dialog {
+        background-color: white;
+        position: fixed;
+        width: 600px;
+        height: 300px;
+        overflow: auto;
+      }
+
+      paper-card.feedback {
+        width: 15%;
+        display: inline-block;
+        position: fixed;
+        background: #fafafa;
+        margin-top: 0px;
+      }
+    </style>
+    <template is="dom-if" if="[[_isDefined(documentId)]]">
+      <nuxeo-document auto id="documentGetter" doc-id=[[documentId]] response="{{nuxeoDocument}}"></nuxeo-document>
+    </template>
+    <nuxeo-operation id="confirmRead" op="confirmRead" input="{{documentId}}" response="{{confirmReadResponse}}"></nuxeo-operation>
+    <nuxeo-operation id="getCurrentUserNameTest" op="javascript.getCurrentUserName" input="{{documentId}}"></nuxeo-operation>
+    <paper-card elevation="3">
+      <div class="card-content">
+        <h1>[[nuxeoDocument.title]]</h1>
+        <template is="dom-if" if="[[_isArticle(nuxeoDocument)]]">
+          <div class="documentCatego">[[nuxeoDocument.properties.article:category]]</div>
+          <template is="dom-repeat" items="[[nuxeoDocument.properties.article:region]]">
+            <div class="documentRegion">[[item]]</div>
+          </template>
+          <div class="documentInfo">Updated: [[_dateFormat(nuxeoDocument.properties.dc:modified)]]</div>
+          <div class="documentInfo">[[_wordsTominutes(nuxeoDocument.properties.article:plainTextContent)]]</div>
+          <div class="documentContent" inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
+        </template>
+
+        <template is="dom-if" if="[[_isAnnouncement(nuxeoDocument)]]">
+          <div class="documentCatego">[[nuxeoDocument.properties.announcement:priorityCode]]</div>
+          <template is="dom-repeat" items="[[nuxeoDocument.properties.announcement:region]]">
+            <div class="documentRegion">[[item]]</div>
+          </template>
+          <div class="documentInfo">Updated: [[_dateFormat(nuxeoDocument.properties.dc:modified)]]</div>
+          <div class="documentContent" inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
+        </template>
+      </div>
+    </paper-card>
+
+    <paper-dialog id="feedbackDialog" modal>
+      <h2>Feedback</h2>
+      <p>
+        <paper-textarea placeholder="Your Feedback..."></paper-text-area>
+      </p>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm on-tap="_feedbackSent">Send</paper-button>
+      </div>
+    </paper-dialog>
+
+    <paper-card heading="" elevation="0" class="feedback">
+      <template is="dom-if" if="[[mustRead]]">
+        <paper-button class="mustread" raised on-tap="_confirmRead">I Have Read This</paper-button>
+      </template>
+      <paper-button raised on-tap="_openFeedback">Give Feedback</paper-button>
+    </paper-card>
+
+    <template is="dom-if" if="[[_isArticle(nuxeoDocument)]]">
+      <paper-card heading="Popularity" elevation="3">
+        <div class="card-content rating">
+          <nuxeo-star-rating-viz doc-id=[[nuxeoDocument.uid]]></nuxeo-star-rating-viz>
+        </div>
+        <div class="documentContent rating">
+          <span class="label">
+		    My Rating:
+	    </span>
+          <nuxeo-my-rating doc-id=[[nuxeoDocument.uid]]></nuxeo-my-rating>
+        </div>
+      </paper-card>
+    </template>
+
+    <paper-card heading="Similar Articles" elevation="3">
+      <template is="dom-if" if="[[_isDefined(documentId)]]">
+        <div class="card-content">
+          <nuxeo-article-similar doc-id=[[nuxeoDocument.uid]]></nuxeo-article-similar>
+        </div>
+      </template>
+    </paper-card>
+
+    <paper-toast id="articleToast" duration="3000" withBackdrop="true"></paper-toast>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-article-display',
+      properties: {
+        documentId: {
+          type: String,
+          notify: true,
+          observer: '_printDocId'
+        },
+        nuxeoDocument: {
+          type: Object,
+          notify: true
+        },
+        userforarticle: {
+          type: Object,
+          notify: true,
+        },
+        mustRead: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        confirmReadResponse: {
+          type: Object,
+          notify: true,
+          observer: '_ReadResponseReceived'
+        }
+
+      },
+      observers: [
+        '_setMustRead(userforarticle, nuxeoDocument)'
+      ],
+
+      ready: function() {
+        //When component is ready.
+        //console.log("--search result ready")
+      },
+      _isDefined: function(documentId) {
+        if ((typeof documentId !== 'undefined') && (documentId !== '/')) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      _dateFormat: function(ISOStringDate) {
+        var date = new Date(ISOStringDate);
+        return date.toDateString() + ' ' + date.toLocaleTimeString();
+      },
+      _isArticle: function(nuxeoDocument) {
+        if (nuxeoDocument) {
+          return nuxeoDocument.type === 'Article';
+        } else {
+          return false;
+        }
+      },
+      _isAnnouncement: function(nuxeoDocument) {
+        if (nuxeoDocument) {
+          return nuxeoDocument.type === 'Announcement';
+        } else {
+          return false;
+        }
+      },
+      _setMustRead: function() {
+        if (this.nuxeoDocument) {
+          this.mustRead = this.nuxeoDocument.properties['readConfirm:usernames'].
+          indexOf(this.userforarticle.id) !== -1;
+        }
+      },
+      _confirmRead: function() {
+        //this.$.getCurrentUserNameTest.execute();
+        this.$.confirmRead.execute();
+        this.mustRead = false;
+        this.$.articleToast.text = 'Read Confirmed';
+        this.$.articleToast.open();
+      },
+      _ReadResponseReceived: function() {
+        if (document.querySelector('#articleHome')) {
+          document.querySelector('#articleHome').refreshWidgets();
+        }
+      },
+      _printDocId: function() {
+        this.documentId = this.documentId.replace('/', '');
+      },
+      _openFeedback: function() {
+        //this.$.feedbackDialog.modal = true;
+        this.$.feedbackDialog.toggle();
+      },
+      _feedbackSent: function() {
+        this.$.articleToast.text = 'Feedback Sent';
+        this.$.articleToast.open();
+      },
+      _wordsTominutes: function(words) {
+
+        if (words) {
+          var nbWords = words.split(' ').length;
+          console.log(words.split(' ').length);
+          if (nbWords < 131) {
+            return '1 min read';
+          }
+          if (nbWords < 261) {
+            return '2 min read';
+          }
+          if (nbWords < 391) {
+            return '3 min read';
+          }
+          if (nbWords < 521) {
+            return '4 min read';
+          }
+          if (nbWords < 651) {
+            return '5 min read';
+          }
+          if (nbWords < 1301) {
+            return '5 min read';
+          }
+          if (nbWords < 1951) {
+            return '15 min read';
+          }
+          //Words in a 1 minute speech	130 words
+          //Words in a 2 minute speech	260 words
+          //Words in a 3 minute speech	390 words
+          //Words in a 4 minute speech	520 words
+          //Words in a 5 minute speech	650 words
+          //Words in a 10 minute speech	1300 words
+          //Words in a 15 minute speech	1950 words
+          //Words in a 20 minute speech	2600 words
+          return 'More than 20 min read';
+        }
+        return '';
+      }
+
+    });
+  </script>
+</dom-module>
