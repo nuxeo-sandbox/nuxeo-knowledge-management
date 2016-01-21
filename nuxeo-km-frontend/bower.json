@@ -12,6 +12,8 @@
     "moment": "~2.11.0",
     "nuxeo-elements": "nuxeo/nuxeo-elements#master",
     "nuxeo-dataviz-elements": "michaelva/nuxeo-dataviz-elements#NXP-18712-improve-nuxeo-es-search-interface",
+    "google-chart": "GoogleWebComponents/google-chart#~1.0.3",
+    "nuxeo-util-mimetypes": "nuxeo-sandbox/nuxeo-util-mimetypes#~1.1.1",
     "paper-dialog": "PolymerElements/paper-dialog#~1.0.3"
   },
   "devDependencies": {

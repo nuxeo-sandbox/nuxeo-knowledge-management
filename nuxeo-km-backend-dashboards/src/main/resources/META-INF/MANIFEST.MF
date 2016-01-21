@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 1
-Bundle-Name: KM Dashboard
-Bundle-SymbolicName: nuxeo-km-backend-dashboards;singleton:=true
-Bundle-Vendor: Nuxeo
-Bundle-Version: 1.0.0
-Nuxeo-RequiredBy: org.nuxeo.ecm.war
-Nuxeo-Component: OSGI-INF/authentication-contrib.xml

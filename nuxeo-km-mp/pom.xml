@@ -45,11 +45,6 @@
 		</dependency>
 		<dependency>
 			<groupId>nuxeo-km</groupId>
-			<artifactId>nuxeo-km-backend-dashboards</artifactId>
-			<version>${nuxeo.project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>nuxeo-km</groupId>
 			<artifactId>nuxeo-km-frontend</artifactId>
 			<version>${nuxeo.project.version}</version>
 		</dependency>
