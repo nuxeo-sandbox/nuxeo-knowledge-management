@@ -33,9 +33,7 @@ Contributors:
   <script src="bower_components/moment/min/moment-with-locales.js"></script>
   <!-- endbuild-->
 
-  <!-- build:vulcanized elements/elements.vulcanized.html -->
   <link rel="import" href="elements/elements.html">
-  <!-- endbuild-->
 
   <style is="custom-style">
     body {
@@ -61,7 +59,7 @@ Contributors:
       ;
     }
     
-    #hideDateRange {
+    #hideWidget {
       display: none;
     }
     
@@ -87,11 +85,11 @@ Contributors:
       <paper-toolbar>
         <div id="logo"></div>
         <div id="title">CVS Dashboard</div>
-        <div id="hideDateRange">
+        <div>
           <input type="date" value="{{startDate::change}}">
           <input type="date" value="{{endDate::change}}">
         </div>
-        <div id="placeholder"></div>
+        <div id="hideWidget"></div>
       </paper-toolbar>
 
       <!-- Include our element and specify a start and end date -->

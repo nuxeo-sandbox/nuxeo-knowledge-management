@@ -1,0 +1,90 @@
+<!--
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+Contributors:
+	Josh Fletcher <jfletcher@nuxeo.com>
+-->
+<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-es-search.html">
+<!--
+  An element that returns the quantity of unread documents by group.
+-->
+<dom-module id="cvs-dashboard-unread-by-group">
+
+  <template>
+
+
+    <nuxeo-es-search auto="true" query="[[_query()]]" size="1" aggregates="[[_aggs()]]" hits="{{docHits}}" aggregations="{{docAggregations}}">
+    </nuxeo-es-search>
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'cvs-dashboard-unread-by-group',
+
+      properties: {
+        docHits: {
+          type: Object,
+          notify: true
+        },
+        docAggregations: {
+          type: Object,
+          notify: true
+        }
+      },
+
+
+      _query: function () {
+        this.query = {
+          "bool": {
+            "must": [{
+              "term": {
+                "ecm:primaryType": "Article"
+              }
+            }, {
+              "term": {
+                "readConfirm:assigned": true
+              }
+            }]
+          }
+        };
+
+        return this.query;
+      },
+
+
+      _aggs: function () {
+        this.aggregates = {
+          "by": {
+            "terms": {
+              "field": "readConfirm:groupnames"
+            }
+          }
+        };
+
+        return this.aggregates;
+      },
+
+      _debug: function (stuff) {
+
+        console.log(stuff);
+
+        debugger;
+      }
+
+
+    });
+  </script>
+</dom-module>
