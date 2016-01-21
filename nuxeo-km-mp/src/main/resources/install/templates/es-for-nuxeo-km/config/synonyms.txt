@@ -1,0 +1,4 @@
+aspirin, acetylsalicylic
+properties, metadata, fields
+content, document
+nuxeo, awesome
