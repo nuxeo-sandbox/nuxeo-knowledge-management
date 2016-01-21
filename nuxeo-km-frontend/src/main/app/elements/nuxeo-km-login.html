@@ -23,6 +23,10 @@ Example: <nuxeo-km-login></nuxeo-km-login>
   <template>
 
     <style is="custom-style" include="shared-styles">
+      body {
+        background: url("images/nuxeo_wallpaper-km.png") 10px 10px no-repeat #000;
+      }
+
       .appheader {
         margin: 2em;
       }
@@ -30,11 +34,8 @@ Example: <nuxeo-km-login></nuxeo-km-login>
       .app-title {
         color: var(--primary-title-color);
         font-size: 400%;
-        margin-left: 10%;
-        margin-right: 5%;
-        margin-bottom: 0;
-        margin-top: 2em;
-        display: inline;
+        display: table;
+        margin: 0 auto;
       }
 
       form {
@@ -79,7 +80,6 @@ Example: <nuxeo-km-login></nuxeo-km-login>
     </style>
     <div class="appheader">
       <div class="logologin">
-        <img src="http://cvs.cloud.nuxeo.com/nuxeo/img/cvscaremarklogo.png">
         <span class='app-title'>Knowledge Base</span>
       </div>
       <div class="card-container" class="red-header">
