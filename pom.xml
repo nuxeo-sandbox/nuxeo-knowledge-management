@@ -26,7 +26,6 @@
     <modules>
         <module>nuxeo-km-backend-core</module>
         <module>nuxeo-km-backend-scoring-admin-ui</module>
-        <module>nuxeo-km-backend-dashboards</module>
         <module>nuxeo-km-frontend</module>
         <module>nuxeo-km-mp</module>
     </modules>
@@ -48,11 +47,6 @@
             <dependency>
                 <groupId>nuxeo-km</groupId>
                 <artifactId>nuxeo-km-backend-scoring-admin-ui</artifactId>
-                <version>${nuxeo.project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>nuxeo-km</groupId>
-                <artifactId>nuxeo-km-backend-dashboards</artifactId>
                 <version>${nuxeo.project.version}</version>
             </dependency>
             <dependency>
