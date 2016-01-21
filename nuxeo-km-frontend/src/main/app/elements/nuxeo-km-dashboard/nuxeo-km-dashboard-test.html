@@ -15,22 +15,22 @@ Contributors:
   Josh Fletcher <jfletcher@nuxeo.com>
 -->
 <!--
-An element providing a dashboard for the CVS demo, for testing single widgets.
+An element providing a dashboard for the KM demo, for testing single widgets.
 
 Example:
 
-    <cvs-dashboard-test start-date="2015-01-01"
+    <nuxeo-km-dashboard-test start-date="2015-01-01"
                       end-date="2015-12-31">
-    </cvs-dashboard-test>
+    </nuxeo-km-dashboard-test>
 
 @group Nuxeo Dashboards
-@element cvs-dashboard-test
+@element nuxeo-km-dashboard-test
 @demo demo/index.html
 -->
 
-<dom-module id="cvs-dashboard-test">
+<dom-module id="nuxeo-km-dashboard-test">
 
-  <link rel="import" type="css" href="cvs-dashboard.css">
+  <link rel="import" type="css" href="nuxeo-km-dashboard.css">
 
   <template>
 
@@ -44,7 +44,7 @@ Example:
 
   <script>
     Polymer({
-      is: 'cvs-dashboard-test',
+      is: 'nuxeo-km-dashboard-test',
 
       properties: {
         startDate: String,

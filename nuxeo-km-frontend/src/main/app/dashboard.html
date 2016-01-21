@@ -19,7 +19,7 @@ Contributors:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>CVS Dashboard</title>
+  <title>Knowledge Management Dashboard</title>
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
@@ -43,7 +43,7 @@ Contributors:
     }
 
     #title {
-      color: #CC0000;
+      color: #213f7d;
       font-size: 175%;
       font-weight: bold;
       display: table;
@@ -51,7 +51,7 @@ Contributors:
     }
 
     #logo {
-      background: transparent url('images/cvscaremarklogo.png') no-repeat;
+      background: transparent url('images/nuxeo-km-logo.png') no-repeat;
       background-size: cover;
       display: inline-block;
       height: 38px;
@@ -84,7 +84,7 @@ Contributors:
     <paper-header-panel>
       <paper-toolbar>
         <div id="logo"></div>
-        <div id="title">CVS Dashboard</div>
+        <div id="title">Knowledge Management Dashboard</div>
         <div>
           <input type="date" value="{{startDate::change}}">
           <input type="date" value="{{endDate::change}}">
@@ -93,8 +93,8 @@ Contributors:
       </paper-toolbar>
 
       <!-- Include our element and specify a start and end date -->
-      <cvs-dashboard start-date="[[startDate]]" end-date="[[endDate]]">
-      </cvs-dashboard>
+      <nuxeo-km-dashboard start-date="[[startDate]]" end-date="[[endDate]]">
+      </nuxeo-km-dashboard>
 
     </paper-header-panel>
 

@@ -15,14 +15,14 @@ Contributors:
 	Josh Fletcher <jfletcher@nuxeo.com>
 -->
 <!--
-  An element that returns the worst performing keyword searches.
+  An element that returns the lowest rated articles.
 -->
-<dom-module id="cvs-dashboard-search-performance">
+<dom-module id="nuxeo-km-dashboard-article-worst-rated">
 
   <template>
 
 
-    <nuxeo-es-search auto="true" query="[[_query()]]" size="0" aggregates="[[_aggs()]]" index="audit" hits="{{docHits}}" aggregations="{{docAggregations}}">
+    <nuxeo-es-search auto="true" query="[[_query()]]" size="10" aggregates="[[_aggs()]]" hits="{{docHits}}" aggregations="{{docAggregations}}">
     </nuxeo-es-search>
 
 
@@ -31,7 +31,7 @@ Contributors:
   <script>
     Polymer({
 
-      is: 'cvs-dashboard-search-performance',
+      is: 'nuxeo-km-dashboard-article-worst-rated',
 
       properties: {
         docHits: {
@@ -41,49 +41,43 @@ Contributors:
         docAggregations: {
           type: Object,
           notify: true
-        }
+        },
+        docOrder: String
       },
 
 
-      // Search for audit events that have a value in the keywords field.
       _query: function () {
         this.query = {
-          "filtered": {
-            "filter": {
-              "exists": {
-                "field": "extended.searchDocumentModel.properties.ArticlesSearch_cv:system_fulltext"
+          "bool": {
+            "must": [{
+              "terms": {
+                "ecm:primaryType": ["Vote"]
               }
-            },
-            "query": {
-              match: {
-                "pageProviderName": "ArticlesSearch"
+            }, {
+              "term": {
+                "ecm:isVersion": "false"
               }
-            }
+            }]
           }
-
         };
-
         return this.query;
       },
 
-      // Aggregate by number of results, ascending.
-      // Then keywords sorted by most used.
+
       _aggs: function () {
         this.aggregates = {
-          "results": {
+          "votesPerDoc": {
             "terms": {
-              "field": "resultsCount",
-              "order": {
-                "_term": "asc"
+              "field": "vote:docTitle",
+              order: {
+                avgVote: "asc"
               },
-              "size": 7,
-              "collect_mode": "breadth_first"
+              "size": 0
             },
             "aggs": {
-              "keywords": {
-                "terms": {
-                  "field": "ArticlesSearch_cv:system_fulltext",
-                  size: 1
+              "avgVote": {
+                "avg": {
+                  "field": "vote:vote"
                 }
               }
             }
