@@ -15,14 +15,14 @@ Contributors:
 	Josh Fletcher <jfletcher@nuxeo.com>
 -->
 <!--
-  An element that returns the quantity of unread documents by group.
+  An element that returns the highest rated articles.
 -->
-<dom-module id="cvs-dashboard-unread-by-group">
+<dom-module id="nuxeo-km-dashboard-article-top-rated">
 
   <template>
 
 
-    <nuxeo-es-search auto="true" query="[[_query()]]" size="1" aggregates="[[_aggs()]]" hits="{{docHits}}" aggregations="{{docAggregations}}">
+    <nuxeo-es-search auto="true" query="[[_query()]]" size="10" aggregates="[[_aggs()]]" hits="{{docHits}}" aggregations="{{docAggregations}}">
     </nuxeo-es-search>
 
 
@@ -31,7 +31,7 @@ Contributors:
   <script>
     Polymer({
 
-      is: 'cvs-dashboard-unread-by-group',
+      is: 'nuxeo-km-dashboard-article-top-rated',
 
       properties: {
         docHits: {
@@ -41,7 +41,8 @@ Contributors:
         docAggregations: {
           type: Object,
           notify: true
-        }
+        },
+        docOrder: String
       },
 
 
@@ -49,26 +50,36 @@ Contributors:
         this.query = {
           "bool": {
             "must": [{
-              "term": {
-                "ecm:primaryType": "Article"
+              "terms": {
+                "ecm:primaryType": ["Vote"]
               }
             }, {
               "term": {
-                "readConfirm:assigned": true
+                "ecm:isVersion": "false"
               }
             }]
           }
         };
-
         return this.query;
       },
 
 
       _aggs: function () {
         this.aggregates = {
-          "by": {
+          "votesPerDoc": {
             "terms": {
-              "field": "readConfirm:groupnames"
+              "field": "vote:docTitle",
+              order: {
+                avgVote: "desc"
+              },
+              "size": 0
+            },
+            "aggs": {
+              "avgVote": {
+                "avg": {
+                  "field": "vote:vote"
+                }
+              }
             }
           }
         };
@@ -77,7 +88,6 @@ Contributors:
       },
 
       _debug: function (stuff) {
-
         console.log(stuff);
 
         debugger;
