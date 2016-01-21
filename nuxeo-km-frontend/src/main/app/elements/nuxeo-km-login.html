@@ -46,7 +46,7 @@ Example: <nuxeo-km-login></nuxeo-km-login>
         width: 100%;
       }
 
-      paper-card ::content .header.paper-card .title-text.paper-card {
+      paper-card::content .header.paper-card .title-text.paper-card {
         color: var(--primary-font-color);
         margin-left: 1em;
       }
@@ -123,21 +123,21 @@ Example: <nuxeo-km-login></nuxeo-km-login>
         }
       },
 
-      ready: function() {
+      ready: function () {
         //When component is ready.
 
       },
-      getRegionLabel: function(region) {
+      getRegionLabel: function (region) {
         if (region === '') {
           return 'Region';
         } else {
           return region;
         }
       },
-      _submitHandler: function(event) {
+      _submitHandler: function (event) {
         Polymer.dom(event).localTarget.parentElement.submit();
       },
-      _login: function() {
+      _login: function () {
         this.page = 'home';
       }
 
