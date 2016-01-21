@@ -1,33 +1,10 @@
-# About the Knowledge Management Dashboards Plugin
+# About the Knowledge Management Dashboard
 
-This Nuxeo plugin uses [Nuxeo Data Visualzation](https://doc.nuxeo.com/x/WZCRAQ) to create a dashboard for the CVS demo.
-
-# Requirements
-
-The nuxeo-km Studio project (internal) is required. The build will work, but the runtime will fail if don't have the correct document types.'
-
-See [CORG/Compiling Nuxeo from sources](http://doc.nuxeo.com/x/xION)
-
-Building this sample requires the following software:
-
-- [Node.js] (http://nodejs.org)
-- [Bower] (http://bower.io)
-
-# Building
-
-Navigate into the folder that contains `pom.xml`.
-
-    mvn clean install
-
-The plugin will be placed in the `target` folder.
-
-# Deploying
-
-It is recommended to deploy the marketplace package. Just move to the parent folder of this repository and `mvn clean install`
+This Polymer application uses [Nuxeo Data Visualzation](https://doc.nuxeo.com/x/WZCRAQ) to create a dashboard for the KM demo.
 
 # Usage
 
-Once installed in the the Knowledge Management demo, there is a bundled Web application at `http://yourserver/nuxeo/cvs-dashboard`.
+Once installed in the the Knowledge Management demo, there is a bundled Web application at `http://yourserver/nuxeo/km/dashboard.html`.
 
 # Resources
 
@@ -37,7 +14,13 @@ Contact [jfletcher@nuxeo.com](mailto:jfletcher@nuxeo.com)
 
 # Licensing
 
-[GNU Lesser General Public License (LGPL) v2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
+(C) Copyright 2014 Nuxeo SA (http://nuxeo.com/) and others.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 # About Nuxeo
 

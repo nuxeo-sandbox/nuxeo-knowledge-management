@@ -14,39 +14,23 @@ Lesser General Public License for more details.
 Contributors:
   Josh Fletcher <jfletcher@nuxeo.com>
 -->
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../bower_components/iron-icons/image-icons.html">
-<link rel="import" href="../bower_components/google-chart/google-chart.html">
-<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-dataviz-elements.html">
-<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-audit-data.html">
-<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-search-data.html">
-<link rel="import" href="../bower_components/nuxeo-util-mimetypes/nuxeo-util-mimetypes.html">
-
-<link rel="import" href="nuxeo-data-table.html">
-<link rel="import" href="nuxeo-data-table-audit.html">
-<link rel="import" href="cvs-dashboard-search-performance.html">
-<link rel="import" href="cvs-dashboard-article-top-rated.html">
-<link rel="import" href="cvs-dashboard-article-worst-rated.html">
-<link rel="import" href="cvs-dashboard-unread-by-group.html">
-<link rel="import" href="nuxeo-data-table-stars.html">
 <!--
-An element providing a dashboard for the CVS demo.
+An element providing a dashboard for the KM demo.
 
 Example:
 
-    <cvs-dashboard start-date="2015-01-01"
+    <nuxeo-km-dashboard start-date="2015-01-01"
                    end-date="2015-12-31">
-    </cvs-dashboard>
+    </nuxeo-km-dashboard>
 
 @group Nuxeo Dashboards
-@element cvs-dashboard
+@element nuxeo-km-dashboard
 @demo demo/index.html
 -->
 
-<dom-module id="cvs-dashboard">
+<dom-module id="nuxeo-km-dashboard">
 
-  <link rel="import" type="css" href="cvs-dashboard.css">
+  <link rel="import" type="css" href="nuxeo-km-dashboard.css">
 
   <template>
 
@@ -63,11 +47,11 @@ Example:
     </paper-card>
 
 
-    <!-- 
+    <!--
       The top search terms that returned low results.
       Note that I limited it to only one set of keywords per result count, otherwise you get junk searches.
     -->
-    <cvs-dashboard-search-performance doc-aggregations="{{seachPerfData}}"></cvs-dashboard-search-performance>
+    <nuxeo-km-dashboard-search-performance doc-aggregations="{{seachPerfData}}"></nuxeo-km-dashboard-search-performance>
 
     <paper-card class="dashboard-widget-header-02" heading="Common Searches with Few Results" elevation="2">
       <div class="card-content-table">
@@ -78,7 +62,7 @@ Example:
 
 
     <!-- Unread by Department --------------------------------------------------->
-    <cvs-dashboard-unread-by-group doc-aggregations="{{unreadDocs}}"> </cvs-dashboard-unread-by-group>
+    <nuxeo-km-dashboard-unread-by-group doc-aggregations="{{unreadDocs}}"> </nuxeo-km-dashboard-unread-by-group>
 
 
     <paper-card class="dashboard-widget-header-01" heading="Most Unread by Region" elevation="2">
@@ -90,7 +74,7 @@ Example:
 
 
     <!-- Best rated --------------------------------------------------->
-    <cvs-dashboard-article-top-rated doc-aggregations="{{topRatedData}}"></cvs-dashboard-article-top-rated>
+    <nuxeo-km-dashboard-article-top-rated doc-aggregations="{{topRatedData}}"></nuxeo-km-dashboard-article-top-rated>
 
     <paper-card class="dashboard-widget-header-01" heading="Highest Rated Articles" elevation="2">
       <div class="card-content-table">
@@ -101,7 +85,7 @@ Example:
 
 
     <!-- Worst rated --------------------------------------------------->
-    <cvs-dashboard-article-worst-rated doc-aggregations="{{worstRatedData}}"></cvs-dashboard-article-worst-rated>
+    <nuxeo-km-dashboard-article-worst-rated doc-aggregations="{{worstRatedData}}"></nuxeo-km-dashboard-article-worst-rated>
 
     <paper-card class="dashboard-widget-header-01" heading="Lowest Rated Articles" elevation="2">
       <div class="card-content-table">
@@ -217,7 +201,7 @@ Example:
 
   <script>
     Polymer({
-      is: 'cvs-dashboard',
+      is: 'nuxeo-km-dashboard',
 
       properties: {
         startDate: String,

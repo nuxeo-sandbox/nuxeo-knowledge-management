@@ -14,16 +14,15 @@ Lesser General Public License for more details.
 Contributors:
 	Josh Fletcher <jfletcher@nuxeo.com>
 -->
-<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-es-search.html">
 <!--
-  An element that returns the quantity of unread documents by group.
+  An element that returns the worst performing keyword searches.
 -->
-<dom-module id="cvs-dashboard-unread-by-group">
+<dom-module id="nuxeo-km-dashboard-search-performance">
 
   <template>
 
 
-    <nuxeo-es-search auto="true" query="[[_query()]]" size="1" aggregates="[[_aggs()]]" hits="{{docHits}}" aggregations="{{docAggregations}}">
+    <nuxeo-es-search auto="true" query="[[_query()]]" size="0" aggregates="[[_aggs()]]" index="audit" hits="{{docHits}}" aggregations="{{docAggregations}}">
     </nuxeo-es-search>
 
 
@@ -32,7 +31,7 @@ Contributors:
   <script>
     Polymer({
 
-      is: 'cvs-dashboard-unread-by-group',
+      is: 'nuxeo-km-dashboard-search-performance',
 
       properties: {
         docHits: {
@@ -46,30 +45,47 @@ Contributors:
       },
 
 
+      // Search for audit events that have a value in the keywords field.
       _query: function () {
         this.query = {
-          "bool": {
-            "must": [{
-              "term": {
-                "ecm:primaryType": "Article"
+          "filtered": {
+            "filter": {
+              "exists": {
+                "field": "extended.searchDocumentModel.properties.ArticlesSearch_cv:system_fulltext"
               }
-            }, {
-              "term": {
-                "readConfirm:assigned": true
+            },
+            "query": {
+              match: {
+                "pageProviderName": "ArticlesSearch"
               }
-            }]
+            }
           }
+
         };
 
         return this.query;
       },
 
-
+      // Aggregate by number of results, ascending.
+      // Then keywords sorted by most used.
       _aggs: function () {
         this.aggregates = {
-          "by": {
+          "results": {
             "terms": {
-              "field": "readConfirm:groupnames"
+              "field": "resultsCount",
+              "order": {
+                "_term": "asc"
+              },
+              "size": 7,
+              "collect_mode": "breadth_first"
+            },
+            "aggs": {
+              "keywords": {
+                "terms": {
+                  "field": "ArticlesSearch_cv:system_fulltext",
+                  size: 1
+                }
+              }
             }
           }
         };
@@ -78,7 +94,6 @@ Contributors:
       },
 
       _debug: function (stuff) {
-
         console.log(stuff);
 
         debugger;

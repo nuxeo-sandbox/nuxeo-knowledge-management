@@ -14,11 +14,10 @@ Lesser General Public License for more details.
 Contributors:
 	Josh Fletcher <jfletcher@nuxeo.com>
 -->
-<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-es-search.html">
 <!--
-  An element that returns the highest rated articles.
+  An element that returns the lowest rated articles.
 -->
-<dom-module id="cvs-dashboard-article-top-rated">
+<dom-module id="nuxeo-km-dashboard-article-worst-rated">
 
   <template>
 
@@ -32,7 +31,7 @@ Contributors:
   <script>
     Polymer({
 
-      is: 'cvs-dashboard-article-top-rated',
+      is: 'nuxeo-km-dashboard-article-worst-rated',
 
       properties: {
         docHits: {
@@ -71,7 +70,7 @@ Contributors:
             "terms": {
               "field": "vote:docTitle",
               order: {
-                avgVote: "desc"
+                avgVote: "asc"
               },
               "size": 0
             },
