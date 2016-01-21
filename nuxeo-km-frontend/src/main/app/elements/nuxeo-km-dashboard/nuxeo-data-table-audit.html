@@ -15,19 +15,17 @@ Contributors:
   Nelson Silva <nsilva@nuxeo.com>
   Josh Fletcher <jfletcher@nuxeo.com>
 -->
-<link rel="import" href="../bower_components/nuxeo-elements/nuxeo-page-provider.html">
-<link rel="import" href="../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
 <!--
 An element for listing two column data. **At this point it's semi-hard-coded to
 only show downloads.**
 
 The difference between this and `nuxeo-data-table` is that, since you're passing
-audit data, you only have the document ID. This element will fetch the document 
+audit data, you only have the document ID. This element will fetch the document
 metadata to display the title or binary name.
 
 Example:
 
-    <nuxeo-data-table-audit columns='[{"key": "key", "title": "File"}, {"key": "value", "title": "Downloads"}]' 
+    <nuxeo-data-table-audit columns='[{"key": "key", "title": "File"}, {"key": "value", "title": "Downloads"}]'
                                          data="[[_table(downloads)]]">
     </nuxeo-data-table-audit>
 
