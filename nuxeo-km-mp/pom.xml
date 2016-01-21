@@ -35,7 +35,7 @@
 		<!-- Additional bundles to be deployed by the MP -->
 		<dependency>
 			<groupId>nuxeo-km</groupId>
-			<artifactId>nuxeo-kmbackend-backend-core</artifactId>
+			<artifactId>nuxeo-km-backend-core</artifactId>
 			<version>${nuxeo.project.version}</version>
 		</dependency>
 		<dependency>
