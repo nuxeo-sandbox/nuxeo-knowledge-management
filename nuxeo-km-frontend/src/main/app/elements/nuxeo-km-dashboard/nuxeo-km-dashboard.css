@@ -49,28 +49,28 @@ iron-icon {
 
 .dashboard-widget-header-01 {
   --paper-card-header: {
-    background: #ffe5de;
+    background: #cc0000;
   }
-  --paper-card-header-color: #000000;
+  --paper-card-header-color: #ffffff;
 }
 
 .dashboard-widget-header-02 {
   --paper-card-header: {
-    background: #d0e8fc;
+    background: #007a7a;
   }
-  --paper-card-header-color: #000000;
+  --paper-card-header-color: #ffffff;
 }
 
 .dashboard-widget-header-03 {
   --paper-card-header: {
-    background: #d9eeda;
+    background: #00a300;
   }
-  --paper-card-header-color: #000000;
+  --paper-card-header-color: #ffffff;
 }
 
 .dashboard-widget-header-04 {
   --paper-card-header: {
-    background: #ffe9c9;
+    background: #cc5c00;
   }
-  --paper-card-header-color: #000000;
+  --paper-card-header-color: #ffffff;
 }
