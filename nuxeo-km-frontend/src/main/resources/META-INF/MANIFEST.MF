@@ -4,5 +4,5 @@ Nuxeo-RequiredBy: org.nuxeo.ecm.war
 Bundle-Version: 0.0.1
 Bundle-Name: Nuxeo KM Frontend
 Bundle-ManifestVersion: 1
-Bundle-SymbolicName: org.nuxeo.polymer;singleton:=true
+Bundle-SymbolicName: nuxeo-km-frontend;singleton:=true
 Nuxeo-Component: OSGI-INF/auth-config.xml

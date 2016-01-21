@@ -1,0 +1,347 @@
+<!--
+(C) Copyright 2015 Nuxeo SA (http://nuxeo.com/) and contributors.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the GNU Lesser General Public License
+(LGPL) version 2.1 which accompanies this distribution, and is available at
+http://www.gnu.org/licenses/lgpl.html
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+Contributors:
+  Josh Fletcher <jfletcher@nuxeo.com>
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
+<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-dataviz-elements.html">
+<link rel="import" href="../bower_components/nuxeo-dataviz-elements/nuxeo-audit-data.html">
+<link rel="import" href="../bower_components/nuxeo-util-mimetypes/nuxeo-util-mimetypes.html">
+<link rel="import" href="nuxeo-dam-dashboard-downloads-table.html">
+<!--
+An element providing a dashboard for the Nuxeo Knowledge Management demo.
+
+Example:
+
+    <km-dashboard start-date="2015-01-01"
+                      end-date="2015-12-31">
+    </km-dashboard>
+
+@group Nuxeo Dashboards
+@element km-dashboard
+@demo demo/index.html
+-->
+
+<dom-module id="km-dashboard">
+
+  <link rel="import" type="css" href="km-dashboard.css">
+
+  <template>
+
+    <!-- Top articles --------------------------------------------------->
+    <!-- Get audit data -->
+    <nuxeo-audit-data event-id="download" grouped-by="docUUID" group-limit="[[7]]" start-date="[[startDate]]" end-date="[[endDate]]" data="{{downloads}}">
+    </nuxeo-audit-data>
+
+    <paper-card class="dashboard-widget-header-01" heading="Top Articles" elevation="2">
+      <div class="card-content-table">
+        <nuxeo-dam-dashboard-downloads-table columns='[{"key": "key", "title": "Article"}, {"key": "value", "title": "Downloads"}]' data="[[_table(downloads)]]">
+        </nuxeo-dam-dashboard-downloads-table>
+      </div>
+    </paper-card>
+
+
+    <!-- Article Categories --------------------------------------------------->
+    <nuxeo-repository-data ecm-primary-type="Article" where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="article:category" data="{{articleCategories}}">
+    </nuxeo-repository-data>
+
+    <paper-card class="dashboard-widget-header-01" heading="Article Categories" elevation="2">
+      <div class="card-content">
+        <google-chart class="center-chart" type="pie" cols='[{"label": "Category", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_rows(articleCategories)]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+
+    <!-- Articles per Region --------------------------------------------------->
+    <nuxeo-repository-data ecm-primary-type="Article" where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="article:region" data="{{articleRegions}}">
+    </nuxeo-repository-data>
+
+    <paper-card class="dashboard-widget-header-01" heading="Articles per Region" elevation="2">
+      <div class="card-content">
+        <google-chart class="center-chart" type="bar" data="[[_coloredBarChartData(articleRegions)]]" options="[[_hideLegend()]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+
+    <!-- Top Contributors --------------------------------------------------->
+    <!-- Note: this is a bit misleading especially in an app without a lot of
+         data. This will return things like workflow definitions, system
+         messages, etc. Since it's a treemap it's probably not a HUGE deal.
+         I was unable to come up with a way to effectively filter this query.
+         For example I might want to check ecm:primaryType for "Picture",
+         "Video", and "File". But I can't do that the way nuxeo-repository-data
+         is implemented because it only does a single "must" predicate; it's
+         an AND for all terms. -->
+    <nuxeo-repository-data grouped-by="dc:lastContributor" data="{{topContributors}}" start-date="[[startDate]]" end-date="[[endDate]]">
+    </nuxeo-repository-data>
+
+    <paper-card class="dashboard-widget-header-02" heading="Top Contributors" elevation="2">
+      <div class="card-content">
+        <google-chart class="center-chart" type='treemap' options='{"maxPostDepth":2}' data="[[_treeFor(topContributors)]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+
+    <!-- File types --------------------------------------------------->
+    <!-- TODO: filter deleted files; it requires a "must_not" predicate
+         for ES; nuxeo-es-query does not support this OOTB. -->
+
+    <!-- Pictures -->
+    <nuxeo-repository-data ecm-primary-type="Picture" where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="picture:info.format" data="{{pictureTypes}}">
+    </nuxeo-repository-data>
+    <paper-card class="dashboard-widget-header-03" heading="Picture Types" elevation="2">
+      <div class="card-content">
+        <google-chart class="center-chart" type="column" data="[[_coloredBarChartData(pictureTypes)]]" options="[[_hideLegend()]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+    <!-- Videos -->
+    <!-- Note that _prettyRows is used because Nuxeo doesn't have a useful
+         field for the video"type". For example there is vid:info.format
+         but it contains a list of types, not a single type. There is
+         picture:info.format but, for example, the format of an MP4 is
+         JPEG. And dc:format is null. -->
+    <nuxeo-repository-data ecm-primary-type="Video" where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="file:content.mime-type" data="{{videoTypes}}">
+    </nuxeo-repository-data>
+
+    <paper-card class="dashboard-widget-header-03" heading="Video Types" elevation="2">
+      <div class="card-content">
+        <google-chart class="center-chart" type="pie" cols='[{"label": "Type", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_prettyRows(videoTypes)]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+    <!-- Files -->
+    <!-- Note that _prettyRows is used because Nuxeo doesn't have a useful
+         field for the file"type". -->
+    <nuxeo-repository-data ecm-primary-type="File" grouped-by="file:content.mime-type" data="{{typeCount}}">
+    </nuxeo-repository-data>
+    <paper-card class="dashboard-widget-header-03" heading="Document Types" elevation="2">
+      <div class="card-content">
+        <google-chart class="center-chart" type="pie" cols='[{"label": "Type", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_prettyRows(typeCount)]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+    <!-- AcknowledgeRead --------------------------------------------------->
+    <!-- Total workflows started by each user -->
+    <nuxeo-workflow-data workflow="AcknowledgeRead" event="afterWorkflowStarted" grouped-by="workflowInitiator" start-date="[[startDate]]" end-date="[[endDate]]" data="{{initiators_AcknowledgeRead}}">
+    </nuxeo-workflow-data>
+
+    <paper-card class="dashboard-widget-header-04" heading="Acknowledge Read Initiator" elevation="2">
+      <div class="card-content">
+        <google-chart type="pie" cols='[{"label": "User", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_rows(initiators_AcknowledgeRead)]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+    <!-- Average workflow duration -->
+    <nuxeo-workflow-data workflow="AcknowledgeRead" event="afterWorkflowFinish" metrics="avg(timeSinceWfStarted)" start-date="[[startDate]]" end-date="[[endDate]]" data="{{avgWorkflowLength_AcknowledgeRead}}">
+    </nuxeo-workflow-data>
+
+    <paper-card class="dashboard-widget-header-04" heading="Avg. Acknowledge Read Duration" elevation="2">
+      <div class="card-content">
+        <iron-icon icon="image:timer"></iron-icon>
+        <span class="workflow-length-label">[[_asDuration(avgWorkflowLength_AcknowledgeRead)]]</span>
+      </div>
+    </paper-card>
+
+
+    <!-- SerialDocumentReview --------------------------------------------------->
+    <!-- Total workflows started by each user -->
+    <nuxeo-workflow-data workflow="SerialDocumentReview" event="afterWorkflowStarted" grouped-by="workflowInitiator" start-date="[[startDate]]" end-date="[[endDate]]" data="{{initiators_SerialDocumentReview}}">
+    </nuxeo-workflow-data>
+
+    <paper-card class="dashboard-widget-header-04" heading="Serial Review Initiator" elevation="2">
+      <div class="card-content">
+        <google-chart type="pie" cols='[{"label": "User", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_rows(initiators_SerialDocumentReview)]]">
+        </google-chart>
+      </div>
+    </paper-card>
+
+    <!-- Average workflow duration -->
+    <nuxeo-workflow-data workflow="SerialDocumentReview" event="afterWorkflowFinish" metrics="avg(timeSinceWfStarted)" start-date="[[startDate]]" end-date="[[endDate]]" data="{{avgWorkflowLength_SerialDocumentReview}}">
+    </nuxeo-workflow-data>
+
+    <paper-card class="dashboard-widget-header-04" heading="Avg. Serial Review Duration" elevation="2">
+      <div class="card-content">
+        <iron-icon icon="image:timer"></iron-icon>
+        <span class="workflow-length-label">[[_asDuration(avgWorkflowLength_SerialDocumentReview)]]</span>
+      </div>
+    </paper-card>
+
+  </template>
+
+  <!---------------------------------------------------------------------------------------------------------->
+
+  <script>
+    Polymer({
+      is: 'km-dashboard',
+
+      properties: {
+        startDate: String,
+        endDate: String
+      },
+
+      // Return JSON object to hide the legend in a Google chart.
+      _hideLegend: function () {
+        return {
+          legend: 'none',
+        }
+      },
+
+      // Transform our data for usage with Google Charts
+      // Change ES aggregate object to array data for bar chart.
+      // Since this is only one series, color is changed per bar.
+      _coloredBarChartData: function (nuxeoData) {
+        var colorArray = this._getColorArray();
+        var result = nuxeoData.map(function (e, index) {
+          return [e.key, e.value, colorArray[index]];
+        });
+
+        // Insert headers.
+        result.splice(0, 0, ["Item", "Value", {
+          role: 'style'
+        }]);
+
+        return result;
+      },
+
+
+      // Convert to the format expected by the "data" parameter of Google Charts.
+      _data: function (nuxeoData) {
+        var result = nuxeoData.map(function (e) {
+          return [e.key, e.value];
+        });
+        result.splice(0, 0, ["Categories", "Value"]);
+        return result;
+      },
+
+
+      _rows: function (data) {
+        return data.map(function (e) {
+          return [e.key, e.value];
+        });
+      },
+
+
+      _incidentBetween: function (start, end) {
+        return [{
+          'range': {
+            'incl:incident_date': {
+              'gte': start,
+              'lte': end
+            }
+          }
+         }];
+      },
+
+
+      _asDuration: function (duration) {
+        var seconds = Math.floor(duration / 1000),
+          minutes = Math.floor(seconds / 60),
+          hours = Math.floor(minutes / 60),
+          days = Math.floor(hours / 24),
+          hours = hours - (days * 24),
+          minutes = minutes - (days * 24 * 60) - (hours * 60),
+          seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60),
+          result = "";
+        if (days > 0) {
+          result += days + " Days ";
+        }
+        if (hours > 0) {
+          result += hours + " h ";
+        }
+        if (minutes > 0) {
+          result += minutes + " m ";
+        }
+        if (seconds > 0) {
+          result += seconds + " s ";
+        }
+        return result;
+      },
+
+      // produces a table with "Label", "Parent", "Value"] for usage in a treemap
+      _treeFor: function (data, separator) {
+        var separator = separator || '/',
+          res = [["", "Parent", "Value"], ["All", null, 0]],
+          parents = {}; // aggregate results in the parent
+        data.forEach(function (e) {
+          var parts = e.key.split(separator),
+            parentKey = parts[0],
+            key = parts[1];
+          res.push([key, parentKey, e.value]);
+
+          if (!parents[parentKey]) {
+            parents[parentKey] = e.value;
+          } else {
+            parents[parentKey] += e.value;
+          }
+        });
+
+        for (var key in parents) {
+          res.push([key, "All", parents[key]]);
+        }
+        return res;
+      },
+
+      _table: function (data) {
+        return data.map(function (e) {
+          return {
+            key: e.key,
+            value: e.value
+          };
+        }.bind(this));
+      },
+
+      // Convert the MIME Type so something more friendly for the user.
+      _convertMimeType: function (mimeType, friendly) {
+        var mimeTypeLookup = document.createElement('nuxeo-util-mimetypes');
+        mimeTypeLookup.mimeType = mimeType;
+        mimeTypeLookup.friendly = friendly;
+        return mimeTypeLookup.query();
+      },
+
+      // Instead of just returning the rows (using _rows), convert the MIME Types to something more friendly.
+      _prettyRows: function (data) {
+        for (var i = 0; i < data.length; i++) {
+          var mimeType = data[i].key;
+          var friendlyName = this._convertMimeType(mimeType, 'true')
+          if (friendlyName) {
+            data[i].key = friendlyName;
+          } else {
+            var fileExts = this._convertMimeType(mimeType);
+            if (fileExts) {
+              data[i].key = fileExts;
+            }
+          }
+        }
+        return this._rows(data);
+      },
+
+      // These are the default colors using by Google Charts.
+      _getColorArray: function () {
+        return ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac", "#b77322", "#16d620", "#b91383", "#f4359e", "#9c5935", "#a9c413", "#2a778d", "#668d1c", "#bea413", "#0c5922", "#743411"]
+      }
+    })
+  </script>
+
+</dom-module>

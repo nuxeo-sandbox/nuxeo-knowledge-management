@@ -1,4 +1,4 @@
-<component name="org.nuxeo.km.contrib">
+<component name="org.nuxeo.km.scoring.actions.contrib">
 <extension point="actions" target="org.nuxeo.ecm.platform.actions.ActionService">
   <action id="ScoringConfigurationManager" label="Scoring" link="scoring-view/scoring.xhtml" order="50">
     <category>ElasticSearch_sub_tab</category>
