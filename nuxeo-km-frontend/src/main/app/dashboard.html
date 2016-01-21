@@ -69,6 +69,16 @@ Contributors:
 
     paper-toolbar {
       --paper-toolbar-background: #f9f9f9;
+      --paper-toolbar-color: #444;
+    }
+
+    #datePicker {
+      display: inline-flex;
+    }
+
+    .dateLabel {
+      padding-right: 3px;
+      padding-left: 5px;
     }
   </style>
 
@@ -85,8 +95,10 @@ Contributors:
       <paper-toolbar>
         <div id="logo"></div>
         <div id="title">Knowledge Management Dashboard</div>
-        <div>
+        <div id="datePicker">
+          <div class="dateLabel">Start</div>
           <input type="date" value="{{startDate::change}}">
+          <div class="dateLabel">End</div>
           <input type="date" value="{{endDate::change}}">
         </div>
         <div id="hideWidget"></div>
