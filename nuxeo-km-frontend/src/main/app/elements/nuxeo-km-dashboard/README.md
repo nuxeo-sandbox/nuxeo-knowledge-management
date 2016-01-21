@@ -1,10 +1,10 @@
-# About the Knowledge Management Dashboards Plugin
+# About the Knowledge Management Dashboard
 
 This Nuxeo plugin uses [Nuxeo Data Visualzation](https://doc.nuxeo.com/x/WZCRAQ) to create a dashboard for the CVS demo.
 
 # Requirements
 
-The nuxeo-km Studio project (internal) is required. The build will work, but the runtime will fail if don't have the correct document types.'
+The nuxeo-km Studio project (internal) is required. The build will work, but the runtime will fail if don't have the correct document types.
 
 See [CORG/Compiling Nuxeo from sources](http://doc.nuxeo.com/x/xION)
 
