@@ -1,19 +1,19 @@
 {
-  "name": "cvs-dashboard",
+  "name": "km-dashboard",
   "version": "1.0.0",
   "authors": [
     "Josh Fletcher <jfletcher@nuxeo.com>"
   ],
-  "description": "A dashboard element for the Nuxeo CVS Demo.",
+  "description": "A dashboard element for the Nuxeo Knowledge Management Demo.",
   "keywords": [
     "web-component",
     "polymer",
     "seed",
     "nuxeo"
   ],
-  "main": "cvs-dashboard.html",
+  "main": "km-dashboard.html",
   "license": "LGPL",
-  "homepage": "https://github.com/jfletcher_nuxeo/cvs-dashboard/",
+  "homepage": "https://github.com/jfletcher_nuxeo/km-dashboard/",
   "ignore": [
     "/.*",
     "/test/"

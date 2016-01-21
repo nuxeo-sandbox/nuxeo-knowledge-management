@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Nuxeo Case Management Workflow Dashboards Plugin" default="build" basedir=".">
+<project name="Nuxeo Knowledge Management Dashboards Plugin" default="build" basedir=".">
 
   <!-- set executable names based on OS family -->
   <condition property="cmd.npm" value="npm.cmd" else="npm">

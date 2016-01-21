@@ -1,8 +1,10 @@
-# About CVS Dashboard Plugin
+# About the Knowledge Management Dashboards Plugin
 
 This Nuxeo plugin uses [Nuxeo Data Visualzation](https://doc.nuxeo.com/x/WZCRAQ) to create a dashboard for the CVS demo.
 
 # Requirements
+
+The nuxeo-km Studio project (internal) is required. The build will work, but the runtime will fail if don't have the correct document types.'
 
 See [CORG/Compiling Nuxeo from sources](http://doc.nuxeo.com/x/xION)
 
@@ -21,13 +23,11 @@ The plugin will be placed in the `target` folder.
 
 # Deploying
 
-It is recommended to deploy the marketplace package. But the plug-in may be installed directly as well. 
-
-Copy JAR file into `$NUXEO_HOME/nxserver/plugins/`.
+It is recommended to deploy the marketplace package. Just move to the parent folder of this repository and `mvn clean install`
 
 # Usage
 
-Once installed in the CVS demo, there is a bundled Web application at `http://yourserver/nuxeo/cvs-dashboard`.
+Once installed in the the Knowledge Management demo, there is a bundled Web application at `http://yourserver/nuxeo/cvs-dashboard`.
 
 # Resources
 

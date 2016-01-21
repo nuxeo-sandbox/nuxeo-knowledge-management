@@ -23,22 +23,22 @@ Contributors:
 <link rel="import" href="../bower_components/nuxeo-util-mimetypes/nuxeo-util-mimetypes.html">
 <link rel="import" href="nuxeo-dam-dashboard-downloads-table.html">
 <!--
-An element providing a dashboard for the CVS demo.
+An element providing a dashboard for the Nuxeo Knowledge Management demo.
 
 Example:
 
-    <cvs-dashboard start-date="2015-01-01"
+    <km-dashboard start-date="2015-01-01"
                       end-date="2015-12-31">
-    </cvs-dashboard>
+    </km-dashboard>
 
 @group Nuxeo Dashboards
-@element cvs-dashboard
+@element km-dashboard
 @demo demo/index.html
 -->
 
-<dom-module id="cvs-dashboard">
+<dom-module id="km-dashboard">
 
-  <link rel="import" type="css" href="cvs-dashboard.css">
+  <link rel="import" type="css" href="km-dashboard.css">
 
   <template>
 
@@ -194,7 +194,7 @@ Example:
 
   <script>
     Polymer({
-      is: 'cvs-dashboard',
+      is: 'km-dashboard',
 
       properties: {
         startDate: String,
