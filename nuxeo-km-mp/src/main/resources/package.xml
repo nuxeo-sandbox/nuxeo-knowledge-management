@@ -1,6 +1,6 @@
 <!-- See documentation at http://doc.nuxeo.com/x/HgIz -->
 <package type="addon" name="nuxeo-knowledge-management" version="@VERSION@">
-  <title>Nuxeo KM MP</title>
+  <title>Nuxeo Knowledge Management Package</title>
   <description></description>
   <home-page>http://doc.nuxeo.com/</home-page>
   <vendor>Nuxeo</vendor>
@@ -22,7 +22,7 @@
   </platforms>
   <!-- Dependencies on other packages -->
   <!-- <dependencies> -->
-  <!-- <package>another-package:1.0.0:1.0.0</package> -->
+  <!-- <package>nuxeo-es-synonyms-mp:7.10-SNAPSHOT</package> -->
   <!-- </dependencies> -->
   <!-- Conflicts with other packages -->
   <!-- <conflicts> -->

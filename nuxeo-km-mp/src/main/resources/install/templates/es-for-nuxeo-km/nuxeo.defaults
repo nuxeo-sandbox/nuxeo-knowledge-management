@@ -1,0 +1,7 @@
+## NOT EDIT THIS FILE, USE nuxeo.conf  ##
+elasticsearch.addressList=localhost:9300
+elasticsearch.clusterName=elasticsearch
+org.nuxeo.synonyms.path=/etc/elasticsearch/synonyms.txt
+org.nuxeo.synonyms.autoreindex=true
+# This is so that we get audit events for search, for the dashboard.
+nuxeo.pageprovider.track=ArticlesSearch

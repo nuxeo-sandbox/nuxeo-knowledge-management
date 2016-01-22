@@ -8,7 +8,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>nuxeo-kmbackend-backend-core</artifactId>
+  <artifactId>nuxeo-km-backend-core</artifactId>
   <name>Nuxeo KM Core</name>
   <description>Nuxeo KM Core</description>
   
