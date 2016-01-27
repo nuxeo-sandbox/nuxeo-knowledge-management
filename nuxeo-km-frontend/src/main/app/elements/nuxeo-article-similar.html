@@ -44,38 +44,45 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
       .articleInfo {
         color: #A9A9A9;
         font-size: 80%;
-        padding-top: 1%;
+        margin-left: 0px;
+        margin-bottom: 5px;
+      }
+
+      .documentTitle {
+        margin-bottom: 5px;
       }
 
       .documentPills {
         border-radius: 0.3em;
         padding-left: 0.5em;
         padding-right: 0.5em;
-        padding-bottom: 0.3em;
-        padding-top: 0.3em;
+        padding-bottom: 0.3ex;
+        padding-top: 0.3ex;
+        margin-bottom: 5px;
         display: inline-flex;
         font-size: 80%;
       }
 
-      .documentCatego {
-        margin-top: 1em;
+      .documentCategory {
         color: #fff;
         background: #059EBD;
       }
 
       .documentRegion {
-        margin-top: 1em;
         color: #fff;
         background: #7C7C7C;
       }
 
-      .documentHighlight {
+      .articleContentContainer {
+        margin-bottom: 5px;
+        border-radius: 0.3em;
+      }
+
+      .articleContent {
         color: #A9A9A9;
         font-size: 90%;
-        padding: 1em;
-        padding-bottom: 2em;
-        height: 8em;
-        text-overflow: ellipsis;
+        line-height: 2.5ex;
+        height: 20ex;
         overflow: hidden;
       }
 
@@ -87,17 +94,21 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
     </nuxeo-es-search>
     <template is="dom-repeat" items="[[myhits.hits]]">
       <paper-card class="sidecard">
-        <div class="card-content cardtop">
-          <div><a href$="[[_href(item)]]">[[item.fields.dc:title]]</a></div>
+        <div class="card-content">
+          <div class="documentTitle"><a href$="[[_href(item)]]">[[item.fields.dc:title]]</a></div>
           <div class="articleInfo"> Updated: [[_dateFormat(item.fields.dc:modified)]]</div>
           <div secondary>
-            <div class="documentPills documentCatego">[[item.fields.article:category]]</div>
+            <div class="documentPills documentCategory">[[item.fields.article:category]]</div>
             <template is="dom-repeat" items="[[item.fields.article:region]]">
               <div class="documentPills documentRegion">[[item]]</div>
             </template>
           </div>
+          <div class="articleContentContainer">
+            <div class="articleContent">
+              [[item.fields.article:plainTextContent]]
+            </div>
+          </div>
         </div>
-        <div class="documentHighlight">[[item.fields.article:plainTextContent]]</div>
       </paper-card>
     </template>
   </template>
@@ -118,7 +129,7 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         query: Object,
         fields: {
           type: Array,
-          value: function() {
+          value: function () {
             return ['_id', 'dc:title', 'dc:modified', 'article:region', 'article:category', 'ecm:uuid', 'article:plainTextContent'];
           }
         },
@@ -129,13 +140,13 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         'buildQuery(docId)'
       ],
 
-      ready: function() {
+      ready: function () {
         //When component is ready.
         console.log('--similar doc ready');
         this.buildQuery();
       },
 
-      buildQuery: function() {
+      buildQuery: function () {
         this.query = {
           more_like_this: { // jshint ignore:line
             docs: [{
@@ -149,10 +160,10 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         };
       },
 
-      _href: function(item) {
+      _href: function (item) {
         return page.base() + '/display/' + item._id;
       },
-      _dateFormat: function(ISOStringDate) {
+      _dateFormat: function (ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();
       }
