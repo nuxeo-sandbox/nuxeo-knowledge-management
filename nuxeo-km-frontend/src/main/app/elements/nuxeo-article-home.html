@@ -40,11 +40,11 @@ Example: <nuxeo-article-home></nuxeo-article-home>
       }
 
       .red-background::content paper-card {
-        background: #ffe5de;
+        background: #cc0000;
       }
 
       .red-header::content paper-card .header {
-        background: #ffe5de;
+        background: #cc0000;
       }
 
       .blue-background::content paper-card {
@@ -133,11 +133,11 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           observer: '_addUserClause'
         }
       },
-      ready: function() {
+      ready: function () {
         //When component is ready.
         //console.log("--search result ready")
       },
-      _addRegionClause: function(region, type) {
+      _addRegionClause: function (region, type) {
         region = region.replace('/', '');
         if (region !== '') {
           if (type === 'article') {
@@ -149,14 +149,14 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           return '';
         }
       },
-      _addUserClause: function() {
+      _addUserClause: function () {
         if (this.currentUser) {
           this.currentUser = this.currentUser.replace('/', '');
           //console.log(this.currentUser);
           return this.currentUser;
         }
       },
-      refreshWidgets: function() {
+      refreshWidgets: function () {
         this.$.MustRead.refresh();
       }
 
