@@ -98,7 +98,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           <div><paper-button on-tap="_refreshHome">Refresh Home</paper-button></div>
         </paper-toolbar>
         <paper-toolbar class="drawerTitle">
-          <div><a href="http://cvs.cloud.nuxeo.com/nuxeo/logout" class="drawerTitle" rel="external">Logout</a></div>
+          <div><a href="[[_logoutURL()]]" class="drawerTitle" rel="external">Logout</a></div>
         </paper-toolbar>
       </paper-header-panel>
       <paper-header-panel main>
@@ -217,6 +217,10 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         document.querySelector('#articleHome').refreshWidgets();
         document.querySelector('#documentGetter').execute();
       },
+
+      _logoutURL(){
+        return "http://" + window.location.hostname + ":" + window.location.port + "nuxeo/logout";
+      }
     });
   </script>
 </dom-module>
