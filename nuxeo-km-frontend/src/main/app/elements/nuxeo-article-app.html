@@ -57,6 +57,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       paper-toolbar a.drawerTitle {
         border-bottom: none;
       }
+
       .drawerTitle paper-button {
         padding: 0;
         margin-left: 0;
@@ -95,7 +96,9 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           <div>My Recommendations</div>
         </paper-toolbar>
         <paper-toolbar class="drawerTitle">
-          <div><paper-button on-tap="_refreshHome">Refresh Home</paper-button></div>
+          <div>
+            <paper-button on-tap="_refreshHome">Refresh Home</paper-button>
+          </div>
         </paper-toolbar>
         <paper-toolbar class="drawerTitle">
           <div><a href="[[_logoutURL()]]" class="drawerTitle" rel="external">Logout</a></div>
@@ -169,13 +172,13 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         }
       },
 
-      scrollPageToTop: function() {
+      scrollPageToTop: function () {
         //this.$.selectedPage.scrollToTop(true);
       },
-      ready: function() {
+      ready: function () {
         //When component is ready.
       },
-      _navigate: function() {
+      _navigate: function () {
         // see nuxeo web ui app for info
         var url = '/' + this.page;
         page(url);
@@ -183,42 +186,42 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           page: this.page
         });
       },
-      _getRegionLabel: function(region) {
+      _getRegionLabel: function (region) {
         if (region === '') {
           return 'Select Region';
         } else {
           return region;
         }
       },
-      _closeDrawer: function() {
+      _closeDrawer: function () {
         var pdp = document.getElementById('drawerPanel');
         this.region = '';
         pdp.togglePanel();
       },
-      _userInfo: function() {
+      _userInfo: function () {
         if (this.currentUserFromOpe) {
           this.currentUserName = this.currentUserFromOpe.value;
           this.$.getCurrentUser.execute();
         }
       },
-      _printUser: function() {
+      _printUser: function () {
         //console.log('--print user');
         //console.log(this.currentUser);
         if (this.currentUser) {
           this.userID = this.currentUser.id;
         }
       },
-      _printDocID: function() {
+      _printDocID: function () {
         console.log('app print doc id');
         console.log(this.docId);
       },
-      _refreshHome: function() {
+      _refreshHome: function () {
         this.$.drawerPanel.togglePanel();
         document.querySelector('#articleHome').refreshWidgets();
         document.querySelector('#documentGetter').execute();
       },
 
-      _logoutURL(){
+      _logoutURL() {
         return "http://" + window.location.hostname + ":" + window.location.port + "/nuxeo/logout";
       }
     });
