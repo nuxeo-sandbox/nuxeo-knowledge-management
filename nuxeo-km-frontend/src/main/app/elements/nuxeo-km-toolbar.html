@@ -69,7 +69,7 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
     <paper-toolbar id="mainToolbar">
       <!-- Application name -->
       <div class="app-name">
-        <a href="/login"><img class="logo" src="http://cvs.cloud.nuxeo.com/nuxeo/img/cvscaremarklogo.png"></a>
+        <a href="/login"><img class="logo" src="../images/nuxeo_logo-km.png"></a>
       </div>
       <paper-tabs class="headerMenu" selected="{{page}}" attr-for-selected="name">
         <paper-tab name="home">Home</paper-tab>
@@ -130,29 +130,29 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         }
       },
 
-      ready: function() {
+      ready: function () {
         //When component is ready.
 
       },
-      _getRegionLabel: function(region) {
+      _getRegionLabel: function (region) {
         if (region === '') {
           return 'Region';
         } else {
           return region;
         }
       },
-      _isHomeTab: function(page) {
+      _isHomeTab: function (page) {
         if (page === 'home') {
           return true;
         } else {
           return false;
         }
       },
-      _toggleDrawerParent: function() {
+      _toggleDrawerParent: function () {
         var pdp = document.getElementById('drawerPanel');
         pdp.togglePanel();
       },
-      _setUserLabel: function() {
+      _setUserLabel: function () {
         if (this.currentUser) {
           this.currentUserLabel = '';
           if (this.currentUser.properties.firstName) {
