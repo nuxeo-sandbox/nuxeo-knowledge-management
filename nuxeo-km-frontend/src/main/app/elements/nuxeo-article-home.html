@@ -24,39 +24,39 @@ Example: <nuxeo-article-home></nuxeo-article-home>
   <template>
     <style is="custom-style" include="shared-styles">
       .olive-background::content paper-card {
-        background: #d9eeda;
+        background: #00a300;
       }
 
       .olive-header::content paper-card .header {
-        background: #d9eeda;
+        background: #00a300;
       }
 
       .orange-background::content paper-card {
-        background: #ffe9c9;
+        background: #cc5c00;
       }
 
       .orange-header::content paper-card .header {
-        background: #ffe9c9;
+        background: #cc5c00;
       }
 
       .red-background::content paper-card {
-        background: #ffe5de;
+        background: #cc0000;
       }
 
       .red-header::content paper-card .header {
-        background: #ffe5de;
+        background: #cc0000;
       }
 
       .blue-background::content paper-card {
-        background: #d0e8fc;
+        background: #007a7a;
       }
 
       .blue-header::content paper-card .header {
-        background: #d0e8fc;
+        background: #007a7a;
       }
 
       ::content paper-card .header.paper-card .title-text.paper-card {
-        color: var(--primary-font-color);
+        color: var(--paper-card-title-color);
         margin-left: 0.6em;
       }
 
@@ -133,11 +133,11 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           observer: '_addUserClause'
         }
       },
-      ready: function() {
+      ready: function () {
         //When component is ready.
         //console.log("--search result ready")
       },
-      _addRegionClause: function(region, type) {
+      _addRegionClause: function (region, type) {
         region = region.replace('/', '');
         if (region !== '') {
           if (type === 'article') {
@@ -149,14 +149,14 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           return '';
         }
       },
-      _addUserClause: function() {
+      _addUserClause: function () {
         if (this.currentUser) {
           this.currentUser = this.currentUser.replace('/', '');
           //console.log(this.currentUser);
           return this.currentUser;
         }
       },
-      refreshWidgets: function() {
+      refreshWidgets: function () {
         this.$.MustRead.refresh();
       }
 
