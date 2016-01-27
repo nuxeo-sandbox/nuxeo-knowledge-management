@@ -95,7 +95,6 @@ Example:
         line-height: 2.5ex;
         height: 4.4ex;
         color: black;
-        text-overflow: ellipsis;
         overflow: hidden;
       }
 
@@ -154,7 +153,7 @@ Example:
         }
       },
 
-      _getHighlightedText: function(highlightObject) {
+      _getHighlightedText: function (highlightObject) {
         if (highlightObject !== undefined) {
           if (highlightObject['article:plainTextContent'] !== undefined && highlightObject['article:plainTextContent'].length > 0) {
             return highlightObject['article:plainTextContent'][0];
@@ -163,16 +162,16 @@ Example:
         return '<p>No Text Highlight</p>';
       },
 
-      ready: function() {
+      ready: function () {
         //When component is ready.
         //console.log("--search result ready")
       },
 
-      _href: function(doc) {
+      _href: function (doc) {
         return page.base() + '/display/' + doc.fields['ecm:uuid'];
       },
 
-      _dateFormat: function(ISOStringDate) {
+      _dateFormat: function (ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();
       }
