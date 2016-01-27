@@ -69,13 +69,18 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         background: #7C7C7C;
       }
 
-      .documentHighlight {
+      .articleContentContainer {
+        margin-bottom: 5px;
+        border-radius: 0.3em;
+      }
+
+      .articleContent {
         color: #A9A9A9;
         font-size: 90%;
-        padding: 1em;
-        padding-bottom: 2em;
-        height: 8em;
-        text-overflow: ellipsis;
+        padding: 1ex;
+        padding-bottom: 2ex;
+        line-height: 2.5ex;
+        height: 20.5ex;
         overflow: hidden;
       }
 
@@ -96,8 +101,12 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
               <div class="documentPills documentRegion">[[item]]</div>
             </template>
           </div>
+          <div class="articleContentContainer">
+            <div class="articleContent">
+              [[item.fields.article:plainTextContent]]
+            </div>
+          </div>
         </div>
-        <div class="documentHighlight">[[item.fields.article:plainTextContent]]</div>
       </paper-card>
     </template>
   </template>
@@ -118,7 +127,7 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         query: Object,
         fields: {
           type: Array,
-          value: function() {
+          value: function () {
             return ['_id', 'dc:title', 'dc:modified', 'article:region', 'article:category', 'ecm:uuid', 'article:plainTextContent'];
           }
         },
@@ -129,13 +138,13 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         'buildQuery(docId)'
       ],
 
-      ready: function() {
+      ready: function () {
         //When component is ready.
         console.log('--similar doc ready');
         this.buildQuery();
       },
 
-      buildQuery: function() {
+      buildQuery: function () {
         this.query = {
           more_like_this: { // jshint ignore:line
             docs: [{
@@ -149,10 +158,10 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         };
       },
 
-      _href: function(item) {
+      _href: function (item) {
         return page.base() + '/display/' + item._id;
       },
-      _dateFormat: function(ISOStringDate) {
+      _dateFormat: function (ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();
       }
