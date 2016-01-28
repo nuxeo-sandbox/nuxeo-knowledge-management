@@ -30,17 +30,13 @@ Example: <nuxeo-article-search></nuxeo-article-search>
         margin-top: 5em;
         overflow: visible;
       }
-
-      paper-header-panel {
-        height: 100%;
-      }
     </style>
 
     <paper-drawer-panel>
-      <div drawer>
+      <paper-material drawer>
         <nuxeo-article-search-filter fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}} region={{region}}>
         </nuxeo-article-search-filter>
-      </div>
+      </paper-material>
       <div main>
         <nuxeo-article-search-results fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}}>
         </nuxeo-article-search-results>
