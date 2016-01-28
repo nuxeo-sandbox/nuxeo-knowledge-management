@@ -34,6 +34,11 @@ Example:
 
   <template>
 
+    <style is="custom-style" include="shared-styles">
+      paper-card {
+        --paper-card-header-color: #ffffff;
+      }
+    </style>
 
     <!-- Top Search Terms --------------------------------------------------->
     <nuxeo-search-data start-date="[[startDate]]" end-date="[[endDate]]" grouped-by="searchDocumentModel.properties.ArticlesSearch_cv:system_fulltext" group-limit="10" data="{{callsPerFT}}" index="[[_getAuditIndexName]]">
