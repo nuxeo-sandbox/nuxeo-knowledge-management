@@ -23,55 +23,55 @@ Example: <nuxeo-article-search></nuxeo-article-search>
 -->
 <dom-module id="nuxeo-article-search">
 
-	<template>
+  <template>
 
-		<style is="custom-style" include="shared-styles">
-			paper-drawer-panel{
-				margin-top: 5em;
-				overflow: visible;
-			}
-			paper-header-panel{
-				height: 100%;
-			}
-		</style>
+    <style is="custom-style" include="shared-styles">
+      paper-drawer-panel {
+        margin-top: 5em;
+        overflow: visible;
+      }
 
-		<paper-drawer-panel>
-			<paper-header-panel drawer>
-				<div>
-					<nuxeo-article-search-filter fulltext={{fulltext}} articles={{articles}}
-						suggestions={{suggestions}} region={{region}}>
-					</nuxeo-article-search-filter>
-				</div>
-			</paper-header-panel>
-			<paper-header-panel main>
-				<div>
-					<nuxeo-article-search-results fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}}>
-					</nuxeo-article-search-results>
-				</div>
-			</paper-header-panel>
-		</paper-drawer-panel>
+      paper-header-panel {
+        height: 100%;
+      }
+    </style>
 
-	</template>
+    <paper-drawer-panel>
+      <paper-header-panel drawer>
+        <div>
+          <nuxeo-article-search-filter fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}} region={{region}}>
+          </nuxeo-article-search-filter>
+        </div>
+      </paper-header-panel>
+      <paper-header-panel main>
+        <div>
+          <nuxeo-article-search-results fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}}>
+          </nuxeo-article-search-results>
+        </div>
+      </paper-header-panel>
+    </paper-drawer-panel>
 
-	<script>
-	Polymer({
-		is: 'nuxeo-article-search',
-		// Expose properties
-		properties: {
-			fulltext: {
-				type: String,
-				notify: true
-			},
-			region: {
-				type: String,
-				notify: true
-			},
-		},
-		ready: function() {
-			//When component is ready.
-			//console.log("--search result ready")
-		}
-	});
-	</script>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-article-search',
+      // Expose properties
+      properties: {
+        fulltext: {
+          type: String,
+          notify: true
+        },
+        region: {
+          type: String,
+          notify: true
+        },
+      },
+      ready: function () {
+        //When component is ready.
+        //console.log("--search result ready")
+      }
+    });
+  </script>
 
 </dom-module>
