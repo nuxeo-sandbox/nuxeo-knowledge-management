@@ -37,18 +37,14 @@ Example: <nuxeo-article-search></nuxeo-article-search>
     </style>
 
     <paper-drawer-panel>
-      <paper-header-panel drawer>
-        <div>
-          <nuxeo-article-search-filter fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}} region={{region}}>
-          </nuxeo-article-search-filter>
-        </div>
-      </paper-header-panel>
-      <paper-header-panel main>
-        <div>
-          <nuxeo-article-search-results fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}}>
-          </nuxeo-article-search-results>
-        </div>
-      </paper-header-panel>
+      <div drawer>
+        <nuxeo-article-search-filter fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}} region={{region}}>
+        </nuxeo-article-search-filter>
+      </div>
+      <div main>
+        <nuxeo-article-search-results fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}}>
+        </nuxeo-article-search-results>
+      </div>
     </paper-drawer-panel>
 
   </template>
