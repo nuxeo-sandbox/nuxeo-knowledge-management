@@ -183,27 +183,28 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
           };
         } else {
           fulltextQuery = {
-            bool: {
-              must: [{
-                match: {
-                  _all: {
-                    query: this.fulltext,
-                    operator: "OR",
-                    analyzer: "en_search_analyzer",
-                    fuzziness: "AUTO"
-                  }
-                }
-              }],
-              should: [{
-                match: {
-                  _all: {
-                    query: this.fulltext,
-                    type: "phrase",
-                    analyzer: "en_search_analyzer"
-                  }
-                }
-              }]
-            }
+             bool: {
+               must: [{
+                 match: {
+                   _all: {
+                     query: this.fulltext,
+                     operator: "OR",
+                     analyzer: "en_search_analyzer",
+                     fuzziness: "AUTO"
+                   }
+                 }
+               }],
+               should: [{
+                 match: {
+                   _all: {
+                     query: this.fulltext,
+                     type: "phrase",
+                     slop: 3,
+                     analyzer: "en_search_analyzer"
+                   }
+                 }
+               }]
+             }
           };
         }
 
@@ -335,13 +336,34 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
         };
 
         this.suggest = {
-          my_suggest: {
+          my_term_suggest: {
             text: this.fulltext,
             term: {
               field: 'article:plainTextContent',
               analyzer: 'fulltext'
             }
-          }
+          },
+          my_phrase_suggest : {
+            text : this.fulltext,
+              phrase : {
+                field : "suggestions",
+                size : 1,
+                real_word_error_likelihood : 0.95,
+                max_errors : 3,
+                collate: {
+                   query: {
+                      match : {
+                        _all : {
+                              query : "{{suggestion}}",
+                              operator: "AND",
+                           }
+                        }
+                     },
+                    params: {field_name : "suggestions"},
+                    prune: false
+                  }
+               }
+            }
         };
 
         this.debounce('autoQuery', function() {

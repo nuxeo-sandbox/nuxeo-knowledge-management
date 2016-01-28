@@ -42,7 +42,7 @@
    "number_of_shards" : "${elasticsearch.indexNumberOfShards}",
    "number_of_replicas" : "${elasticsearch.indexNumberOfReplicas}",
 </#if>
-   "analysis" : {
+"analysis" : {
       "filter" : {
          "truncate_filter" : {
             "length" : 256,
@@ -55,6 +55,9 @@
          "asciifolding_filter" : {
             "type" : "asciifolding",
             "preserve_original" : true
+         },
+         "shingle" : {
+            "type" : "shingle"
          },
          "en_stem_filter" : {
             "name" : "minimal_english",
@@ -133,6 +136,21 @@
          "type" : "custom",
          "tokenizer" : "standard"
         },
+        "en_phrase_suggestion_analyzer" : {
+         "char_filter":  [ "html_strip"],
+         "filter" : [
+            "word_delimiter_filter",
+            "lowercase",
+            "en_stop_filter",
+            "my_stop",
+            "en_synonyms",
+            "en_stem_filter",
+            "asciifolding_filter",
+            "shingle"
+         ],
+         "type" : "custom",
+         "tokenizer" : "standard"
+        },
          "fr_analyzer" : {
             "char_filter":  [ "html_strip"],
             "filter" : [
@@ -198,7 +216,8 @@
          "type" : "multi_field",
          "fields" : {
            "dc:title" : {
-             "type" : "string"
+             "type" : "string",
+             "copy_to":  ["suggestions"]
            },
            "fulltext" : {
              "boost": 2,
@@ -228,7 +247,8 @@
            "note:note" : {
              "index" : "no",
              "include_in_all" : true,
-             "type" : "string"
+             "type" : "string",
+             "copy_to":  ["suggestions"]
            },
            "fulltext" : {
              "type": "string",
@@ -240,7 +260,8 @@
       "ecm:binarytext" : {
          "type" : "string",
          "include_in_all" : true,
-         "analyzer" : "fulltext"
+         "analyzer" : "fulltext",
+         "copy_to":  ["suggestions"]
       },
       "ecm:path" : {
          "type" : "multi_field",
@@ -271,11 +292,15 @@
          "type": "string",
          "index" : "no",
          "include_in_all" : false
+      },
+      "suggestions" : {
+        "analyzer" : "en_phrase_suggestion_analyzer",
+        "include_in_all" : false,
+        "type": "string"
       }
    }
 }
       </mapping>
-
     </elasticSearchIndex>
   </extension>
 
