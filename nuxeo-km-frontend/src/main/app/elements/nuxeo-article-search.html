@@ -30,11 +30,22 @@ Example: <nuxeo-article-search></nuxeo-article-search>
         margin-top: 5em;
         overflow: visible;
       }
+
+      .fixed {
+        display: inline-block;
+        position: fixed;
+      }
+
+      paper-drawer-panel {
+        --paper-drawer-panel-left-drawer-container: {
+          background-color: transparent;
+        }
+      };
     </style>
 
     <paper-drawer-panel>
-      <paper-material drawer>
-        <nuxeo-article-search-filter fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}} region={{region}}>
+      <paper-material drawer class="fixed">
+        <nuxeo-article-search-filter class="fixed" fulltext={{fulltext}} articles={{articles}} suggestions={{suggestions}} region={{region}}>
         </nuxeo-article-search-filter>
       </paper-material>
       <div main>
