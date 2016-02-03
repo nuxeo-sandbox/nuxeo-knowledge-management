@@ -84,17 +84,13 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
 		updateSuggestion: function() {
 			this.display_suggestion = false; // jshint ignore:line
 			this.suggestion = '';
-			var array = this.suggestions.my_suggest; // jshint ignore:line
+			var array = this.suggestions.my_phrase_suggest; // jshint ignore:line
 			if (array === undefined) {
-        return;
-      }
-			for(var i=0;i<array.length;i++) {
-				var options = array[i].options;
-				var text = array[i].text;
+				return;
+      	} else {
+				var options = array[0].options;
 				var option = options[0];
-				if (option === undefined) {
-					this.suggestion += ' '+text;
-				} else {
+				if (option !== undefined) {
 					this.suggestion += ' '+option.text;
 					this.display_suggestion = true; // jshint ignore:line
 				}
