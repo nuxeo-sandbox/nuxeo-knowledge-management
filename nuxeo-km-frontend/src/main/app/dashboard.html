@@ -50,14 +50,12 @@ Contributors:
       margin: 0 auto;
     }
 
-    #logo {
-      background: transparent url('images/nuxeo_logo-km.png') no-repeat;
-      background-size: cover;
-      display: inline-block;
-      height: 30px;
-      width: 220px;
-      ;
+    #logoContainer {
+      display: table-cell;
+      vertical-align: middle;
     }
+
+    .logo {}
 
     #hideWidget {
       display: none;
@@ -93,7 +91,9 @@ Contributors:
 
     <paper-header-panel>
       <paper-toolbar>
-        <div id="logo"></div>
+        <div id="logoContainer">
+          <img class="logo" src="../images/nuxeo_logo-km.png">
+        </div>
         <div id="title">Knowledge Management Dashboard</div>
         <div id="datePicker">
           <div class="dateLabel">Start</div>
