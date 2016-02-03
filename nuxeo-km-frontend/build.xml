@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!--
+  <!--
 ~ (C) Copyright 2006-2016 Nuxeo SA (http://nuxeo.com/) and contributors.
 ~
 ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,18 +46,17 @@
     </exec>
   </target>
 
-  <target name="init" description="Download all node and web dependencies">
+  <target name="init" description="Download all node and web dependencies" depends="clean-cache">
     <exec executable="${cmd.npm}" failonerror="true">
       <arg value="install" />
     </exec>
-    <!--<bower-fetch artifact="polymerelements:iron-elements:1.0.4" />
-  <bower-fetch artifact="polymerelements:paper-elements:1.0.5" />-->
     <exec executable="${cmd.bower}" failonerror="true">
       <arg value="install" />
     </exec>
   </target>
 
   <target name="build" depends="init,build-with-tests,build-skip-tests" />
+
   <target name="build-with-tests" unless="skipTests">
     <echo message="build and test" />
     <exec executable="${cmd.gulp}" failonerror="true">
@@ -72,17 +71,17 @@
     </exec>
   </target>
 
-  <!--<macrodef name="bower-fetch">
-  <attribute name="artifact"/>
-  <attribute name="dir" default="bower_components"/>
-  <sequential>
-    <echo message="Fetching @{artifact}" />
-    <exec executable="${cmd.mvn}" dir="../../.." failonerror="true">
-      <arg value="dependency:unpack" />
-      <arg value="-Dartifact=@{artifact}:zip" />
-      <arg value="-DoutputDirectory=src/main/js/@{dir}" />
-    </exec>
-  </sequential>
-</macrodef>-->
+  <macrodef name="bower-fetch">
+    <attribute name="artifact" />
+    <attribute name="dir" default="bower_components" />
+    <sequential>
+      <echo message="Fetching @{artifact}" />
+      <exec executable="${cmd.mvn}" dir="../../.." failonerror="true">
+        <arg value="dependency:unpack" />
+        <arg value="-Dartifact=@{artifact}:zip" />
+        <arg value="-DoutputDirectory=src/main/yo/@{dir}" />
+      </exec>
+    </sequential>
+  </macrodef>
 
 </project>
