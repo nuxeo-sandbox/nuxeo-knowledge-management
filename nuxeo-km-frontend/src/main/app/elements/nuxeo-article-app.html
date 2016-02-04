@@ -104,19 +104,17 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           <div><a href="[[_logoutURL()]]" class="drawerTitle" rel="external">Logout</a></div>
         </paper-toolbar>
       </paper-header-panel>
-      <paper-header-panel main>
+      <paper-header-panel main mode="waterfall">
+        <nuxeo-km-toolbar class="paper-header" page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
         <div>
           <iron-pages selected="[[page]]" attr-for-selected="name">
             <div name="home">
-              <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
               <nuxeo-article-home id="articleHome" region={{region}} current-user=[[userID]]/>
             </div>
             <div name="search">
-              <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
               <nuxeo-article-search region={{region}}/>
             </div>
             <div name="display">
-              <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
               <nuxeo-article-display id="articleDisplay" userforarticle=[[currentUser]] document-id={{docId}}/>
             </div>
             <div name="login">
@@ -131,7 +129,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
   </template>
   <script>
     Polymer({
-      is: 'nuxeo-article-app',
+      is : 'nuxeo-article-app',
       // Expose properties
       properties: {
         baseUrl: {
@@ -221,7 +219,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         document.querySelector('#documentGetter').execute();
       },
 
-      _logoutURL() {
+      _logoutURL: function () {
         return "http://" + window.location.hostname + ":" + window.location.port + "/nuxeo/logout";
       }
     });
