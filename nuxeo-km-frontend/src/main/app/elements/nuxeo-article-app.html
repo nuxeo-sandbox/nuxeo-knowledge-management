@@ -20,7 +20,9 @@ Example: <nuxeo-article-app></nuxeo-article-app>
 -->
 
 <dom-module id="nuxeo-article-app">
+
   <template>
+
     <style is="custom-style">
       paper-toolbar {
         background: #e4e4e4;
@@ -75,6 +77,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         text-align: center;
       }
     </style>
+
     <!-- Main Content -->
     <nuxeo-operation auto id="getCurrentUserName" op="javascript.getCurrentUserName" response="{{currentUserFromOpe}}"></nuxeo-operation>
     <nuxeo-resource id="getCurrentUser" path="/user/{{currentUserName}}" response="{{currentUser}}"></nuxeo-resource>
@@ -105,7 +108,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         </paper-toolbar>
       </paper-header-panel>
       <paper-header-panel main mode="waterfall">
-        <nuxeo-km-toolbar class="paper-header" page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
+        <nuxeo-km-toolbar hidden="{{_hideToolbar}}" class="paper-header" page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
         <div>
           <iron-pages selected="[[page]]" attr-for-selected="name">
             <div name="home">
@@ -125,11 +128,12 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       </paper-header-panel>
     </paper-drawer-panel>
 
-
   </template>
+
   <script>
     Polymer({
-      is : 'nuxeo-article-app',
+      is: 'nuxeo-article-app',
+
       // Expose properties
       properties: {
         baseUrl: {
@@ -167,16 +171,23 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         userID: {
           type: String,
           notify: true
+        },
+        _hideToolbar: {
+          type: Boolean,
+          value: true,
+          notify: true
         }
       },
 
+      /* Do not delete this (even though it's empty)! The page will stop working. */
       scrollPageToTop: function () {
         //this.$.selectedPage.scrollToTop(true);
       },
-      ready: function () {
-        //When component is ready.
-      },
+
+      ready: function () {},
+
       _navigate: function () {
+        this._toolbarToggle(this.page);
         // see nuxeo web ui app for info
         var url = '/' + this.page;
         page(url);
@@ -184,6 +195,15 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           page: this.page
         });
       },
+
+      _toolbarToggle: function (page) {
+        if (page != "login") {
+          this._hideToolbar = false;
+        } else {
+          this._hideToolbar = true;
+        }
+      },
+
       _getRegionLabel: function (region) {
         if (region === '') {
           return 'Select Region';
@@ -191,17 +211,20 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           return region;
         }
       },
+
       _closeDrawer: function () {
         var pdp = document.getElementById('drawerPanel');
         this.region = '';
         pdp.togglePanel();
       },
+
       _userInfo: function () {
         if (this.currentUserFromOpe) {
           this.currentUserName = this.currentUserFromOpe.value;
           this.$.getCurrentUser.execute();
         }
       },
+
       _printUser: function () {
         //console.log('--print user');
         //console.log(this.currentUser);
@@ -209,10 +232,12 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           this.userID = this.currentUser.id;
         }
       },
+
       _printDocID: function () {
         console.log('app print doc id');
         console.log(this.docId);
       },
+
       _refreshHome: function () {
         this.$.drawerPanel.togglePanel();
         document.querySelector('#articleHome').refreshWidgets();
@@ -222,6 +247,8 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       _logoutURL: function () {
         return "http://" + window.location.hostname + ":" + window.location.port + "/nuxeo/logout";
       }
+
     });
   </script>
+
 </dom-module>
