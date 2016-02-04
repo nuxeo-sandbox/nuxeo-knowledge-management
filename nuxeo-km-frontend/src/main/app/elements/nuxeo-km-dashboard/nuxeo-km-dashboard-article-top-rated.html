@@ -51,7 +51,7 @@ Contributors:
           "bool": {
             "must": [{
               "terms": {
-                "ecm:primaryType": ["Vote"]
+                "ecm:primaryType": ["Rating"]
               }
             }, {
               "term": {
@@ -68,7 +68,7 @@ Contributors:
         this.aggregates = {
           "votesPerDoc": {
             "terms": {
-              "field": "vote:docTitle",
+              "field": "rating:docTitle",
               order: {
                 avgVote: "desc"
               },
@@ -77,7 +77,7 @@ Contributors:
             "aggs": {
               "avgVote": {
                 "avg": {
-                  "field": "vote:vote"
+                  "field": "rating:rating"
                 }
               }
             }

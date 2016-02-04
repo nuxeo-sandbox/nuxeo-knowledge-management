@@ -178,11 +178,11 @@ Example:
 
 
     <!-- Documents -->
-    <nuxeo-repository-data where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="ecm:primaryType" data="{{pictureTypes}}">
+    <nuxeo-repository-data where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="ecm:primaryType" data="{{docTypes}}">
     </nuxeo-repository-data>
     <paper-card class="dashboard-widget-header-03" heading="Document Types" elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="bar" data="[[_coloredBarChartData(pictureTypes)]]" options="[[_hideLegend()]]">
+        <google-chart class="center-chart" type="bar" data="[[_coloredBarChartData(docTypes)]]" options="[[_hideLegend()]]">
         </google-chart>
       </div>
     </paper-card>
