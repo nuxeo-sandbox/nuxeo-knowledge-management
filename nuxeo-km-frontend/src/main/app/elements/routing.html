@@ -10,7 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <script src="../bower_components/page/page.js"></script>
 <script>
-  window.addEventListener('WebComponentsReady', function() {
+   window.addEventListener('WebComponentsReady', function() {
 
     var app = document.querySelector('nuxeo-article-app');
     var serverBase = '/nuxeo/km/';
@@ -20,8 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // More info: https://visionmedia.github.io/page.js/
 
     // Removes end / from app.baseUrl which page.base requires for production
-    page.base(app.baseUrl.replace(/\/$/, ''));
-
+   page.base(app.baseUrl.replace(/\/$/, ''));
 
     // Middleware
     function scrollToTop(ctx, next) {
@@ -81,26 +80,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       page.redirect('/login');
     });
 
-    page(serverBase+'home', function() {
+    page(serverBase + 'home', function() {
       app.page = 'home';
     });
 
-    page(serverBase+'search', function() {
+    page(serverBase + 'search', function() {
       app.page = 'search';
     });
 
-    page(serverBase+'login', function() {
+    page(serverBase + 'login', function() {
       app.page = 'login';
     });
 
-    page(serverBase+'workinstructions', function() {
+    page(serverBase + 'workinstructions', function() {
       app.page = 'home';
     });
 
-    page(serverBase+'training', function() {
+    page(serverBase + 'training', function() {
       app.page = 'home';
     });
-
 
     // /display/<id>
     page(/^\/display\/([^@]*)/, function(data) {
@@ -115,14 +113,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       //app.$.toast.show();
       //page.redirect(app.baseUrl);
       console.log('-- 404 unknow page called');
-      console.log('base url '+app.baseUrl);
+      console.log('base url ' + app.baseUrl);
       console.log(data);
     });
 
     // add #! before urls
-    page({
-      hashbang: true
-    });
+    page({hashbang: true});
 
-  });
+   });
 </script>

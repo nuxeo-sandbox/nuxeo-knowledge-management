@@ -25,7 +25,8 @@ Example: <nuxeo-article-display></nuxeo-article-display>
     <style is="custom-style">
       paper-card {
         width: 80%;
-        margin: 1em;
+        margin: 1%;
+        padding: 1%
       }
 
       h1 {
@@ -174,13 +175,13 @@ Example: <nuxeo-article-display></nuxeo-article-display>
     <template is="dom-if" if="[[_isArticle(nuxeoDocument)]]">
       <paper-card heading="Popularity" elevation="3">
         <div class="card-content rating">
-          <nuxeo-star-rating-viz doc-id=[[nuxeoDocument.uid]]></nuxeo-star-rating-viz>
+          <nuxeo-star-rating-stats doc-id="[[nuxeoDocument.uid]]"></nuxeo-star-rating-stats>
         </div>
         <div class="documentContent rating">
           <span class="label">
 		    My Rating:
 	    </span>
-          <nuxeo-my-rating doc-id=[[nuxeoDocument.uid]]></nuxeo-my-rating>
+          <nuxeo-star-rating-document doc-id="[[nuxeoDocument.uid]]"></nuxeo-star-rating-document>
         </div>
       </paper-card>
     </template>
