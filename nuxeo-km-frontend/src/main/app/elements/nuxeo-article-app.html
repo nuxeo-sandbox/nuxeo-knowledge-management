@@ -20,7 +20,9 @@ Example: <nuxeo-article-app></nuxeo-article-app>
 -->
 
 <dom-module id="nuxeo-article-app">
+
   <template>
+
     <style is="custom-style">
       paper-toolbar {
         background: #e4e4e4;
@@ -75,6 +77,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         text-align: center;
       }
     </style>
+
     <!-- Main Content -->
     <nuxeo-operation auto id="getCurrentUserName" op="javascript.getCurrentUserName" response="{{currentUserFromOpe}}"></nuxeo-operation>
     <nuxeo-resource id="getCurrentUser" path="/user/{{currentUserName}}" response="{{currentUser}}"></nuxeo-resource>
@@ -125,8 +128,8 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       </paper-header-panel>
     </paper-drawer-panel>
 
-
   </template>
+
   <script>
     Polymer({
       is: 'nuxeo-article-app',
@@ -247,4 +250,5 @@ Example: <nuxeo-article-app></nuxeo-article-app>
 
     });
   </script>
+
 </dom-module>
