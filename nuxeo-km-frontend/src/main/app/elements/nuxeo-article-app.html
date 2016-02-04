@@ -104,7 +104,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           <div><a href="[[_logoutURL()]]" class="drawerTitle" rel="external">Logout</a></div>
         </paper-toolbar>
       </paper-header-panel>
-      <paper-header-panel main>
+      <paper-header-panel main mode="waterfall">
         <nuxeo-km-toolbar class="paper-header" page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
         <div>
           <iron-pages selected="[[page]]" attr-for-selected="name">
