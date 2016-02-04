@@ -131,7 +131,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
   </template>
   <script>
     Polymer({
-      is: 'nuxeo-article-app',
+      is : 'nuxeo-article-app',
       // Expose properties
       properties: {
         baseUrl: {
@@ -221,7 +221,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         document.querySelector('#documentGetter').execute();
       },
 
-      _logoutURL() {
+      _logoutURL: function () {
         return "http://" + window.location.hostname + ":" + window.location.port + "/nuxeo/logout";
       }
     });
