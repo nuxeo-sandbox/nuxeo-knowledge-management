@@ -129,7 +129,8 @@ Example: <nuxeo-article-app></nuxeo-article-app>
   </template>
   <script>
     Polymer({
-      is : 'nuxeo-article-app',
+      is: 'nuxeo-article-app',
+
       // Expose properties
       properties: {
         baseUrl: {
@@ -173,9 +174,11 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       scrollPageToTop: function () {
         //this.$.selectedPage.scrollToTop(true);
       },
+
       ready: function () {
         //When component is ready.
       },
+
       _navigate: function () {
         // see nuxeo web ui app for info
         var url = '/' + this.page;
@@ -184,6 +187,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           page: this.page
         });
       },
+
       _getRegionLabel: function (region) {
         if (region === '') {
           return 'Select Region';
@@ -191,17 +195,20 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           return region;
         }
       },
+
       _closeDrawer: function () {
         var pdp = document.getElementById('drawerPanel');
         this.region = '';
         pdp.togglePanel();
       },
+
       _userInfo: function () {
         if (this.currentUserFromOpe) {
           this.currentUserName = this.currentUserFromOpe.value;
           this.$.getCurrentUser.execute();
         }
       },
+
       _printUser: function () {
         //console.log('--print user');
         //console.log(this.currentUser);
@@ -209,10 +216,12 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           this.userID = this.currentUser.id;
         }
       },
+
       _printDocID: function () {
         console.log('app print doc id');
         console.log(this.docId);
       },
+
       _refreshHome: function () {
         this.$.drawerPanel.togglePanel();
         document.querySelector('#articleHome').refreshWidgets();
