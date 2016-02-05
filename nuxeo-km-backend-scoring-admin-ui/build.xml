@@ -46,7 +46,7 @@
     </exec>
   </target>
 
-  <target name="init" description="Download all node and web dependencies" depends="clean-cache">
+  <target name="init" description="Download all node and web dependencies">
     <exec executable="${cmd.npm}" failonerror="true">
       <arg value="install" />
     </exec>
