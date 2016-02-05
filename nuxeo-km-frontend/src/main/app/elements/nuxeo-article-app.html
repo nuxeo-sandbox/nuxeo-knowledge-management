@@ -108,7 +108,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         </paper-toolbar>
       </paper-header-panel>
       <paper-header-panel main mode="waterfall">
-        <nuxeo-km-toolbar hidden="{{_hideToolbar}}" class="paper-header" page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
+        <nuxeo-km-toolbar hidden$="{{_hideToolbar}}" class="paper-header" page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
         <div>
           <iron-pages selected="[[page]]" attr-for-selected="name">
             <div name="home">
@@ -171,11 +171,6 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         userID: {
           type: String,
           notify: true
-        },
-        _hideToolbar: {
-          type: Boolean,
-          value: true,
-          notify: true
         }
       },
 
@@ -183,8 +178,6 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       scrollPageToTop: function () {
         //this.$.selectedPage.scrollToTop(true);
       },
-
-      ready: function () {},
 
       _navigate: function () {
         this._toolbarToggle(this.page);
