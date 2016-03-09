@@ -19,7 +19,7 @@
             </style>
             <nx-connection id="nx"></nx-connection>
             <nuxeo-resource id="getScoringConfig" path="/path/CVS/SearchScoring" response="{{config}}"></nuxeo-resource>
-            <nuxeo-resource id="setScoringConfig" method="PUT" path="/path/KM/SearchScoring" data=[[config]] response="{{config}}"></nuxeo-resource>
+            <nuxeo-resource id="setScoringConfig" method="PUT" path="/path/CVS/SearchScoring" data=[[config]] response="{{config}}"></nuxeo-resource>
 
             <template is="dom-if" if="[[config]]">
                   <div class="bubbleBox">
