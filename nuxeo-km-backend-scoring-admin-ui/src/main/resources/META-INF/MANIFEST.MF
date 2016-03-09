@@ -1,4 +1,4 @@
-nifest-Version: 1.0
+Manifest-Version: 1.0
 Bundle-Vendor: Nuxeo
 Nuxeo-RequiredBy: org.nuxeo.ecm.war
 Bundle-Version: 0.0.1
