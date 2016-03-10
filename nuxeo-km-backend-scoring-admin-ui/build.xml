@@ -33,7 +33,7 @@
     <os family="windows" />
   </condition>
 
-  <target name="clean-cache" description="Clean npm and bower cache" unless="skipCleanCache">
+  <target name="clean-cache" description="Clean npm and bower cache" if="cleanCache">
     <delete dir="node_modules" failonerror="true" />
     <delete dir="bower_components" failonerror="true" />
     <exec executable="${cmd.npm}" failonerror="true">
