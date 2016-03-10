@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!--
+  <!--
 ~ (C) Copyright 2006-2016 Nuxeo SA (http://nuxeo.com/) and contributors.
 ~
 ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,58 +17,58 @@
 ~  Contributors:
 ~     nuxeo
 -->
-<project name="Nuxeo KM Frontend" default="build" basedir=".">
+  <project name="Nuxeo KM Frontend" default="build" basedir=".">
 
-  <!-- set executable names based on OS family -->
-  <condition property="cmd.npm" value="npm.cmd" else="npm">
-    <os family="windows" />
-  </condition>
-  <condition property="cmd.bower" value="bower.cmd" else="bower">
-    <os family="windows" />
-  </condition>
-  <condition property="cmd.gulp" value="gulp.cmd" else="gulp">
-    <os family="windows" />
-  </condition>
-  <condition property="cmd.mvn" value="mvn.cmd" else="mvn">
-    <os family="windows" />
-  </condition>
+    <!-- set executable names based on OS family -->
+    <condition property="cmd.npm" value="npm.cmd" else="npm">
+      <os family="windows" />
+    </condition>
+    <condition property="cmd.bower" value="bower.cmd" else="bower">
+      <os family="windows" />
+    </condition>
+    <condition property="cmd.gulp" value="gulp.cmd" else="gulp">
+      <os family="windows" />
+    </condition>
+    <condition property="cmd.mvn" value="mvn.cmd" else="mvn">
+      <os family="windows" />
+    </condition>
 
-  <target name="clean-cache" description="Clean npm and bower cache" if="cleanCache">
-    <delete dir="node_modules" failonerror="true" />
-    <delete dir="bower_components" failonerror="true" />
-    <exec executable="${cmd.npm}" failonerror="true">
-      <arg value="cache" />
-      <arg value="clean" />
-    </exec>
-    <exec executable="${cmd.bower}" failonerror="true">
-      <arg value="cache" />
-      <arg value="clean" />
-    </exec>
-  </target>
+    <target name="clean-cache" description="Clean npm and bower cache" if="cleanCache">
+      <delete dir="node_modules" failonerror="true" />
+      <delete dir="bower_components" failonerror="true" />
+      <exec executable="${cmd.npm}" failonerror="true">
+        <arg value="cache" />
+        <arg value="clean" />
+      </exec>
+      <exec executable="${cmd.bower}" failonerror="true">
+        <arg value="cache" />
+        <arg value="clean" />
+      </exec>
+    </target>
 
-  <target name="init" description="Download all node and web dependencies">
-    <exec executable="${cmd.npm}" failonerror="true">
-      <arg value="install" />
-    </exec>
-    <exec executable="${cmd.bower}" failonerror="true">
-      <arg value="install" />
-    </exec>
-  </target>
+    <target name="init" description="Download all node and web dependencies">
+      <exec executable="${cmd.npm}" failonerror="true">
+        <arg value="install" />
+      </exec>
+      <exec executable="${cmd.bower}" failonerror="true">
+        <arg value="install" />
+      </exec>
+    </target>
 
-  <target name="build" depends="init,build-with-tests,build-skip-tests" />
+    <target name="build" depends="init,build-with-tests,build-skip-tests" />
 
-  <target name="build-with-tests" unless="skipTests">
-    <echo message="build and test" />
-    <exec executable="${cmd.gulp}" failonerror="true">
-      <arg value="default" />
-    </exec>
-    <mkdir dir="target/surefire-reports" />
-    <copy file="test-results.xml" todir="target/surefire-reports" failonerror="false" />
-  </target>
-  <target name="build-skip-tests" if="skipTests">
-    <exec executable="${cmd.gulp}" failonerror="true">
-      <arg value="default" />
-    </exec>
-  </target>
+    <target name="build-with-tests" unless="skipTests">
+      <echo message="build and test" />
+      <exec executable="${cmd.gulp}" failonerror="true">
+        <arg value="default" />
+      </exec>
+      <mkdir dir="target/surefire-reports" />
+      <copy file="test-results.xml" todir="target/surefire-reports" failonerror="false" />
+    </target>
+    <target name="build-skip-tests" if="skipTests">
+      <exec executable="${cmd.gulp}" failonerror="true">
+        <arg value="default" />
+      </exec>
+    </target>
 
-</project>
+  </project>
