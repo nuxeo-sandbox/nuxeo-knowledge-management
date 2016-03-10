@@ -1,7 +1,7 @@
-nuxeo-knowledge-management
-===========================
+# About nuxeo-knowledge-management
 
-A plug-in for the [Nuxeo](http://nuxeo.com) Knowledge Management Example
+A plug-in for the [Nuxeo](http://nuxeo.com) Knowledge Management Example.
+
 
 ## List of Features
 
@@ -14,6 +14,8 @@ A plug-in for the [Nuxeo](http://nuxeo.com) Knowledge Management Example
 The NuxeoPackage installs a set the plug-ins (.jar), and also sets up a template, named `es-for-nuxeo-km`, in `nuxeo-knowledge-management/nuxeo-km-mp/src/main/resources/install/templates/`. This template is very important, since it contains the elasticsearch mapping and also some files requests at runtime: A script to "boost" regions and a first synonyms file. See below how to install them (must be done manually)
 
 ## Build
+
+[![Build Status](https://qa.nuxeo.org/jenkins/buildStatus/icon?job=Sandbox/sandbox_nuxeo-knowledge-management-master)](https://qa.nuxeo.org/jenkins/view/sandbox/job/Sandbox/job/sandbox_nuxeo-knowledge-management-master/)
 
 There are a few steps in order to testa nd build the plug-in. Basically, each part using WebComponents (typically, the frontend) must be setup frist, then the whole package can be built.
 
@@ -32,18 +34,19 @@ Now, when building `nuxeo-knowledge-management`, the NuxeoPackage declares a dep
 To build the plug-in, and assuming maven is correctly setup on your computer:
 
 ```
-git clone 
+git clone
 mvn clean install
 ```
 
 The NuxeoPackage is now located at /nuxeo-knowledge-management/nuxeo-km-mp/target/nuxeo-km-mp-{version}.zip and can be installed on your server.
+
 
 ## Install
 
 ### Install the NuxeoPackage
 Install the package (nuxeo-km-mp-{version}.zip) on your instance (see the "Offline" mode of [this documentation page](https://doc.nuxeo.com/x/moFH))
 
-### Install the Specifi Elasticsearch Files on your Server
+### Install the Specific Elasticsearch Files on your Server
 
 Also, 2 important files must be copied in the elastic search folder of your server: `region_boost.groovy` and `synonyms.txt`. After having installed the NuxeoPackage, you will find these files in the `templates/es-for-nuxeo-km` folder.
 
@@ -61,6 +64,7 @@ sudo mkdir /etc/elasticsearch/scripts
 sudo cp TEMPLATE_FOLDER/es-for-nuxeo-km/config/scripts/region_boost.groovy /etc/elasticsearch/scripts
 ```
 
+
 ## Testing the Frontend on your Localhost
 
 This part is useful if you want to test the frontend without embedding it in the server, so it acts as an external client. Notice that the plug-in still has to be installed on the server.
@@ -70,7 +74,7 @@ This part is useful if you want to test the frontend without embedding it in the
 With Node.js installed, run the following one liner from the root of your Polymer Starter Kit download:
 
 ```
-npm install -g gulp bower 
+npm install -g gulp bower
 npm install
 bower install
 ```
@@ -127,12 +131,28 @@ Now, to test as an external client:
 
 
 ## Prerequisites
+
 Besides the dependence on `nuxeo-es-synonyms` described above:
 
-* The plugin depends on a dedicated Studio Project, and assumes some specific Documùent Types exist
+* The plugin depends on a dedicated Studio Project, and assumes some specific Document Types exist
+
+
+## Support
+
+**These features are not part of the Nuxeo Production platform.**
+
+These solutions are provided for inspiration and we encourage customers to use them as code samples and learning resources.
+
+This is a moving project (no API maintenance, no deprecation process, etc.) If any of these solutions are found to be useful for the Nuxeo Platform in general, they will be integrated directly into platform, not maintained here.
+
+
+## Licensing
+
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
 
 ## About Nuxeo
 
-Nuxeo provides a modular, extensible Java-based [open source software platform for enterprise content management](http://www.nuxeo.com/en/products/ep) and packaged applications for [document management](http://www.nuxeo.com/en/products/document-management), [digital asset management](http://www.nuxeo.com/en/products/dam) and [case management](http://www.nuxeo.com/en/products/case-management). Designed by developers for developers, the Nuxeo platform offers a modern architecture, a powerful plug-in model and extensive packaging capabilities for building content applications.
+Nuxeo dramatically improves how content-based applications are built, managed and deployed, making customers more agile, innovative and successful. Nuxeo provides a next generation, enterprise ready platform for building traditional and cutting-edge content oriented applications. Combining a powerful application development environment with SaaS-based tools and a modular architecture, the Nuxeo Platform and Products provide clear business value to some of the most recognizable brands including Verizon, Electronic Arts, Netflix, Sharp, FICO, the U.S. Navy, and Boeing. Nuxeo is headquartered in New York and Paris.
 
-More information at <http://www.nuxeo.com/>
+More information is available at [www.nuxeo.com](http://www.nuxeo.com).
