@@ -20,16 +20,30 @@ The NuxeoPackage installs a set the plug-ins (.jar), and also sets up a template
 There are a few steps in order to testa nd build the plug-in. Basically, each part using WebComponents (typically, the frontend) must be setup frist, then the whole package can be built.
 
 
-The plug-in depends on `nuxeo-es-synonyms` (you can find it [here](https://github.com/nuxeo-sandbox/nuxeo-es-synonyms)). Because, at the time this README is written, this plug-in is not available in the maven repositories of nuxeo, you must first build it on your computer:
+The plug-in depends on: 
+
+- `nuxeo-es-synonyms` (you can find it [here](https://github.com/nuxeo-sandbox/nuxeo-es-synonyms)). Because, at the time this README is written, this plug-in is not available in the maven repositories of nuxeo, you must first build it on your computer:
 
 To build `nuxeo-es-synonyms`, and assuming maven is correctly setup on your computer:
 ```
 cd /path/to/some/directory
 git clone https://github.com/nuxeo-sandbox/nuxeo-es-synonyms
+cd nuxeo-es-synonyms
 mvn install
 ```
+Now, when building `nuxeo-knowledge-management`, the NuxeoPackage declares a dependency to `nuxeo-es-synonyms` and the .jars of `nuxeo-es-synonyms` will be automatically added (there is no need to install `nuxeo-es-synonyms` on the server).
 
-Now, when building `nuxeo-knowledge-management`, the NuxeoPackage declares a dependency to `nuxeo-es-synonyms` and the .jars of `nuxeo-es-synonyms` will be automatically added (there is no need to install `nuxeo-es-synonyms`).
+- `nuxeo-labs-rating` (you can find it [here](https://github.com/nuxeo-sandbox/nuxeo-labs-rating)). Because, at the time this README is written, this plug-in is not available in the maven repositories of nuxeo, you must first build it on your computer:
+
+To build `nuxeo-labs-rating`, and assuming maven is correctly setup on your computer:
+```
+cd /path/to/some/directory
+git clone https://github.com/nuxeo-sandbox/nuxeo-labs-rating
+cd nuxeo-labs-rating
+mvn install
+```
+Now, when building `nuxeo-knowledge-management`, the NuxeoPackage declares a dependency to `nuxeo-labs-rating` and the .jars of `nuxeo-labs-rating` will be automatically added (there is no need to install `nuxeo-labs-rating` on the server).
+
 
 To build the plug-in, and assuming maven is correctly setup on your computer:
 
