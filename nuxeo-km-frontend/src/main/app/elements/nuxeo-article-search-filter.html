@@ -146,7 +146,7 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
 
       observers: [
         'resetFacets(fulltext)',
-        'updateQuery(aggregates,post_filter)',
+        'updateQuery(region, aggregates,post_filter)',
         'updateParameter(response)',
         '_execArticleSearchQuery(articleSearchParams)'
       ],
