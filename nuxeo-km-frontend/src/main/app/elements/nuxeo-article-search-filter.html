@@ -39,20 +39,55 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
     <!-- In order to generate audit data for searches, the query is passed to a
 		page provider. Note that the results of this query are not used, this is only to
 		generate audit data. -->
-    <nuxeo-page-provider id='articlePageProvider' page-size='1' provider='ArticlesSearch' params='[[articleSearchParams]]'>
+    <nuxeo-page-provider
+      id="articlePageProvider" page-size="1" provider="ArticlesSearch" params="[[articleSearchParams]]">
     </nuxeo-page-provider>
 
-    <paper-input id="searchFullTextInput" label="Full Text Search" class="filterItem" value="{{fulltext}}">
+    <paper-input
+      id="searchFullTextInput" label="Full Text Search" class="filterItem" value="{{fulltext}}">
     </paper-input>
 
     <div class="filterItem">
-      <div class="filterItemLabel">Region</div>
-      <nuxeo-checkbox-aggregation name='article_region_agg' aggregations='[[aggregations]]' value="{{regionAgg}}"></nuxeo-checkbox-aggregation>
-      <div class="filterItemLabel">Category</div>
-      <nuxeo-checkbox-aggregation name='article_category_agg' aggregations='[[aggregations]]' value="{{categoAgg}}"></nuxeo-checkbox-aggregation>
+
+      <nuxeo-es-aggregates id="aggregates"
+        agg="{{aggregates}}"
+        post-filters="{{post_filter}}">
+
+        <nuxeo-es-aggregate-term name="Region"
+          field="article:region"
+          selected-values="[[regionAgg]]"></nuxeo-es-aggregate-term>
+        <nuxeo-es-aggregate-term name="Category"
+          field="article:category"
+          selected-values="[[categoAgg]]"></nuxeo-es-aggregate-term>
+      </nuxeo-es-aggregates>
+
+      <nuxeo-checkbox-aggregation
+        name="Region"
+        aggregations="[[aggregations]]"
+        selected-values="{{regionAgg}}">
+      </nuxeo-checkbox-aggregation>
+      <nuxeo-checkbox-aggregation
+        name="Category"
+        aggregations="[[aggregations]]"
+        selected-values="{{categoAgg}}">
+      </nuxeo-checkbox-aggregation>
+
     </div>
-    <nuxeo-es-search id='articleProvider' fields=[[fields]] query=[[query]] size="20" highlight=[[highlight]] post_filter=[[post_filter]] aggregates=[[aggregates]] hits={{articles}} aggregations={{aggregations}} suggest=[[suggest]] suggestions={{suggestions}}>
-    </nuxeo-es-search>
+
+    <nuxeo-es-query
+      id="articleProvider"
+      fields="[[fields]]"
+      query="[[query]]"
+      size="20"
+      highlight="[[highlight]]"
+      post-filters="[[post_filter]]"
+      aggregates="[[aggregates]]"
+      hits="{{articles}}"
+      aggregations="{{aggregations}}"
+      suggest="[[suggest]]"
+      suggestions="{{suggestions}}">
+    </nuxeo-es-query>
+
     <nuxeo-resource auto path="/path/CVS/SearchScoring" response="{{response}}"></nuxeo-resource>
 
   </template>
@@ -65,25 +100,19 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
       // Expose properties
       properties: {
         region: {
-          type: String,
-          notify: true
+          type: String
         },
+
         fulltext: {
           type: String,
           notify: true
         },
+
         articles: {
           type: Object,
           notify: true
         },
-        query: {
-          type: Object,
-          notify: true
-        },
-        highlight: {
-          type: Object,
-          value: {}
-        },
+
         fields: {
           type: Array,
           value: function() {
@@ -92,30 +121,12 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
             ];
           }
         },
-        aggregates: {
-          type: Object,
-          notify: true
-        },
-        post_filter: { // jshint ignore:line
-          type: Object,
-          notify: true
-        },
-        aggregations: {
-          type: Object,
-          notify: true
-        },
-        hits: {
-          type: Object,
-          notify: true
-        },
-        suggest: {
-          type: Object,
-          notify: true
-        },
+
         suggestions: {
           type: Object,
           notify: true
         },
+
         parameter: {
           type: Object,
           value: {
@@ -125,10 +136,7 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
             recent_boost_value: 0.5,
           }
         },
-        response: {
-          type: Object,
-          notify: true
-        },
+
         articleSearchParams: {
           type: Object,
           computed: '_buildArticleSearchParams(fulltext)',
@@ -138,7 +146,7 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
 
       observers: [
         'resetFacets(fulltext)',
-        'updateQuery(regionAgg,categoAgg,region)',
+        'updateQuery(aggregates,post_filter)',
         'updateParameter(response)',
         '_execArticleSearchQuery(articleSearchParams)'
       ],
@@ -254,87 +262,6 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
           }
         };
 
-        var postFilters = [];
-        var regionAggFilter = {
-          match_all: {}
-        };
-        var categoryAggFilter = {
-          match_all: {}
-        };
-
-        if (this.categoAgg !== undefined && this.categoAgg.length > 0) {
-          postFilters.push({
-            terms: {
-              "article:category": this.categoAgg
-            }
-          });
-          regionAggFilter = {
-            and: {
-              filters: [{
-                terms: {
-                  "article:category": this.categoAgg
-                }
-              }]
-            }
-          };
-        }
-        if (this.regionAgg !== undefined && this.regionAgg.length > 0) {
-          postFilters.push({
-            terms: {
-              "article:region": this.regionAgg
-            }
-          });
-          categoryAggFilter = {
-            and: {
-              filters: [{
-                terms: {
-                  "article:region": this.regionAgg
-                }
-              }]
-            }
-          };
-        }
-        if (postFilters.length > 0) {
-          this.post_filter = {
-            and: {
-              filters: postFilters
-            }
-          };
-        } else {
-          this.post_filter = {
-            match_all: {}
-          };
-        }
-
-        this.aggregates = {
-          article_region_agg_filter: {
-            filter: regionAggFilter,
-            aggregations: {
-              article_region_agg: {
-                terms: {
-                  field: "article:region",
-                  order: {
-                    _count: "desc"
-                  }
-                }
-              }
-            }
-          },
-          article_category_agg_filter: {
-            filter: categoryAggFilter,
-            aggregations: {
-              article_category_agg: {
-                terms: {
-                  field: "article:category",
-                  order: {
-                    _count: "desc"
-                  }
-                }
-              }
-            }
-          }
-        };
-
         this.suggest = {
           my_term_suggest: {
             text: this.fulltext,
@@ -395,7 +322,6 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
         //this.$.articlePageProvider.fetch();
         this.updateQuery();
       },
-
 
       updateParameter: function() {
           if (this.response !== null && this.response !== undefined) {

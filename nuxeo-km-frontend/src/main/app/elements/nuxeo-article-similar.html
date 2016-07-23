@@ -90,8 +90,14 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
         margin-bottom: 1em;
       }
     </style>
-    <nuxeo-es-search auto=[[auto]] size="3" fields=[[fields]] query=[[query]] aggregates=[[aggregates]] hits={{myhits}}>
-    </nuxeo-es-search>
+    <nuxeo-es-query
+      auto="[[auto]]"
+      size="3" 
+      fields="[[fields]]"
+      query="[[query]]"
+      aggregates="[[aggregates]]"
+      hits="{{myhits}}">
+    </nuxeo-es-query>
     <template is="dom-repeat" items="[[myhits.hits]]">
       <paper-card class="sidecard">
         <div class="card-content">
