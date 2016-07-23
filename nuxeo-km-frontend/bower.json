@@ -2,19 +2,19 @@
   "name": "nuxeo-km-frontend",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.2.0",
+	"polymer": "Polymer/polymer#^1.1.4",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.5",
     "iron-elements": "PolymerElements/iron-elements#^1.0.0",
-    "neon-elements": "PolymerElements/neon-elements#^1.0.0",
-    "page": "visionmedia/page.js#~1.6.4",
-    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
-    "platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
+	"platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
+	"neon-elements": "PolymerElements/neon-elements#^1.0.0",
+	"google-chart": "GoogleWebComponents/google-chart#~1.0.3",
+	"page": "visionmedia/page.js#~1.6.4",
     "moment": "~2.11.0",
-    "nuxeo-elements": "nuxeo/nuxeo-elements#^0.2.6",
-    "nuxeo-dataviz-elements": "michaelva/nuxeo-dataviz-elements#NXP-18712-improve-nuxeo-es-search-interface",
-    "google-chart": "GoogleWebComponents/google-chart#~1.0.3",
-    "nuxeo-util-mimetypes": "nuxeo-sandbox/nuxeo-util-mimetypes#~1.1.1",
-    "paper-dialog": "PolymerElements/paper-dialog#~1.0.3",
-    "nuxeo-labs-rating": "nuxeo-sandbox/nuxeo-labs-rating"
+	"nuxeo-elements": "nuxeo/nuxeo-elements#^0.3.0",
+	"nuxeo-dataviz-elements": "nuxeo/nuxeo-dataviz-elements#^0.3.0",
+	"nuxeo-labs-elements": "nuxeo-sandbox/nuxeo-labs-elements",
+	"nuxeo-labs-rating": "nuxeo-sandbox/nuxeo-labs-rating",
+	"nuxeo-util-elements": "nuxeo-sandbox/nuxeo-util-elements"
   },
   "devDependencies": {
     "web-component-tester": "*"
