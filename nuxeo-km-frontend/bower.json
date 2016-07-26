@@ -7,14 +7,14 @@
     "iron-elements": "PolymerElements/iron-elements#^1.0.0",
 	"platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
 	"neon-elements": "PolymerElements/neon-elements#^1.0.0",
-	"google-chart": "GoogleWebComponents/google-chart#~1.0.3",
-	"page": "visionmedia/page.js#~1.6.4",
-    "moment": "~2.11.0",
-	"nuxeo-elements": "nuxeo/nuxeo-elements#^0.3.0",
-	"nuxeo-dataviz-elements": "nuxeo/nuxeo-dataviz-elements#^0.3.0",
-	"nuxeo-labs-elements": "nuxeo-sandbox/nuxeo-labs-elements",
-	"nuxeo-labs-rating": "nuxeo-sandbox/nuxeo-labs-rating",
-	"nuxeo-util-elements": "nuxeo-sandbox/nuxeo-util-elements"
+	"google-chart": "GoogleWebComponents/google-chart#^1.0.3",
+	"page": "visionmedia/page.js#^1.6.4",
+    "moment": "^2.10.0",
+	"nuxeo-elements": "nuxeo/nuxeo-elements#^0.4.0",
+	"nuxeo-dataviz-elements": "nuxeo/nuxeo-dataviz-elements#^0.4.0",
+	"nuxeo-labs-elements": "nuxeo-sandbox/nuxeo-labs-elements#^3.4.0",
+	"nuxeo-util-elements": "nuxeo-sandbox/nuxeo-util-elements#^1.1.0",
+	"nuxeo-labs-rating": "nuxeo-sandbox/nuxeo-labs-rating#master"
   },
   "devDependencies": {
     "web-component-tester": "*"
