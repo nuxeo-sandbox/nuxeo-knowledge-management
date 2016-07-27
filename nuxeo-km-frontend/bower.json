@@ -12,7 +12,7 @@
     "moment": "^2.10.0",
 	"nuxeo-elements": "nuxeo/nuxeo-elements#^0.4.0",
 	"nuxeo-dataviz-elements": "nuxeo/nuxeo-dataviz-elements#^0.4.0",
-	"nuxeo-labs-elements": "nuxeo-sandbox/nuxeo-labs-elements#^3.4.0",
+	"nuxeo-labs-elements": "nuxeo-sandbox/nuxeo-labs-elements#^3.5.0",
 	"nuxeo-util-elements": "nuxeo-sandbox/nuxeo-util-elements#^1.1.0",
 	"nuxeo-labs-rating": "nuxeo-sandbox/nuxeo-labs-rating#master"
   },

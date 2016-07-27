@@ -68,11 +68,11 @@ Contributors:
         this.aggregates = {
           "votesPerDoc": {
             "terms": {
-              "field": "rating:docTitle",
+              "field": "rating:docId",
               order: {
                 avgVote: "asc"
               },
-              "size": 0
+              "size": 5
             },
             "aggs": {
               "avgVote": {

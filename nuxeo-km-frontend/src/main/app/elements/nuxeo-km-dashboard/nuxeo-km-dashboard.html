@@ -80,10 +80,10 @@ Example:
 
     <!-- Best rated --------------------------------------------------->
     <nuxeo-km-dashboard-article-top-rated doc-aggregations="{{topRatedData}}"></nuxeo-km-dashboard-article-top-rated>
-
+    <nuxeo-es-bucket-docid-label-enricher input="[[topRatedData.votesPerDoc.buckets]]" output="{{topRatedDataWithLabel}}"></nuxeo-es-bucket-docid-label-enricher>
     <paper-card class="dashboard-widget-header-01" heading="Highest Rated Articles" elevation="2">
       <div class="card-content-table">
-        <nuxeo-data-table-stars columns='["Article", "Rating (Votes)"]' data="[[_tableForRatings(topRatedData.votesPerDoc.buckets)]]">
+        <nuxeo-data-table-stars columns='["Article", "Rating (Votes)"]' data="[[_tableForRatings(topRatedDataWithLabel)]]">
         </nuxeo-data-table-stars>
       </div>
     </paper-card>
@@ -91,10 +91,10 @@ Example:
 
     <!-- Worst rated --------------------------------------------------->
     <nuxeo-km-dashboard-article-worst-rated doc-aggregations="{{worstRatedData}}"></nuxeo-km-dashboard-article-worst-rated>
-
+    <nuxeo-es-bucket-docid-label-enricher input="[[worstRatedData.votesPerDoc.buckets]]" output="{{worstRatedDataWithLabel}}"></nuxeo-es-bucket-docid-label-enricher>
     <paper-card class="dashboard-widget-header-01" heading="Lowest Rated Articles" elevation="2">
       <div class="card-content-table">
-        <nuxeo-data-table-stars columns='["Article", "Rating (Votes)"]' data="[[_tableForRatings(worstRatedData.votesPerDoc.buckets)]]">
+        <nuxeo-data-table-stars columns='["Article", "Rating (Votes)"]' data="[[_tableForRatings(worstRatedDataWithLabel)]]">
         </nuxeo-data-table-stars>
       </div>
     </paper-card>
@@ -115,10 +115,10 @@ Example:
     <!-- Articles per Region --------------------------------------------------->
     <nuxeo-repository-data ecm-primary-type="Article" where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="article:region" data="{{articleRegions}}">
     </nuxeo-repository-data>
-
+    <nuxeo-es-bucket-directory-label-enricher input=[[articleRegions]] output="{{articleRegionsWithLabel}}" directory-name="region"></nuxeo-es-bucket-directory-label-enricher>
     <paper-card class="dashboard-widget-header-01" heading="Articles per Region" elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="column" data="[[_coloredBarChartData(articleRegions)]]" options="[[_hideLegend()]]">
+        <google-chart class="center-chart" type="column" data="[[_coloredBarChartDataWithLabel(articleRegionsWithLabel)]]" options="[[_hideLegend()]]">
         </google-chart>
       </div>
     </paper-card>
@@ -237,6 +237,19 @@ Example:
         return result;
       },
 
+      _coloredBarChartDataWithLabel: function (nuxeoData) {
+        var colorArray = this._getColorArray();
+        var result = nuxeoData.map(function (e, index) {
+          return [e.label, e.value, colorArray[index]];
+        });
+
+        // Insert headers.
+        result.splice(0, 0, ["Item", "Value", {
+          role: 'style'
+        }]);
+
+        return result;
+      },
 
       // Convert to the format expected by the "data" parameter of Google Charts.
       _data: function (nuxeoData) {
@@ -363,7 +376,7 @@ Example:
         data = data.slice(0, 6)
         return data.map(function (e) {
           return {
-            key: e.key,
+            key: e.label,
             value: Math.round(e.avgVote.value),
             count: e.doc_count
           };
