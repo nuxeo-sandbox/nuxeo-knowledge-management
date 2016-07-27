@@ -41,84 +41,155 @@ Example:
     </style>
 
     <!-- Top Search Terms --------------------------------------------------->
-    <nuxeo-search-data start-date="[[startDate]]" end-date="[[endDate]]" grouped-by="searchDocumentModel.properties.ArticlesSearch_cv:system_fulltext" group-limit="10" data="{{callsPerFT}}" index="[[_getAuditIndexName]]">
+    <nuxeo-search-data
+      start-date="[[startDate]]"
+      end-date="[[endDate]]"
+      grouped-by="searchDocumentModel.properties.ArticlesSearch_cv:system_fulltext"
+      group-limit="10"
+      data="{{callsPerFT}}"
+      index="[[_getAuditIndexName]]">
     </nuxeo-search-data>
 
     <paper-card class="dashboard-widget-header-02" heading="Most Popular Searches" elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="bar" data="[[_coloredBarChartData(callsPerFT)]]" options="[[_hideLegend()]]">
+        <google-chart
+          class="center-chart"
+          type="bar"
+          data="[[_coloredBarChartData(callsPerFT)]]"
+          options="[[_hideLegend()]]">
         </google-chart>
       </div>
     </paper-card>
-
 
     <!--
       The top search terms that returned low results.
       Note that I limited it to only one set of keywords per result count, otherwise you get junk searches.
     -->
-    <nuxeo-km-dashboard-search-performance doc-aggregations="{{seachPerfData}}"></nuxeo-km-dashboard-search-performance>
+    <nuxeo-km-dashboard-search-performance doc-aggregations="{{seachPerfData}}">
+    </nuxeo-km-dashboard-search-performance>
 
-    <paper-card class="dashboard-widget-header-02" heading="Common Searches with Few Results" elevation="2">
+    <paper-card
+      class="dashboard-widget-header-02"
+      heading="Common Searches with Few Results"
+      elevation="2">
       <div class="card-content-table">
-        <nuxeo-data-table columns='["Term", "Result Count"]' data="[[_tableForSearchPerf(seachPerfData.results.buckets)]]">
+        <nuxeo-data-table
+          columns="[Term,'Result Count']"
+          data="[[_tableForSearchPerf(seachPerfData.results.buckets)]]">
         </nuxeo-data-table>
       </div>
     </paper-card>
 
 
     <!-- Unread by Department --------------------------------------------------->
-    <nuxeo-km-dashboard-unread-by-group doc-aggregations="{{unreadDocs}}"> </nuxeo-km-dashboard-unread-by-group>
+    <nuxeo-km-dashboard-unread-by-group doc-aggregations="{{unreadDocs}}">
+    </nuxeo-km-dashboard-unread-by-group>
 
 
-    <paper-card class="dashboard-widget-header-01" heading="Most Unread by Region" elevation="2">
+    <paper-card
+      class="dashboard-widget-header-01"
+      heading="Most Unread by Region"
+      elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="column" data="[[_rowsForUnread(unreadDocs.by.buckets)]]" options="[[_hideLegend()]]">
+        <google-chart
+          class="center-chart"
+          type="column"
+          data="[[_rowsForUnread(unreadDocs.by.buckets)]]"
+          options="[[_hideLegend()]]">
         </google-chart>
       </div>
     </paper-card>
 
 
     <!-- Best rated --------------------------------------------------->
-    <nuxeo-km-dashboard-article-top-rated doc-aggregations="{{topRatedData}}"></nuxeo-km-dashboard-article-top-rated>
-    <nuxeo-es-bucket-docid-label-enricher input="[[topRatedData.votesPerDoc.buckets]]" output="{{topRatedDataWithLabel}}"></nuxeo-es-bucket-docid-label-enricher>
-    <paper-card class="dashboard-widget-header-01" heading="Highest Rated Articles" elevation="2">
+    <nuxeo-km-dashboard-article-top-rated doc-aggregations="{{topRatedData}}">
+    </nuxeo-km-dashboard-article-top-rated>
+    <nuxeo-es-bucket-docid-label-enricher
+      input="[[topRatedData.votesPerDoc.buckets]]"
+      output="{{topRatedDataWithLabel}}">
+    </nuxeo-es-bucket-docid-label-enricher>
+    <paper-card
+      class="dashboard-widget-header-01"
+      heading="Highest Rated Articles"
+      elevation="2">
       <div class="card-content-table">
-        <nuxeo-data-table-stars columns='["Article", "Rating (Votes)"]' data="[[_tableForRatings(topRatedDataWithLabel)]]">
+        <nuxeo-data-table-stars
+          columns="['Article', 'Rating (Votes)']"
+          data="[[_tableForRatings(topRatedDataWithLabel)]]">
         </nuxeo-data-table-stars>
       </div>
     </paper-card>
 
 
     <!-- Worst rated --------------------------------------------------->
-    <nuxeo-km-dashboard-article-worst-rated doc-aggregations="{{worstRatedData}}"></nuxeo-km-dashboard-article-worst-rated>
-    <nuxeo-es-bucket-docid-label-enricher input="[[worstRatedData.votesPerDoc.buckets]]" output="{{worstRatedDataWithLabel}}"></nuxeo-es-bucket-docid-label-enricher>
-    <paper-card class="dashboard-widget-header-01" heading="Lowest Rated Articles" elevation="2">
+    <nuxeo-km-dashboard-article-worst-rated doc-aggregations="{{worstRatedData}}">
+    </nuxeo-km-dashboard-article-worst-rated>
+    <nuxeo-es-bucket-docid-label-enricher
+      input="[[worstRatedData.votesPerDoc.buckets]]"
+      output="{{worstRatedDataWithLabel}}">
+    </nuxeo-es-bucket-docid-label-enricher>
+    <paper-card
+      class="dashboard-widget-header-01"
+      heading="Lowest Rated Articles"
+      elevation="2">
       <div class="card-content-table">
-        <nuxeo-data-table-stars columns='["Article", "Rating (Votes)"]' data="[[_tableForRatings(worstRatedDataWithLabel)]]">
+        <nuxeo-data-table-stars
+          columns="['Article', 'Rating (Votes)']"
+          data="[[_tableForRatings(worstRatedDataWithLabel)]]">
         </nuxeo-data-table-stars>
       </div>
     </paper-card>
 
 
     <!-- Article Categories --------------------------------------------------->
-    <nuxeo-repository-data ecm-primary-type="Article" where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="article:category" data="{{articleCategories}}">
+    <nuxeo-repository-data
+      ecm-primary-type="Article"
+      where='[{"term": {"ecm:isVersion": "false"}}]'
+      grouped-by="article:category"
+      data="{{articleCategories}}">
     </nuxeo-repository-data>
-    <nuxeo-es-bucket-directory-label-enricher input=[[articleCategories]] output="{{articleCategoriesWithLabel}}" directory-name="category"></nuxeo-es-bucket-directory-label-enricher>
-    <paper-card class="dashboard-widget-header-01" heading="Article Categories" elevation="2">
+    <nuxeo-es-bucket-directory-label-enricher
+      input=[[articleCategories]]
+      output="{{articleCategoriesWithLabel}}"
+      directory-name="category">
+    </nuxeo-es-bucket-directory-label-enricher>
+    <paper-card
+      class="dashboard-widget-header-01"
+      heading="Article Categories"
+      elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="pie" cols='[{"label": "Category", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_rows(articleCategoriesWithLabel)]]">
+        <google-chart
+          class="center-chart"
+          type="pie"
+          cols='[{"label": "Category", "type": "string"},{"label": "Value", "type": "number"}]'
+          rows="[[_rows(articleCategoriesWithLabel)]]">
         </google-chart>
       </div>
     </paper-card>
 
 
     <!-- Articles per Region --------------------------------------------------->
-    <nuxeo-repository-data ecm-primary-type="Article" where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="article:region" data="{{articleRegions}}">
+    <nuxeo-repository-data
+      ecm-primary-type="Article"
+      where='[{"term": {"ecm:isVersion": "false"}}]'
+      grouped-by="article:region"
+      data="{{articleRegions}}">
     </nuxeo-repository-data>
-    <nuxeo-es-bucket-directory-label-enricher input=[[articleRegions]] output="{{articleRegionsWithLabel}}" directory-name="region"></nuxeo-es-bucket-directory-label-enricher>
-    <paper-card class="dashboard-widget-header-01" heading="Articles per Region" elevation="2">
+    <nuxeo-es-bucket-directory-label-enricher
+      input=[[articleRegions]]
+      output="{{articleRegionsWithLabel}}"
+      directory-name="region">
+    </nuxeo-es-bucket-directory-label-enricher>
+    <paper-card
+      class="dashboard-widget-header-01"
+      heading="Articles per Region"
+      elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="column" data="[[_coloredBarChartDataWithLabel(articleRegionsWithLabel)]]" options="[[_hideLegend()]]">
+        <google-chart
+          class="center-chart"
+          type="column"
+          data="[[_coloredBarChartDataWithLabel(articleRegionsWithLabel)]]"
+          options="[[_hideLegend()]]">
         </google-chart>
       </div>
     </paper-card>
@@ -129,25 +200,48 @@ Example:
 
     <!-- Article_Workflow -->
     <!-- Total workflows started by each user -->
-    <nuxeo-workflow-data workflow="Article_Workflow" event="afterWorkflowStarted" grouped-by="workflowInitiator" start-date="[[startDate]]" end-date="[[endDate]]" data="{{initiators_Article_Workflow}}">
+    <nuxeo-workflow-data
+      workflow="Article_Workflow"
+      event="afterWorkflowStarted"
+      grouped-by="workflowInitiator"
+      start-date="[[startDate]]"
+      end-date="[[endDate]]"
+      data="{{initiators_Article_Workflow}}">
     </nuxeo-workflow-data>
 
-    <paper-card class="dashboard-widget-header-04" heading="Article Workflow Initiator" elevation="2">
+    <paper-card
+      class="dashboard-widget-header-04"
+      heading="Article Workflow Initiator"
+      elevation="2">
       <div class="card-content">
-        <google-chart type="pie" cols='[{"label": "User", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_rows(initiators_Article_Workflow)]]">
+        <google-chart
+          type="pie"
+          cols='[{"label": "User", "type": "string"},{"label": "Value", "type": "number"}]'
+          rows="[[_rows(initiators_Article_Workflow)]]">
         </google-chart>
       </div>
     </paper-card>
 
 
     <!-- Average workflow duration -->
-    <nuxeo-workflow-data workflow="Article_Workflow" event="afterWorkflowFinish" metrics="avg(timeSinceWfStarted)" start-date="[[startDate]]" end-date="[[endDate]]" data="{{avgWorkflowLength_Article_Workflow}}">
+    <nuxeo-workflow-data
+      workflow="Article_Workflow"
+      event="afterWorkflowFinish"
+      metrics="avg(timeSinceWfStarted)"
+      start-date="[[startDate]]"
+      end-date="[[endDate]]"
+      data="{{avgWorkflowLength_Article_Workflow}}">
     </nuxeo-workflow-data>
 
-    <paper-card class="dashboard-widget-header-04" heading="Avg. Article Workflow Duration" elevation="2">
+    <paper-card
+      class="dashboard-widget-header-04"
+      heading="Avg. Article Workflow Duration"
+      elevation="2">
       <div class="card-content">
         <iron-icon icon="image:timer"></iron-icon>
-        <span class="workflow-length-label">[[_asDuration(avgWorkflowLength_Article_Workflow)]]</span>
+        <span class="workflow-length-label">
+          [[_asDuration(avgWorkflowLength_Article_Workflow)]]
+        </span>
       </div>
     </paper-card>
 
@@ -161,12 +255,20 @@ Example:
          "Video", and "File". But I can't do that the way nuxeo-repository-data
          is implemented because it only does a single "must" predicate; it's
          an AND for all terms. -->
-    <nuxeo-repository-data grouped-by="dc:lastContributor" data="{{topContributors}}" start-date="[[startDate]]" end-date="[[endDate]]">
+    <nuxeo-repository-data
+      grouped-by="dc:lastContributor"
+      data="{{topContributors}}"
+      start-date="[[startDate]]"
+      end-date="[[endDate]]">
     </nuxeo-repository-data>
 
     <paper-card class="dashboard-widget-header-02" heading="Top Contributors" elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type='treemap' options='{"maxPostDepth":2}' data="[[_treeFor(topContributors)]]">
+        <google-chart
+          class="center-chart"
+          type='treemap'
+          options='{"maxPostDepth":2}'
+          data="[[_treeFor(topContributors)]]">
         </google-chart>
       </div>
     </paper-card>
@@ -178,11 +280,18 @@ Example:
 
 
     <!-- Documents -->
-    <nuxeo-repository-data where='[{"term": {"ecm:isVersion": "false"}}]' grouped-by="ecm:primaryType" data="{{docTypes}}">
+    <nuxeo-repository-data
+      where='[{"term": {"ecm:isVersion": "false"}}]'
+      grouped-by="ecm:primaryType"
+      data="{{docTypes}}">
     </nuxeo-repository-data>
     <paper-card class="dashboard-widget-header-03" heading="Document Types" elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="bar" data="[[_coloredBarChartData(docTypes)]]" options="[[_hideLegend()]]">
+        <google-chart
+          class="center-chart"
+          type="bar"
+          data="[[_coloredBarChartData(docTypes)]]"
+          options="[[_hideLegend()]]">
         </google-chart>
       </div>
     </paper-card>
@@ -194,11 +303,14 @@ Example:
     </nuxeo-repository-data>
     <paper-card class="dashboard-widget-header-03" heading="File Types" elevation="2">
       <div class="card-content">
-        <google-chart class="center-chart" type="pie" cols='[{"label": "Type", "type": "string"},{"label": "Value", "type": "number"}]' rows="[[_prettyRows(typeCount)]]">
+        <google-chart
+          class="center-chart"
+          type="pie"
+          cols='[{"label": "Type", "type": "string"},{"label": "Value", "type": "number"}]'
+          rows="[[_prettyRows(typeCount)]]">
         </google-chart>
       </div>
     </paper-card>
-
 
   </template>
 
