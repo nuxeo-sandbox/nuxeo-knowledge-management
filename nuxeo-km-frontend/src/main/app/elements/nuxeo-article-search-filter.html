@@ -88,7 +88,10 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
       suggestions="{{suggestions}}">
     </nuxeo-es-query>
 
-    <nuxeo-resource auto path="/path/CVS/SearchScoring" response="{{response}}"></nuxeo-resource>
+    <nuxeo-operation auto
+           op="javascript.GetSearchScoringConfig"
+           response="{{response}}">
+    </nuxeo-operation>
 
   </template>
 

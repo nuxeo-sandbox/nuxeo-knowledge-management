@@ -84,6 +84,7 @@ Example: <nuxeo-article-search-results articles={{articles}}></nuxeo-article-sea
 		updateSuggestion: function() {
 			this.display_suggestion = false; // jshint ignore:line
 			this.suggestion = '';
+			if (this.suggestions === undefined) return;
 			var array = this.suggestions.my_phrase_suggest; // jshint ignore:line
 			if (array === undefined) {
 				return;
