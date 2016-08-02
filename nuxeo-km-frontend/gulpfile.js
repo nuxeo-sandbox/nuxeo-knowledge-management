@@ -106,7 +106,7 @@ gulp.task('copy', function() {
   // Copy over only the bower_components we need
   // These are things which cannot be vulcanized
   var bower = gulp.src([
-    'target/bower_components/**/*'
+    'bower_components/**/*'
   ]).pipe(gulp.dest(dist('bower_components')));
 
   var elements = gulp.src([appl('elements/**/*.html'),
@@ -142,7 +142,7 @@ gulp.task('build', ['images', 'fonts'], function() {
     .pipe(debug())
     .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
     .pipe($.useref({
-      searchPath: [appl(), 'target/bower_components']
+      searchPath: [appl(), 'bower_components']
     }))
     .pipe($.if('*.js', $.uglify({
       preserveComments: 'license'
@@ -234,7 +234,7 @@ gulp.task('serve', ['styles'], function() {
       baseDir: ['.tmp', APP],
       middleware: [historyApiFallback(), require('proxy-middleware')(proxyOptions)],
       routes: {
-        '/bower_components': 'target/bower_components'
+        '/bower_components': 'bower_components'
       }
     }
   });
