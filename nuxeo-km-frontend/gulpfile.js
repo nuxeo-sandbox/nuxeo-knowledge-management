@@ -168,6 +168,21 @@ gulp.task('vulcanize', function() {
     .pipe($.size({title: 'vulcanize'}));
 });
 
+// Delete all unnecessary bower dependencies
+gulp.task('dist:bower', function (cb) {
+  del([
+    DIST + '/bower_components/**/*',
+    '!' + DIST + '/bower_components/jquery',
+    '!' + DIST + '/bower_components/jquery/dist',
+    '!' + DIST + '/bower_components/jquery/dist/jquery.min.js',
+    '!' + DIST + '/bower_components/moment',
+    '!' + DIST + '/bower_components/moment/min',
+    '!' + DIST + '/bower_components/moment/min/moment-with-locales.min.js',
+    '!' + DIST + '/bower_components/webcomponentsjs',
+    '!' + DIST + '/bower_components/webcomponentsjs/webcomponents-lite.js'
+  ], cb);
+});
+
 // Generate config data for the <sw-precache-cache> element.
 // This include a list of files that should be precached, as well as a (hopefully unique) cache
 // id that ensure that multiple PSK projects don't share the same Cache Storage.
@@ -274,7 +289,7 @@ gulp.task('default', ['clean'], function(cb) {
   runSequence(
     ['copy', 'styles'],
     'build',
-    'vulcanize', // 'cache-config',
+    'vulcanize', 'dist:bower', // 'cache-config',
     cb);
 });
 
