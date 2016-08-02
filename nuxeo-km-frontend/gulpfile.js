@@ -178,6 +178,13 @@ gulp.task('dist:bower', function (cb) {
     '!' + DIST + '/bower_components/moment',
     '!' + DIST + '/bower_components/moment/min',
     '!' + DIST + '/bower_components/moment/min/moment-with-locales.min.js',
+    '!' + DIST + '/bower_components/nuxeo-labs-rating',
+    '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui',
+    '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src',
+    '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src/main',
+    '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src/main/app',
+    '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src/main/app/images',
+    '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src/main/app/images/rating.png',
     '!' + DIST + '/bower_components/webcomponentsjs',
     '!' + DIST + '/bower_components/webcomponentsjs/webcomponents-lite.js'
   ], cb);
