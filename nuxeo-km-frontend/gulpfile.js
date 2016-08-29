@@ -153,7 +153,7 @@ gulp.task('build', ['images', 'fonts'], function() {
       empty: true,
       spare: true
     })))
-    .pipe(gulp.dest(dist()))
+    .pipe(gulp.dest(dist()));
 });
 
 // Vulcanize granular configuration
