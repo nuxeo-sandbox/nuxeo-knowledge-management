@@ -38,6 +38,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       next();
     });
 
+    page('/index-local.html', function() {
+      app.page = 'login';
+      page.redirect('/login');
+    });
+
+
     page('/', function() {
       app.page = 'login';
       page.redirect('/login');
