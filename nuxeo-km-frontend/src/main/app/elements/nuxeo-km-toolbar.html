@@ -90,13 +90,17 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
             <paper-menu class="dropdown-content"
                 attr-for-selected="name"
                 selected={{theme}}
-                fallback-selection="default"
-                >
-              <paper-item name="default" on-tap="_setTheme">Google</paper-item>
-              <paper-item name="dark-side" on-tap="_setTheme">Dark Side</paper-item>
-              <paper-item name="ice" on-tap="_setTheme">Ice</paper-item>
-              <paper-item name="la-resistance" on-tap="_setTheme">La Resistance</paper-item>
-              <paper-item name="technology" on-tap="_setTheme">Technology</paper-item>
+                fallback-selection="default">
+              <paper-item name="default"
+                  on-tap="_setTheme">Google</paper-item>
+              <paper-item name="dark-side"
+                  on-tap="_setTheme">Dark Side</paper-item>
+              <paper-item name="ice"
+                  on-tap="_setTheme">Ice</paper-item>
+              <paper-item name="la-resistance"
+                  on-tap="_setTheme">La Resistance</paper-item>
+              <paper-item name="technology"
+                  on-tap="_setTheme">Technology</paper-item>
             </paper-menu>
           </paper-menu-button>
           <paper-menu-button>
@@ -119,7 +123,8 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
       </div>
     </paper-toolbar>
 
-    <paper-toast id="toast" text="Applying Theme..."></paper-toast>
+    <paper-toast id="toast"
+        text="Applying Theme..."></paper-toast>
 
   </template>
   <script>
@@ -152,15 +157,24 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         theme: {
           type: String,
           notify: true
-                }
+        },
+        themes: {
+          type: Array,
+          value: function() {
+            return [{
+              'themeName': 'Ice',
+              'themeId': 'ice'
+            }];
+          }
+        }
       },
 
 
-_setTheme: function(event){
-  localStorage.setItem('theme', event.target.dataset.theme);
-  this.$.toast.open();
-  location.reload();
-},
+      _setTheme: function(event) {
+        localStorage.setItem('theme', event.target.dataset.theme);
+        this.$.toast.open();
+        location.reload();
+      },
       ready: function() {
         //When component is ready.
 
