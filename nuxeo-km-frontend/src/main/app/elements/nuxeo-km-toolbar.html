@@ -182,7 +182,7 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
 
 
       _setTheme: function(event) {
-        localStorage.setItem('theme', event.target.dataset.theme);
+        localStorage.setItem('theme', event.currentTarget.themeId);
         this.$.toast.open();
         location.reload();
       },
