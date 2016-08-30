@@ -70,9 +70,12 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
     <paper-toolbar id="mainToolbar">
       <!-- Application name -->
       <div class="app-name">
-        <a href="/home"><img class="logo" src="../images/nuxeo_logo-km.png"></a>
+        <a href="/home"><img class="logo"
+              src="../images/nuxeo_logo-km.png"></a>
       </div>
-      <paper-tabs class="headerMenu" selected="{{page}}" attr-for-selected="name">
+      <paper-tabs class="headerMenu"
+          selected="{{page}}"
+          attr-for-selected="name">
         <paper-tab name="home">Home</paper-tab>
         <paper-tab name="training">Training</paper-tab>
         <paper-tab name="workinstructions">Work</paper-tab>
@@ -82,8 +85,12 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         <!-- Profile -->
         <section class="headerMenu">
           <paper-menu-button>
-            <paper-icon-button src="../images/theme.png" class="dropdown-trigger"></paper-icon-button>
-            <paper-menu class="dropdown-content" attr-for-selected="name" selected={{theme}} fallback-selection="default">
+            <paper-icon-button src="../images/theme.png"
+                class="dropdown-trigger"></paper-icon-button>
+            <paper-menu class="dropdown-content"
+                attr-for-selected="name"
+                selected={{theme}}
+                fallback-selection="default">
               <paper-item name="default">Default</paper-item>
               <paper-item name="dark-side">Dark Side</paper-item>
               <paper-item name="ice">Ice</paper-item>
@@ -95,7 +102,9 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
             <paper-button class="dropdown-trigger">
               <span>[[_getRegionLabel(region)]]</span>
             </paper-button>
-            <paper-menu class="dropdown-content" attr-for-selected="name" selected={{region}}>
+            <paper-menu class="dropdown-content"
+                attr-for-selected="name"
+                selected={{region}}>
               <paper-item name="Midatlantic">Midatlantic</paper-item>
               <paper-item name="Midwest">Midwest</paper-item>
               <paper-item name="Mountain">Mountain</paper-item>
@@ -144,29 +153,29 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         }
       },
 
-      ready: function () {
+      ready: function() {
         //When component is ready.
 
       },
-      _getRegionLabel: function (region) {
+      _getRegionLabel: function(region) {
         if (region === '') {
           return 'Region';
         } else {
           return region;
         }
       },
-      _isHomeTab: function (page) {
+      _isHomeTab: function(page) {
         if (page === 'home') {
           return true;
         } else {
           return false;
         }
       },
-      _toggleDrawerParent: function () {
+      _toggleDrawerParent: function() {
         var pdp = document.getElementById('drawerPanel');
         pdp.togglePanel();
       },
-      _setUserLabel: function () {
+      _setUserLabel: function() {
         if (this.currentUser) {
           this.currentUserLabel = '';
           if (this.currentUser.properties.firstName) {
