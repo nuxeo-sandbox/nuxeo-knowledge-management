@@ -61,6 +61,15 @@
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
 
+  <script>
+    // append theme file
+    var theme = localStorage.getItem('theme') || 'default';
+    var link = document.createElement('link')
+    link.setAttribute('rel', 'import')
+    link.setAttribute('href', 'styles/' + theme + '-theme.html');
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+  
   <style is="custom-style"></style>
 
 </head>
