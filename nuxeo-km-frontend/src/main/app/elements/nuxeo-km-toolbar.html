@@ -83,12 +83,12 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         <section class="headerMenu">
           <paper-menu-button>
             <paper-icon-button src="../images/theme.png" class="dropdown-trigger"></paper-icon-button>
-            <paper-menu class="dropdown-content" attr-for-selected="name" selected={{theme}}>
-              <paper-item name="Default">Default</paper-item>
-              <paper-item name="Dark Side">Dark Side</paper-item>
-              <paper-item name="Ice">Ice</paper-item>
-              <paper-item name="La Resistance">La Resistance</paper-item>
-              <paper-item name="Technology">Technology</paper-item>
+            <paper-menu class="dropdown-content" attr-for-selected="name" selected={{theme}} fallback-selection="default">
+              <paper-item name="default">Default</paper-item>
+              <paper-item name="dark-side">Dark Side</paper-item>
+              <paper-item name="ice">Ice</paper-item>
+              <paper-item name="la-resistance">La Resistance</paper-item>
+              <paper-item name="technology">Technology</paper-item>
             </paper-menu>
           </paper-menu-button>
           <paper-menu-button>
@@ -140,7 +140,7 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         theme: {
           type: String,
           notify: true,
-          value: 'Default'
+          value: 'default'
         }
       },
 
