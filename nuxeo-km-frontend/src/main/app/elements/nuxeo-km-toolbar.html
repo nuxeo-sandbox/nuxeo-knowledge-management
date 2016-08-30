@@ -80,11 +80,20 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
       </paper-tabs>
       <div class="horizontal flex layout end-justified">
         <!-- Profile -->
-        <!--template is="dom-if" if="[[_isHomeTab(page)]]"-->
         <section class="headerMenu">
           <paper-menu-button>
+            <paper-icon-button src="../images/theme.png" class="dropdown-trigger"></paper-icon-button>
+            <paper-menu class="dropdown-content" attr-for-selected="name" selected={{theme}}>
+              <paper-item name="Default">Default</paper-item>
+              <paper-item name="Dark Side">Dark Side</paper-item>
+              <paper-item name="Ice">Ice</paper-item>
+              <paper-item name="La Resistance">La Resistance</paper-item>
+              <paper-item name="Technology">Technology</paper-item>
+            </paper-menu>
+          </paper-menu-button>
+          <paper-menu-button>
             <paper-button class="dropdown-trigger">
-              <span>{{_getRegionLabel(region)}}</span>
+              <span>[[_getRegionLabel(region)]]</span>
             </paper-button>
             <paper-menu class="dropdown-content" attr-for-selected="name" selected={{region}}>
               <paper-item name="Midatlantic">Midatlantic</paper-item>
@@ -97,7 +106,6 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
           </paper-menu-button>
           <paper-button on-tap="_toggleDrawerParent">[[currentUserLabel]]</paper-button>
         </section>
-        <!--/template-->
       </div>
     </paper-toolbar>
 
@@ -128,6 +136,11 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
           type: String,
           notify: true,
           value: 'Menu'
+        },
+        theme: {
+          type: String,
+          notify: true,
+          value: 'Default'
         }
       },
 
