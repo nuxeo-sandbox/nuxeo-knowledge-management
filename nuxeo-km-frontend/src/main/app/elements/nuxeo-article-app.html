@@ -79,30 +79,26 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         <div>
           <iron-pages selected="[[page]]"
               attr-for-selected="name">
-            <div name="home">
-              <nuxeo-article-home id="articleHome"
-                  region="{{region}}"
-                  current-user="[[userID]]" />
-            </div>
-            <div name="search">
-              <nuxeo-article-search region="{{region}}" />
-            </div>
-            <div name="display">
-              <nuxeo-article-display id="articleDisplay"
-                  userforarticle="[[currentUser]]"
-                  document-id="{{docId}}" />
-            </div>
-            <div name="login">
-              <nuxeo-km-login region="{{region}}"
-                  base-url=[
-                  "[baseUrl]]"
-                  page="{{page}}"></nuxeo-km-login>
-            </div>
+            <nuxeo-article-home name="home"
+                id="articleHome"
+                region="{{region}}"
+                current-user="[[userID]]"> </nuxeo-article-home>
+            <nuxeo-article-search name="search"
+                region="{{region}}"></nuxeo-article-search>
+            <nuxeo-article-display name="display"
+                id="articleDisplay"
+                userforarticle="[[currentUser]]"
+                document-id="{{docId}}"></nuxeo-article-display>
+            <nuxeo-km-login name="login"
+                region="{{region}}"
+                base-url=[
+                "[baseUrl]]"
+                page="{{page}}"></nuxeo-km-login>
           </iron-pages>
         </div>
 
       </paper-header-panel>
-      
+
     </paper-drawer-panel>
 
   </template>
