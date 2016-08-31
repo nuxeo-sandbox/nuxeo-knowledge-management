@@ -74,30 +74,31 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           mode="waterfall">
         <nuxeo-km-toolbar hidden$="{{_hideToolbar}}"
             class="paper-header"
-            page={{page}}
-            region={{region}}
-            base-url=[[baseUrl]]
-            current-user=[[currentUser]]></nuxeo-km-toolbar>
+            page="{{page}}"
+            region="{{region}}"
+            base-url="[[baseUrl]]"
+            current-user="[[currentUser]]"
+            theme="[[_getTheme()]]"></nuxeo-km-toolbar>
         <div>
           <iron-pages selected="[[page]]"
               attr-for-selected="name">
             <div name="home">
               <nuxeo-article-home id="articleHome"
-                  region={{region}}
-                  current-user=[[userID]]/>
+                  region="{{region}}"
+                  current-user="[[userID]]"/>
             </div>
             <div name="search">
-              <nuxeo-article-search region={{region}}/>
+              <nuxeo-article-search region="{{region}}"/>
             </div>
             <div name="display">
               <nuxeo-article-display id="articleDisplay"
-                  userforarticle=[[currentUser]]
-                  document-id={{docId}}/>
+                  userforarticle="[[currentUser]]"
+                  document-id="{{docId}}"/>
             </div>
             <div name="login">
-              <nuxeo-km-login region={{region}}
-                  base-url=[[baseUrl]]
-                  page={{page}}></nuxeo-km-login>
+              <nuxeo-km-login region="{{region}}"
+                  base-url=["[baseUrl]]"
+                  page="{{page}}"></nuxeo-km-login>
             </div>
           </iron-pages>
         </div>
@@ -211,6 +212,13 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         this.$.drawerPanel.togglePanel();
         document.querySelector('#articleHome').refreshWidgets();
         document.querySelector('#documentGetter').execute();
+      },
+
+      _getTheme: function(){
+        var theme = localStorage.getItem('theme');
+        if(theme == "undefined"){
+          theme = "default";
+        }
       },
 
       _logout: function() {
