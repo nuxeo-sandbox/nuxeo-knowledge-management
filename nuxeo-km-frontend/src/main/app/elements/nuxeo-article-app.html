@@ -24,10 +24,6 @@ Example: <nuxeo-article-app></nuxeo-article-app>
   <template>
 
     <style is="custom-style">
-      paper-toolbar {
-        background: #e4e4e4;
-      }
-
       paper-drawer-panel {
         overflow-y: visible;
       }
@@ -36,92 +32,72 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         max-height: 40px;
       }
 
-      .headerMenu {
-        color: #CC0000;
-        font-size: 130%;
-      }
-
-      .app-name {
-        color: #CC0000;
-        font-size: 180%;
-      }
-
-      .drawerTitle {
-        background: var(--primary-title-color);
-        color: var(--paper-menu-background-color);
-        height: 2em;
-        font-weight: bold;
-        font-size: 100%;
-        border-bottom: 2px solid var(--paper-menu-background-color);
-        ;
-      }
-
-      paper-toolbar a.drawerTitle {
-        border-bottom: none;
-      }
-
-      .drawerTitle paper-button {
-        padding: 0;
-        margin-left: 0;
-      }
-
-      paper-toolbar::content .toolbar-tools.paper-toolbar {
-        height: 2em;
-      }
-
-      .drawerInfo {
-        background: var(--paper-menu-background-color);
-        color: #A8A8A8;
-        padding-top: 2em;
-        padding-bottom: 2em;
+      .sunkenPanel {
+        background: var(--primary-background-color);
+        color: var(--paper-menu-disabled-color);
+        padding: 30px 10px 5px 10px;
+        box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.3), inset 0px -1px 1px rgba(255, 255, 255, 0.5);
+        border-radius: 3px;
         text-align: center;
+        padding-bottom: 2em;
+        padding-top: 2em;
+        margin-left: 5px;
+        margin-right: 5px;
       }
     </style>
 
     <!-- Main Content -->
-    <nuxeo-operation auto id="getCurrentUserName" op="javascript.getCurrentUserName" response="{{currentUserFromOpe}}"></nuxeo-operation>
-    <nuxeo-resource id="getCurrentUser" path="/user/{{currentUserName}}" response="{{currentUser}}"></nuxeo-resource>
+    <nuxeo-operation auto
+        id="getCurrentUserName"
+        op="javascript.getCurrentUserName"
+        response="{{currentUserFromOpe}}"></nuxeo-operation>
+    <nuxeo-resource id="getCurrentUser"
+        path="/user/{{currentUserName}}"
+        response="{{currentUser}}"></nuxeo-resource>
 
-    <paper-drawer-panel id="drawerPanel" force-narrow="true" right-drawer>
-      <paper-header-panel drawer>
-        <paper-toolbar class="drawerTitle">
-          <div>Favorites</div>
-        </paper-toolbar>
-        <div class="drawerInfo">No Favorites</div>
-        <paper-toolbar class="drawerTitle">
-          <div>Notifications</div>
-        </paper-toolbar>
-        <div class="drawerInfo">No Notifications</div>
-        <paper-toolbar class="drawerTitle">
-          <div>My Settings</div>
-        </paper-toolbar>
-        <paper-toolbar class="drawerTitle">
-          <div>My Recommendations</div>
-        </paper-toolbar>
-        <paper-toolbar class="drawerTitle">
-          <div>
-            <paper-button on-tap="_refreshHome">Refresh Home</paper-button>
-          </div>
-        </paper-toolbar>
-        <paper-toolbar class="drawerTitle">
-          <div><a href="[[_logoutURL()]]" class="drawerTitle" rel="external">Logout</a></div>
-        </paper-toolbar>
-      </paper-header-panel>
-      <paper-header-panel main mode="waterfall">
-        <nuxeo-km-toolbar hidden$="{{_hideToolbar}}" class="paper-header" page={{page}} region={{region}} base-url=[[baseUrl]] current-user=[[currentUser]]></nuxeo-km-toolbar>
+    <paper-drawer-panel id="drawerPanel"
+        force-narrow="true"
+        right-drawer>
+
+      <paper-menu drawer>
+        <paper-item>Favorites</paper-item>
+        <div class="sunkenPanel">No Favorites</div>
+        <paper-item>Notifications</paper-item>
+        <div class="sunkenPanel">No Notifications</div>
+        <paper-item>My Settings</paper-item>
+        <paper-item>My Recommendations</paper-item>
+        <paper-item on-tap="_refreshHome">Refresh Home</paper-item>
+        <paper-item on-tap="_logout">Logout</paper-item>
+      </paper-menu>
+
+      <paper-header-panel main
+          mode="waterfall">
+        <nuxeo-km-toolbar hidden$="{{_hideToolbar}}"
+            class="paper-header"
+            page={{page}}
+            region={{region}}
+            base-url=[[baseUrl]]
+            current-user=[[currentUser]]></nuxeo-km-toolbar>
         <div>
-          <iron-pages selected="[[page]]" attr-for-selected="name">
+          <iron-pages selected="[[page]]"
+              attr-for-selected="name">
             <div name="home">
-              <nuxeo-article-home id="articleHome" region={{region}} current-user=[[userID]]/>
+              <nuxeo-article-home id="articleHome"
+                  region={{region}}
+                  current-user=[[userID]]/>
             </div>
             <div name="search">
               <nuxeo-article-search region={{region}}/>
             </div>
             <div name="display">
-              <nuxeo-article-display id="articleDisplay" userforarticle=[[currentUser]] document-id={{docId}}/>
+              <nuxeo-article-display id="articleDisplay"
+                  userforarticle=[[currentUser]]
+                  document-id={{docId}}/>
             </div>
             <div name="login">
-              <nuxeo-km-login region={{region}} base-url=[[baseUrl]] page={{page}}></nuxeo-km-login>
+              <nuxeo-km-login region={{region}}
+                  base-url=[[baseUrl]]
+                  page={{page}}></nuxeo-km-login>
             </div>
           </iron-pages>
         </div>
@@ -175,11 +151,11 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       },
 
       /* Do not delete this (even though it's empty)! The page will stop working. */
-      scrollPageToTop: function () {
+      scrollPageToTop: function() {
         //this.$.selectedPage.scrollToTop(true);
       },
 
-      _navigate: function () {
+      _navigate: function() {
         this._toolbarToggle(this.page);
         // see nuxeo web ui app for info
         var url = '/' + this.page;
@@ -189,7 +165,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         });
       },
 
-      _toolbarToggle: function (page) {
+      _toolbarToggle: function(page) {
         if (page != "login") {
           this._hideToolbar = false;
         } else {
@@ -197,7 +173,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         }
       },
 
-      _getRegionLabel: function (region) {
+      _getRegionLabel: function(region) {
         if (region === '') {
           return 'Select Region';
         } else {
@@ -205,20 +181,20 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         }
       },
 
-      _closeDrawer: function () {
+      _closeDrawer: function() {
         var pdp = document.getElementById('drawerPanel');
         this.region = '';
         pdp.togglePanel();
       },
 
-      _userInfo: function () {
+      _userInfo: function() {
         if (this.currentUserFromOpe) {
           this.currentUserName = this.currentUserFromOpe.value;
           this.$.getCurrentUser.execute();
         }
       },
 
-      _printUser: function () {
+      _printUser: function() {
         //console.log('--print user');
         //console.log(this.currentUser);
         if (this.currentUser) {
@@ -226,19 +202,19 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         }
       },
 
-      _printDocID: function () {
+      _printDocID: function() {
         console.log('app print doc id');
         console.log(this.docId);
       },
 
-      _refreshHome: function () {
+      _refreshHome: function() {
         this.$.drawerPanel.togglePanel();
         document.querySelector('#articleHome').refreshWidgets();
         document.querySelector('#documentGetter').execute();
       },
 
-      _logoutURL: function () {
-        return "http://" + window.location.hostname + ":" + window.location.port + "/nuxeo/logout";
+      _logout: function() {
+        window.location.href = "http://" + window.location.hostname + ":" + window.location.port + "/nuxeo/logout";
       }
 
     });
