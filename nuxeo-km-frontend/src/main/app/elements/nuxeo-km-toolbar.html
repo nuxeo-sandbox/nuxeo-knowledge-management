@@ -186,10 +186,12 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         this.$.toast.open();
         location.reload();
       },
+
       ready: function() {
         //When component is ready.
 
       },
+      
       _getRegionLabel: function(region) {
         if (region === '') {
           return 'Region';
@@ -197,6 +199,7 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
           return region;
         }
       },
+
       _isHomeTab: function(page) {
         if (page === 'home') {
           return true;
@@ -204,10 +207,12 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
           return false;
         }
       },
+
       _toggleDrawerParent: function() {
         var pdp = document.getElementById('drawerPanel');
         pdp.togglePanel();
       },
+
       _setUserLabel: function() {
         if (this.currentUser) {
           this.currentUserLabel = '';
