@@ -85,19 +85,20 @@ Example: <nuxeo-article-app></nuxeo-article-app>
             <div name="home">
               <nuxeo-article-home id="articleHome"
                   region="{{region}}"
-                  current-user="[[userID]]"/>
+                  current-user="[[userID]]" />
             </div>
             <div name="search">
-              <nuxeo-article-search region="{{region}}"/>
+              <nuxeo-article-search region="{{region}}" />
             </div>
             <div name="display">
               <nuxeo-article-display id="articleDisplay"
                   userforarticle="[[currentUser]]"
-                  document-id="{{docId}}"/>
+                  document-id="{{docId}}" />
             </div>
             <div name="login">
               <nuxeo-km-login region="{{region}}"
-                  base-url=["[baseUrl]]"
+                  base-url=[
+                  "[baseUrl]]"
                   page="{{page}}"></nuxeo-km-login>
             </div>
           </iron-pages>
@@ -214,9 +215,9 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         document.querySelector('#documentGetter').execute();
       },
 
-      _getTheme: function(){
+      _getTheme: function() {
         var theme = localStorage.getItem('theme');
-        if(theme == "undefined"){
+        if (theme == "undefined") {
           theme = "default";
         }
       },
