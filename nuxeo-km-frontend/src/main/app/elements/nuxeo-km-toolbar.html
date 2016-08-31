@@ -85,8 +85,8 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         <!-- Profile -->
         <section class="headerMenu">
 
-          <nuxeo-themes-menu available-themes="[[_getThemes()]]">
-          </nuxeo-themes-menu>
+          <!-- This is for the Themes button. -->
+          <content></content>
 
           <paper-menu-button>
             <paper-button class="dropdown-trigger">
@@ -136,39 +136,7 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
           type: String,
           notify: true,
           value: 'Menu'
-        },
-        theme: {
-          type: String,
-          notify: true
-        },
-        themes: {
-          type: Array,
-          value: function() {
-            return [{
-              'themeName': 'Dark Side',
-              'themeId': 'dark-side'
-            }, {
-              'themeName': 'Google',
-              'themeId': 'default'
-            }, {
-              'themeName': 'Ice',
-              'themeId': 'ice'
-            }, {
-              'themeName': 'La Resistance',
-              'themeId': 'la-resistance'
-            }, {
-              'themeName': 'Technology',
-              'themeId': 'technology'
-            }];
-          }
         }
-      },
-
-
-      _setTheme: function(event) {
-        localStorage.setItem('theme', event.currentTarget.themeId);
-        this.$.toast.open();
-        location.reload();
       },
 
       _getRegionLabel: function(region) {
@@ -205,25 +173,6 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
             this.currentUserLabel = this.currentUser.id;
           }
         }
-      },
-
-      _getThemes: function() {
-        return [{
-          'themeName': 'Dark Side',
-          'themeId': 'dark-side'
-        }, {
-          'themeName': 'Google',
-          'themeId': 'default'
-        }, {
-          'themeName': 'Ice',
-          'themeId': 'ice'
-        }, {
-          'themeName': 'La Resistance',
-          'themeId': 'la-resistance'
-        }, {
-          'themeName': 'Technology',
-          'themeId': 'technology'
-        }];
       }
 
     });

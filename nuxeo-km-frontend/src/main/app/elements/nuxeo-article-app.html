@@ -77,8 +77,10 @@ Example: <nuxeo-article-app></nuxeo-article-app>
             page="{{page}}"
             region="{{region}}"
             base-url="[[baseUrl]]"
-            current-user="[[currentUser]]"
-            theme="[[_getTheme()]]"></nuxeo-km-toolbar>
+            current-user="[[currentUser]]">
+          <nuxeo-themes-menu available-themes="[[_getThemes()]]">
+          </nuxeo-themes-menu>
+        </nuxeo-km-toolbar>
         <div>
           <iron-pages selected="[[page]]"
               attr-for-selected="name">
@@ -215,12 +217,27 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         document.querySelector('#documentGetter').execute();
       },
 
-      _getTheme: function() {
-        return  localStorage.getItem('theme');
-      },
-
       _logout: function() {
         window.location.href = "http://" + window.location.hostname + ":" + window.location.port + "/nuxeo/logout";
+      },
+
+      _getThemes: function() {
+        return [{
+          'themeName': 'Dark Side',
+          'themeId': 'dark-side'
+        }, {
+          'themeName': 'Google',
+          'themeId': 'default'
+        }, {
+          'themeName': 'Ice',
+          'themeId': 'ice'
+        }, {
+          'themeName': 'La Resistance',
+          'themeId': 'la-resistance'
+        }, {
+          'themeName': 'Technology',
+          'themeId': 'technology'
+        }];
       }
 
     });
