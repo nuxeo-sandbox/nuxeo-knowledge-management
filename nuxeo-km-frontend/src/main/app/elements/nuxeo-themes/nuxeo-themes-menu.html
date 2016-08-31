@@ -1,0 +1,102 @@
+<!--
+@license
+(C) Copyright 2016 Nuxeo SA (http://nuxeo.com/) and others.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+@Contributors:
+  Josh Fletcher <jfletcher@nuxeo.com>
+
+Example:
+
+  <nuxeo-themes-menu themes="[[_getThemes()]]">
+  </nuxeo-themes-menu>
+
+@group Nuxeo Elements
+@element nuxeo-themes-menu
+@demo app/index.html
+-->
+
+<dom-module id="nuxeo-themes-menu">
+
+  <template>
+
+    <paper-menu-button>
+      <paper-icon-button src="../../images/theme.png"
+          class="dropdown-trigger"></paper-icon-button>
+      <paper-menu class="dropdown-content"
+          attr-for-selected="theme-id"
+          selected={{theme}}
+          fallback-selection="default">
+        <template is="dom-repeat"
+            items="{{themes}}"
+            as="theme">
+          <paper-item theme-id="{{theme.themeId}}"
+              on-tap="_setTheme">{{theme.themeName}}</paper-item>
+        </template>
+      </paper-menu>
+    </paper-menu-button>
+
+    <paper-toast id="toast"
+        text="Applying Theme..."></paper-toast>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-themes-menu',
+      // Expose properties
+      properties: {
+        theme: {
+          type: String
+        },
+        themes: {
+          type: Array,
+          value: function() {
+            return [{
+              'themeName': 'Dark Side',
+              'themeId': 'dark-side'
+            }, {
+              'themeName': 'Google',
+              'themeId': 'default'
+            }, {
+              'themeName': 'Ice',
+              'themeId': 'ice'
+            }, {
+              'themeName': 'La Resistance',
+              'themeId': 'la-resistance'
+            }, {
+              'themeName': 'Technology',
+              'themeId': 'technology'
+            }];
+          }
+        }
+      },
+
+      ready: function(){
+        this.theme = this._getTheme();
+      },
+
+      _setTheme: function(event) {
+        localStorage.setItem('theme', event.currentTarget.themeId);
+        this.$.toast.open();
+        location.reload();
+      },
+
+      _getTheme: function() {
+        return localStorage.getItem('theme');
+      }
+
+    });
+  </script>
+</dom-module>
