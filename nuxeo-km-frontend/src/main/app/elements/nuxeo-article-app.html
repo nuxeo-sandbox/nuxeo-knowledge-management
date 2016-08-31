@@ -24,7 +24,6 @@ Example: <nuxeo-article-app></nuxeo-article-app>
   <template>
 
     <style is="custom-style">
-
       .sunkenPanel {
         background: var(--primary-background-color);
         color: var(--paper-menu-disabled-color);
@@ -39,7 +38,6 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       }
     </style>
 
-    <!-- Main Content -->
     <nuxeo-operation auto
         id="getCurrentUserName"
         op="javascript.getCurrentUserName"
@@ -48,10 +46,12 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         path="/user/{{currentUserName}}"
         response="{{currentUser}}"></nuxeo-resource>
 
+    <!-- Main Content -->
     <paper-drawer-panel id="drawerPanel"
         force-narrow="true"
         right-drawer>
 
+      <!-- Drawer panel that opens when you click the user name. -->
       <paper-menu drawer>
         <paper-item>Favorites</paper-item>
         <div class="sunkenPanel">No Favorites</div>
@@ -65,6 +65,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
 
       <paper-header-panel main
           mode="waterfall">
+
         <nuxeo-km-toolbar hidden$="{{_hideToolbar}}"
             class="paper-header"
             page="{{page}}"
@@ -74,6 +75,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
           <nuxeo-themes-menu available-themes="[[_getThemes()]]">
           </nuxeo-themes-menu>
         </nuxeo-km-toolbar>
+
         <div>
           <iron-pages selected="[[page]]"
               attr-for-selected="name">
@@ -98,7 +100,9 @@ Example: <nuxeo-article-app></nuxeo-article-app>
             </div>
           </iron-pages>
         </div>
+
       </paper-header-panel>
+      
     </paper-drawer-panel>
 
   </template>
