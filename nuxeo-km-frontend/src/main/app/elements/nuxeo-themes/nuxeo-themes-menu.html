@@ -19,7 +19,7 @@ limitations under the License.
 
 Example:
 
-  <nuxeo-themes-menu themes="[[_getThemes()]]">
+  <nuxeo-themes-menu available-themes="[[_getThemes()]]">
   </nuxeo-themes-menu>
 
 @group Nuxeo Elements
@@ -36,10 +36,10 @@ Example:
           class="dropdown-trigger"></paper-icon-button>
       <paper-menu class="dropdown-content"
           attr-for-selected="theme-id"
-          selected={{theme}}
+          selected={{currentTheme}}
           fallback-selection="default">
         <template is="dom-repeat"
-            items="{{themes}}"
+            items="{{availableThemes}}"
             as="theme">
           <paper-item theme-id="{{theme.themeId}}"
               on-tap="_setTheme">{{theme.themeName}}</paper-item>
@@ -57,34 +57,22 @@ Example:
       is: 'nuxeo-themes-menu',
       // Expose properties
       properties: {
-        theme: {
+        currentTheme: {
           type: String
         },
-        themes: {
+        availableThemes: {
           type: Array,
           value: function() {
             return [{
-              'themeName': 'Dark Side',
-              'themeId': 'dark-side'
-            }, {
-              'themeName': 'Google',
+              'themeName': 'Default',
               'themeId': 'default'
-            }, {
-              'themeName': 'Ice',
-              'themeId': 'ice'
-            }, {
-              'themeName': 'La Resistance',
-              'themeId': 'la-resistance'
-            }, {
-              'themeName': 'Technology',
-              'themeId': 'technology'
             }];
           }
         }
       },
 
-      ready: function(){
-        this.theme = this._getTheme();
+      ready: function() {
+        this.currentTheme = this._getTheme();
       },
 
       _setTheme: function(event) {

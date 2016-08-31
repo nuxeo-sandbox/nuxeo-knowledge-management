@@ -85,21 +85,8 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         <!-- Profile -->
         <section class="headerMenu">
 
-          <paper-menu-button>
-            <paper-icon-button src="../images/theme.png"
-                class="dropdown-trigger"></paper-icon-button>
-            <paper-menu class="dropdown-content"
-                attr-for-selected="theme-id"
-                selected={{theme}}
-                fallback-selection="default">
-              <template is="dom-repeat"
-                  items="{{themes}}"
-                  as="theme">
-                <paper-item theme-id="{{theme.themeId}}"
-                    on-tap="_setTheme">{{theme.themeName}}</paper-item>
-              </template>
-            </paper-menu>
-          </paper-menu-button>
+          <nuxeo-themes-menu available-themes="[[_getThemes()]]">
+          </nuxeo-themes-menu>
 
           <paper-menu-button>
             <paper-button class="dropdown-trigger">
@@ -121,9 +108,6 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         </section>
       </div>
     </paper-toolbar>
-
-    <paper-toast id="toast"
-        text="Applying Theme..."></paper-toast>
 
   </template>
   <script>
@@ -221,6 +205,25 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
             this.currentUserLabel = this.currentUser.id;
           }
         }
+      },
+
+      _getThemes: function() {
+        return [{
+          'themeName': 'Dark Side',
+          'themeId': 'dark-side'
+        }, {
+          'themeName': 'Google',
+          'themeId': 'default'
+        }, {
+          'themeName': 'Ice',
+          'themeId': 'ice'
+        }, {
+          'themeName': 'La Resistance',
+          'themeId': 'la-resistance'
+        }, {
+          'themeName': 'Technology',
+          'themeId': 'technology'
+        }];
       }
 
     });
