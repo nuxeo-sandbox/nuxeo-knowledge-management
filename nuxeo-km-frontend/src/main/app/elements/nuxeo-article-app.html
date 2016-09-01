@@ -23,7 +23,7 @@ Example: <nuxeo-article-app></nuxeo-article-app>
 
   <template>
 
-    <style is="custom-style">
+    <style include="shared-theme">
       .sunkenPanel {
         background: var(--primary-background-color);
         color: var(--paper-menu-disabled-color);
@@ -51,17 +51,27 @@ Example: <nuxeo-article-app></nuxeo-article-app>
         force-narrow="true"
         right-drawer>
 
-      <!-- Drawer panel that opens when you click the user name. -->
-      <paper-menu drawer>
-        <paper-item>Favorites</paper-item>
-        <div class="sunkenPanel">No Favorites</div>
-        <paper-item>Notifications</paper-item>
-        <div class="sunkenPanel">No Notifications</div>
-        <paper-item>My Settings</paper-item>
-        <paper-item>My Recommendations</paper-item>
-        <paper-item on-tap="_refreshHome">Refresh Home</paper-item>
-        <paper-item on-tap="_logout">Logout</paper-item>
-      </paper-menu>
+      <!-- Drawer panel that opens when you click the user icon -->
+      <paper-header-panel drawer
+          mode="seamed">
+        <paper-toolbar>
+          <paper-icon-button icon="account-box"></paper-icon-button>
+          <span class="title">[[currentUserName]]</span></paper-toolbar>
+        <div>
+          <paper-menu drawer>
+            <paper-item>Favorites</paper-item>
+            <div class="sunkenPanel">No Favorites</div>
+            <paper-item>Notifications</paper-item>
+            <div class="sunkenPanel">No Notifications</div>
+            <paper-item>My Settings</paper-item>
+            <paper-item>My Recommendations</paper-item>
+            <paper-item on-tap="_refreshHome">Refresh Home</paper-item>
+            <paper-item on-tap="_logout">Logout</paper-item>
+        </div>
+        </paper-menu>
+
+      </paper-header-panel>
+
 
       <paper-header-panel main
           mode="waterfall">
