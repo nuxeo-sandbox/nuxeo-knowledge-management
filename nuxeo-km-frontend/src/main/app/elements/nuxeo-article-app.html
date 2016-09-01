@@ -41,10 +41,12 @@ Example: <nuxeo-article-app></nuxeo-article-app>
     <nuxeo-operation auto
         id="getCurrentUserName"
         op="javascript.getCurrentUserName"
-        response="{{currentUserFromOpe}}"></nuxeo-operation>
+        response="{{currentUserFromOpe}}">
+    </nuxeo-operation>
     <nuxeo-resource id="getCurrentUser"
         path="/user/{{currentUserName}}"
-        response="{{currentUser}}"></nuxeo-resource>
+        response="{{currentUser}}">
+    </nuxeo-resource>
 
     <!-- Main Content -->
     <paper-drawer-panel id="drawerPanel"
@@ -55,8 +57,10 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       <paper-header-panel drawer
           mode="seamed">
         <paper-toolbar>
-          <paper-icon-button icon="account-box"></paper-icon-button>
-          <span class="title">[[currentUserName]]</span></paper-toolbar>
+          <paper-icon-button icon="account-box">
+          </paper-icon-button>
+          <span class="title">[[currentUserName]]</span>
+        </paper-toolbar>
         <div>
           <paper-menu drawer>
             <paper-item>Favorites</paper-item>
@@ -167,9 +171,9 @@ Example: <nuxeo-article-app></nuxeo-article-app>
       },
 
       /**
-      *  Do not delete this (even though it's empty)! The page will stop working.
-      *  It's required by routing.html
-      */
+       *  Do not delete this (even though it's empty)! The page will stop working.
+       *  It's required by routing.html
+       */
       scrollPageToTop: function() {
         //this.$.selectedPage.scrollToTop(true);
       },
