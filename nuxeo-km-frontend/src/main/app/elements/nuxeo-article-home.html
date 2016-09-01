@@ -94,22 +94,36 @@ Example: <nuxeo-article-home></nuxeo-article-home>
     </style>
 
     <div class="widget-container">
-      <nuxeo-article-home-widget id="RecentlyModified" class="olive-header" title="Recently Modified Articles" color="green-card" query="SELECT * FROM
+      <nuxeo-article-home-widget id="RecentlyModified"
+          class="olive-header"
+          title="Recently Modified Articles"
+          color="green-card"
+          query="SELECT * FROM
 			Article WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
 			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' [[_addRegionClause(region,'article')]] ORDER BY dc:modified DESC">
       </nuxeo-article-home-widget>
 
-      <nuxeo-article-home-widget id="MustRead" class="red-header" title="Must Read" query="SELECT * FROM
+      <nuxeo-article-home-widget id="MustRead"
+          class="red-header"
+          title="Must Read"
+          query="SELECT * FROM
       Article WHERE readConfirm:assigned = 1 AND readConfirm:usernames = '{{currentUser}}' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
       ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' ORDER BY dc:created">
       </nuxeo-article-home-widget>
 
-      <nuxeo-article-home-announcement-widget id="Announcements" class="orange-header" title="Announcements" query="SELECT * FROM
+      <nuxeo-article-home-announcement-widget id="Announcements"
+          class="orange-header"
+          title="Announcements"
+          query="SELECT * FROM
 			Announcement WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
 			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState != 'deleted' [[_addRegionClause(region,'announcement')]] ORDER BY announcement:priorityCode">
       </nuxeo-article-home-announcement-widget>
 
-      <nuxeo-article-home-widget id="DrugDescription" class="blue-header" title="Drug Description Articles" color="green-card" query="SELECT * FROM
+      <nuxeo-article-home-widget id="DrugDescription"
+          class="blue-header"
+          title="Drug Description Articles"
+          color="green-card"
+          query="SELECT * FROM
 			Article WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
 			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' AND
 			article:category='Drug Description' [[_addRegionClause(region,'article')]] ORDER BY dc:modified DESC">
@@ -132,11 +146,11 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           observer: '_addUserClause'
         }
       },
-      ready: function () {
+      ready: function() {
         //When component is ready.
         //console.log("--search result ready")
       },
-      _addRegionClause: function (region, type) {
+      _addRegionClause: function(region, type) {
         region = region.replace('/', '');
         if (region !== '') {
           if (type === 'article') {
@@ -148,14 +162,14 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           return '';
         }
       },
-      _addUserClause: function () {
+      _addUserClause: function() {
         if (this.currentUser) {
           this.currentUser = this.currentUser.replace('/', '');
           //console.log(this.currentUser);
           return this.currentUser;
         }
       },
-      refreshWidgets: function () {
+      refreshWidgets: function() {
         this.$.MustRead.refresh();
       }
 
