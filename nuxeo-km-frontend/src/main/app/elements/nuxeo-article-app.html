@@ -23,7 +23,14 @@ Example: <nuxeo-article-app></nuxeo-article-app>
 
   <template>
 
-    <style include="shared-theme">
+    <style>
+      paper-drawer-panel {
+        --paper-drawer-panel-right-drawer-container: {
+          background: var(--paper-menu-background-color);
+        }
+        ;
+      }
+
       .sunkenPanel {
         background: var(--primary-background-color);
         color: var(--paper-menu-disabled-color);
