@@ -114,10 +114,14 @@ Example: <nuxeo-article-home></nuxeo-article-home>
       <paper-card class="blue-header"
           heading="Drug Description Articles">
         <div class="card-content">
-          <nuxeo-article-home-widget query="SELECT * FROM
-			Article WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
-			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' AND
-			article:category='Drug Description' [[_addRegionClause(region,'article')]] ORDER BY dc:modified DESC">
+          <nuxeo-article-home-widget query="SELECT * FROM Article
+            WHERE ecm:mixinType != 'HiddenInNavigation'
+            AND ecm:isProxy = 0
+            AND ecm:isCheckedInVersion = 0
+            AND ecm:currentLifeCycleState = 'approved'
+            AND article:category='Drug Description'
+            [[_addRegionClause(region,'article')]]
+            ORDER BY dc:modified DESC">
           </nuxeo-article-home-widget>
         </div>
       </paper-card>
