@@ -23,55 +23,41 @@ Example: <nuxeo-article-home-announcement-widget></nuxeo-article-home-announceme
 <dom-module id="nuxeo-article-home-announcement-widget">
 
   <template>
-    <style is="custom-style">
 
-    </style>
+    <nuxeo-page-provider auto
+        pageSize="10"
+        query="[[query]]"
+        current-page="{{articles}}"></nuxeo-page-provider>
 
-    <nuxeo-page-provider auto pageSize="10" query="[[query]]" current-page="{{articles}}"></nuxeo-page-provider>
-
-    <paper-card heading="[[title]]" elevation="1">
-      <div class="card-content">
-        <template is="dom-repeat" items="[[articles]]">
-          <paper-item>
-            <paper-item-body two-line>
-              <div><a href$="[[_href(item)]]">[[item.title]]</a></div>
-              <div>
-                <span class="documentCatego">[[item.properties.announcement:priorityCode]]</span>
-                <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
-              </div>
-            </paper-item-body>
-          </paper-item>
-        </template>
-
-      </div>
-
-
-
-    </paper-card>
+    <template is="dom-repeat"
+        items="[[articles]]">
+      <paper-item>
+        <paper-item-body two-line>
+          <div><a href$="[[_href(item)]]">[[item.title]]</a></div>
+          <div>
+            <span class="documentCatego">[[item.properties.announcement:priorityCode]]</span>
+            <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
+          </div>
+        </paper-item-body>
+      </paper-item>
+    </template>
 
   </template>
+
   <script>
     Polymer({
       is: 'nuxeo-article-home-announcement-widget',
       // Expose properties
       properties: {
         query: {
-          type: String,
-          notify: true
-        },
-        title: {
-          type: String,
-          notify: true
-        },
+          type: String
+        }
+      },
 
-      },
-      ready: function() {
-        //When component is ready.
-        //console.log("--search result ready")
-      },
       _href: function(doc) {
         return page.base() + '/display/' + doc.uid;
       },
+
       _dateFormat: function(ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();

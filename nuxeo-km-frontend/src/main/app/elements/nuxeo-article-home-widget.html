@@ -18,32 +18,35 @@ Example: <nuxeo-article-home-widget></nuxeo-article-home-widget>
 @element nuxeo-article-home-widget
 @demo app/index.html
 -->
-
 <dom-module id="nuxeo-article-home-widget">
 
   <template>
-    <style is="custom-style">
-
+    <style>
+      .documentCategory {
+        font-weight: bold;
+      }
     </style>
 
-    <nuxeo-page-provider id="widgetPageProvider" auto page-size="5" query="[[query]]" current-page="{{articles}}"></nuxeo-page-provider>
+    <nuxeo-page-provider id="widgetPageProvider"
+        auto
+        page-size="5"
+        query="[[query]]"
+        current-page="{{articles}}"></nuxeo-page-provider>
 
-    <paper-card heading="[[title]]" elevation="1">
-      <div class="card-content">
-        <template is="dom-repeat" items="[[articles]]">
+        <template is="dom-repeat"
+            items="[[articles]]">
           <paper-item>
             <paper-item-body two-line>
               <div><a href$="[[_href(item)]]">[[item.title]]</a></div>
               <div>
-                <span class="documentCatego">Category: [[item.properties.article:category]]</span>
+                <span class="documentCategory">Category: [[item.properties.article:category]]</span>
                 <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
               </div>
             </paper-item-body>
           </paper-item>
         </template>
 
-      </div>
-    </paper-card>
+
 
   </template>
   <script>
@@ -55,34 +58,21 @@ Example: <nuxeo-article-home-widget></nuxeo-article-home-widget>
           type: String,
           notify: true
         },
-        title: {
-          type: String,
-          notify: true
-        },
         region: {
           type: String,
           notify: true,
           value: 'Region'
-        },
-        color: {
-          type: String,
-          notify: true,
         }
 
       },
-      ready: function() {
-        //When component is ready.
-        //console.log("--search result ready")
-      },
+
       _href: function(doc) {
         return page.base() + '/display/' + doc.uid;
       },
+
       _dateFormat: function(ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();
-      },
-      refresh: function() {
-        this.$.widgetPageProvider.fetch();
       }
 
     });
