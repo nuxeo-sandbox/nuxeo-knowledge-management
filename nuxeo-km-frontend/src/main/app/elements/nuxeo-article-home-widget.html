@@ -40,10 +40,10 @@ Example: <nuxeo-article-home-widget></nuxeo-article-home-widget>
     </nuxeo-page-provider>
 
     <div>
-      <template is="dom-repeat"
-          items="[[articles]]">
-        <paper-menu selected="{{selectedArticle}}"
-            attr-for-selected="display-url">
+      <paper-menu selected="{{selectedArticle}}"
+          attr-for-selected="display-url">
+        <template is="dom-repeat"
+            items="[[articles]]">
           <paper-item display-url="/display/[[item.uid]]"
               class="article-item">
             <paper-item-body two-line>
@@ -54,8 +54,8 @@ Example: <nuxeo-article-home-widget></nuxeo-article-home-widget>
               </div>
             </paper-item-body>
           </paper-item>
-        </paper-menu>
-      </template>
+        </template>
+      </paper-menu>
     </div>
 
   </template>
