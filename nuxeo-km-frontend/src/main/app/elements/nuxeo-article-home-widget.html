@@ -44,8 +44,7 @@ Example: <nuxeo-article-home-widget></nuxeo-article-home-widget>
           attr-for-selected="display-url">
         <template is="dom-repeat"
             items="[[articles]]">
-          <paper-item display-url="/display/[[item.uid]]"
-              class="article-item">
+          <paper-item display-url="/display/[[item.uid]]">
             <paper-item-body two-line>
               <div class="item-title">[[item.title]]</div>
               <div secondary>
