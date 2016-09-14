@@ -125,55 +125,81 @@ Example: <nuxeo-article-display></nuxeo-article-display>
         background: #ffffff;
       }
     </style>
-    <template is="dom-if" if="[[_isDefined(documentId)]]">
-      <nuxeo-document auto id="documentGetter" doc-id=[[documentId]] response="{{nuxeoDocument}}"></nuxeo-document>
+    <template is="dom-if"
+        if="[[_isDefined(documentId)]]">
+      <nuxeo-document auto
+          id="documentGetter"
+          doc-id=[[documentId]]
+          response="{{nuxeoDocument}}"></nuxeo-document>
     </template>
-    <nuxeo-operation id="confirmRead" op="confirmRead" input="{{documentId}}" response="{{confirmReadResponse}}"></nuxeo-operation>
-    <nuxeo-operation id="getCurrentUserNameTest" op="javascript.getCurrentUserName" input="{{documentId}}"></nuxeo-operation>
+    <nuxeo-operation id="confirmRead"
+        op="confirmRead"
+        input="{{documentId}}"
+        response="{{confirmReadResponse}}"></nuxeo-operation>
+    <nuxeo-operation id="getCurrentUserNameTest"
+        op="javascript.getCurrentUserName"
+        input="{{documentId}}"></nuxeo-operation>
     <paper-card elevation="3">
       <div class="card-content">
         <h1>[[nuxeoDocument.title]]</h1>
-        <template is="dom-if" if="[[_isArticle(nuxeoDocument)]]">
+        <template is="dom-if"
+            if="[[_isArticle(nuxeoDocument)]]">
           <div class="documentCatego">[[nuxeoDocument.properties.article:category]]</div>
-          <template is="dom-repeat" items="[[nuxeoDocument.properties.article:region]]">
+          <template is="dom-repeat"
+              items="[[nuxeoDocument.properties.article:region]]">
             <div class="documentRegion">[[item]]</div>
           </template>
           <div class="documentInfo">Updated: [[_dateFormat(nuxeoDocument.properties.dc:modified)]]</div>
           <div class="documentInfo">[[_wordsTominutes(nuxeoDocument.properties.article:plainTextContent)]]</div>
-          <div class="documentContent" inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
+          <div class="documentContent"
+              inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
         </template>
 
-        <template is="dom-if" if="[[_isAnnouncement(nuxeoDocument)]]">
+        <template is="dom-if"
+            if="[[_isAnnouncement(nuxeoDocument)]]">
           <div class="documentCatego">[[nuxeoDocument.properties.announcement:priorityCode]]</div>
-          <template is="dom-repeat" items="[[nuxeoDocument.properties.announcement:region]]">
+          <template is="dom-repeat"
+              items="[[nuxeoDocument.properties.announcement:region]]">
             <div class="documentRegion">[[item]]</div>
           </template>
           <div class="documentInfo">Updated: [[_dateFormat(nuxeoDocument.properties.dc:modified)]]</div>
-          <div class="documentContent" inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
+          <div class="documentContent"
+              inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
         </template>
       </div>
     </paper-card>
 
-    <paper-dialog id="feedbackDialog" modal>
+    <paper-dialog id="feedbackDialog"
+        modal>
       <h2>Feedback</h2>
       <p>
         <paper-textarea placeholder="Your Feedback..."></paper-text-area>
       </p>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm on-tap="_feedbackSent">Send</paper-button>
+        <paper-button dialog-confirm
+            on-tap="_feedbackSent">Send</paper-button>
       </div>
     </paper-dialog>
 
-    <paper-card heading="" elevation="0" class="feedback">
-      <template is="dom-if" if="[[mustRead]]">
-        <paper-button class="mustread" raised on-tap="_confirmRead">I Have Read This</paper-button>
+    <paper-card heading=""
+        elevation="0"
+        class="feedback">
+      <template is="dom-if"
+          if="[[mustRead]]">
+        <paper-button class="mustread"
+            raised
+            on-tap="_confirmRead">I Have Read This</paper-button>
       </template>
-      <paper-button class="feedbackButton" raised on-tap="_openFeedback">Give Feedback</paper-button>
+      <paper-button class="feedbackButton"
+          raised
+          on-tap="_openFeedback">Give Feedback</paper-button>
     </paper-card>
 
-    <template is="dom-if" if="[[_isArticle(nuxeoDocument)]]">
-      <paper-card heading="Popularity" elevation="3">
+    <template is="dom-if"
+        if="[[_isArticle(nuxeoDocument)]]">
+      <paper-card heading="Popularity"
+          elevation="3">
         <div class="card-content rating">
           <nuxeo-star-rating-stats doc-id="[[nuxeoDocument.uid]]"></nuxeo-star-rating-stats>
         </div>
@@ -186,15 +212,19 @@ Example: <nuxeo-article-display></nuxeo-article-display>
       </paper-card>
     </template>
 
-    <paper-card heading="Similar Articles" elevation="3">
-      <template is="dom-if" if="[[_isDefined(documentId)]]">
+    <paper-card heading="Similar Articles"
+        elevation="3">
+      <template is="dom-if"
+          if="[[_isDefined(documentId)]]">
         <div class="card-content">
           <nuxeo-article-similar doc-id=[[nuxeoDocument.uid]]></nuxeo-article-similar>
         </div>
       </template>
     </paper-card>
 
-    <paper-toast id="articleToast" duration="3000" withBackdrop="true"></paper-toast>
+    <paper-toast id="articleToast"
+        duration="3000"
+        withBackdrop="true"></paper-toast>
 
   </template>
   <script>
@@ -230,65 +260,65 @@ Example: <nuxeo-article-display></nuxeo-article-display>
         '_setMustRead(userforarticle, nuxeoDocument)'
       ],
 
-      ready: function () {
+      ready: function() {
         //When component is ready.
         //console.log("--search result ready")
       },
-      _isDefined: function (documentId) {
+      _isDefined: function(documentId) {
         if ((typeof documentId !== 'undefined') && (documentId !== '/')) {
           return true;
         } else {
           return false;
         }
       },
-      _dateFormat: function (ISOStringDate) {
+      _dateFormat: function(ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();
       },
-      _isArticle: function (nuxeoDocument) {
+      _isArticle: function(nuxeoDocument) {
         if (nuxeoDocument) {
           return nuxeoDocument.type === 'Article';
         } else {
           return false;
         }
       },
-      _isAnnouncement: function (nuxeoDocument) {
+      _isAnnouncement: function(nuxeoDocument) {
         if (nuxeoDocument) {
           return nuxeoDocument.type === 'Announcement';
         } else {
           return false;
         }
       },
-      _setMustRead: function () {
+      _setMustRead: function() {
         if (this.nuxeoDocument) {
           this.mustRead = this.nuxeoDocument.properties['readConfirm:usernames'].
           indexOf(this.userforarticle.id) !== -1;
         }
       },
-      _confirmRead: function () {
+      _confirmRead: function() {
         //this.$.getCurrentUserNameTest.execute();
         this.$.confirmRead.execute();
         this.mustRead = false;
         this.$.articleToast.text = 'Read Confirmed';
         this.$.articleToast.open();
       },
-      _ReadResponseReceived: function () {
+      _ReadResponseReceived: function() {
         if (document.querySelector('#articleHome')) {
           document.querySelector('#articleHome').refreshWidgets();
         }
       },
-      _printDocId: function () {
+      _printDocId: function() {
         this.documentId = this.documentId.replace('/', '');
       },
-      _openFeedback: function () {
+      _openFeedback: function() {
         //this.$.feedbackDialog.modal = true;
         this.$.feedbackDialog.toggle();
       },
-      _feedbackSent: function () {
+      _feedbackSent: function() {
         this.$.articleToast.text = 'Feedback Sent';
         this.$.articleToast.open();
       },
-      _wordsTominutes: function (words) {
+      _wordsTominutes: function(words) {
 
         if (words) {
           var nbWords = words.split(' ').length;
