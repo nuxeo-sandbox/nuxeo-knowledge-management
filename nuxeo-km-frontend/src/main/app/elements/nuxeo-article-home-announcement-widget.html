@@ -19,28 +19,40 @@ Example: <nuxeo-article-home-announcement-widget></nuxeo-article-home-announceme
 @element nuxeo-article-home-announcement-widget
 @demo app/index.html
 -->
-
 <dom-module id="nuxeo-article-home-announcement-widget">
 
   <template>
+
+    <style>
+      .documentCategory {
+        font-weight: bold;
+      }
+
+      .item-title {
+        font-size: 130%;
+      }
+    </style>
 
     <nuxeo-page-provider auto
         pageSize="10"
         query="[[query]]"
         current-page="{{articles}}"></nuxeo-page-provider>
 
-    <template is="dom-repeat"
-        items="[[articles]]">
-      <paper-item>
-        <paper-item-body two-line>
-          <div><a href$="[[_href(item)]]">[[item.title]]</a></div>
-          <div>
-            <span class="documentCatego">[[item.properties.announcement:priorityCode]]</span>
-            <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
-          </div>
-        </paper-item-body>
-      </paper-item>
-    </template>
+    <paper-menu selected="{{selectedArticle}}"
+        attr-for-selected="display-url">
+      <template is="dom-repeat"
+          items="[[articles]]">
+        <paper-item display-url="/display/[[item.uid]]">
+          <paper-item-body two-line>
+            <div class="item-title">[[item.title]]</div>
+            <div secondary>
+              <span class="documentCategory">[[item.properties.announcement:priorityCode]]</span>
+              <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
+            </div>
+          </paper-item-body>
+        </paper-item>
+      </template>
+    </paper-menu>
 
   </template>
 
@@ -51,11 +63,20 @@ Example: <nuxeo-article-home-announcement-widget></nuxeo-article-home-announceme
       properties: {
         query: {
           type: String
+        },
+        selectedArticle: {
+          type: String,
+          observer: '_navigateToPage'
         }
       },
 
-      _href: function(doc) {
-        return page.base() + '/display/' + doc.uid;
+      _navigateToPage: function() {
+        // see nuxeo web ui app for info
+        var url = this.selectedArticle;
+        page(url);
+        this.fire('navigation', {
+          page: this.selectedArticle
+        });
       },
 
       _dateFormat: function(ISOStringDate) {
