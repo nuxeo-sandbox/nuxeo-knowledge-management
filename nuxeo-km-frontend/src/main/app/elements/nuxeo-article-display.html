@@ -125,20 +125,26 @@ Example: <nuxeo-article-display></nuxeo-article-display>
         background: #ffffff;
       }
     </style>
+
     <template is="dom-if"
         if="[[_isDefined(documentId)]]">
       <nuxeo-document auto
           id="documentGetter"
           doc-id=[[documentId]]
-          response="{{nuxeoDocument}}"></nuxeo-document>
+          response="{{nuxeoDocument}}">
+      </nuxeo-document>
     </template>
+
     <nuxeo-operation id="confirmRead"
         op="confirmRead"
         input="{{documentId}}"
-        response="{{confirmReadResponse}}"></nuxeo-operation>
+        response="{{confirmReadResponse}}">
+    </nuxeo-operation>
     <nuxeo-operation id="getCurrentUserNameTest"
         op="javascript.getCurrentUserName"
-        input="{{documentId}}"></nuxeo-operation>
+        input="{{documentId}}">
+    </nuxeo-operation>
+
     <paper-card elevation="3">
       <div class="card-content">
         <h1>[[nuxeoDocument.title]]</h1>
