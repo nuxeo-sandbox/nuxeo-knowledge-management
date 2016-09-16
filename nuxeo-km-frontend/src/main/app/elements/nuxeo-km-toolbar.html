@@ -22,28 +22,8 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
 <dom-module id="nuxeo-km-toolbar">
   <template>
     <style is="custom-style">
-      paper-toolbar {
-        background: var(--paper-menu-background-color);
-      }
-
-      .logo {
-        max-height: 40px;
-        margin-top: 3%;
-        margin-right: 1em;
-      }
-
-      .headerMenu {
-        color: var(--primary-title-color);
-        font-size: 140%;
-        vertical-align: bottom;
-      }
-
-      .app-name {
-        color: var(--primary-title-color);
-        font-size: 180%;
-        display: table-cell;
-        vertical-align: middle;
-        width: 237px;
+      paper-tab {
+        text-transform: uppercase;
       }
 
       .top-app {
@@ -68,37 +48,42 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
     <!-- Main Toolbar -->
 
     <paper-toolbar id="mainToolbar">
-      <!-- Application name -->
-      <div class="app-name">
-        <a href="/home"><img class="logo" src="../images/nuxeo_logo-km.png"></a>
-      </div>
-      <paper-tabs class="headerMenu" selected="{{page}}" attr-for-selected="name">
+
+      <paper-icon-button src="../images/logo.png"></paper-icon-button>
+
+      <paper-tabs selected="{{page}}"
+          attr-for-selected="name">
         <paper-tab name="home">Home</paper-tab>
         <paper-tab name="training">Training</paper-tab>
         <paper-tab name="workinstructions">Work</paper-tab>
         <paper-tab name="search">Search</paper-tab>
       </paper-tabs>
-      <div class="horizontal flex layout end-justified">
-        <!-- Profile -->
-        <!--template is="dom-if" if="[[_isHomeTab(page)]]"-->
-        <section class="headerMenu">
-          <paper-menu-button>
-            <paper-button class="dropdown-trigger">
-              <span>{{_getRegionLabel(region)}}</span>
-            </paper-button>
-            <paper-menu class="dropdown-content" attr-for-selected="name" selected={{region}}>
-              <paper-item name="Midatlantic">Midatlantic</paper-item>
-              <paper-item name="Midwest">Midwest</paper-item>
-              <paper-item name="Mountain">Mountain</paper-item>
-              <paper-item name="Northeast">Northeast</paper-item>
-              <paper-item name="Pacific">Pacific</paper-item>
-              <paper-item name="Southeast">Southeast</paper-item>
-            </paper-menu>
-          </paper-menu-button>
-          <paper-button on-tap="_toggleDrawerParent">[[currentUserLabel]]</paper-button>
-        </section>
-        <!--/template-->
-      </div>
+
+      <!-- This span takes up empty space in the middle and pushes the tabs to the left, buttons to the right. -->
+      <span class="title"></span>
+
+      <!-- This is for the Themes button. -->
+      <content></content>
+
+      <!-- This is for the Region menu. -->
+      <paper-menu-button>
+        <paper-icon-button class="dropdown-trigger"
+            icon="maps:map">
+        </paper-icon-button>
+        <paper-menu class="dropdown-content"
+            attr-for-selected="name"
+            selected={{region}}>
+          <paper-item name="Midatlantic">Midatlantic</paper-item>
+          <paper-item name="Midwest">Midwest</paper-item>
+          <paper-item name="Mountain">Mountain</paper-item>
+          <paper-item name="Northeast">Northeast</paper-item>
+          <paper-item name="Pacific">Pacific</paper-item>
+          <paper-item name="Southeast">Southeast</paper-item>
+        </paper-menu>
+      </paper-menu-button>
+
+      <paper-icon-button icon="account-box"
+          on-tap="_toggleDrawerParent"></paper-icon-button>
     </paper-toolbar>
 
   </template>
@@ -131,29 +116,28 @@ Example: <nuxeo-km-toolbar page={{page}} region={{region}} base-url=[[baseUrl]]>
         }
       },
 
-      ready: function () {
-        //When component is ready.
-
-      },
-      _getRegionLabel: function (region) {
+      _getRegionLabel: function(region) {
         if (region === '') {
           return 'Region';
         } else {
           return region;
         }
       },
-      _isHomeTab: function (page) {
+
+      _isHomeTab: function(page) {
         if (page === 'home') {
           return true;
         } else {
           return false;
         }
       },
-      _toggleDrawerParent: function () {
+
+      _toggleDrawerParent: function() {
         var pdp = document.getElementById('drawerPanel');
         pdp.togglePanel();
       },
-      _setUserLabel: function () {
+
+      _setUserLabel: function() {
         if (this.currentUser) {
           this.currentUserLabel = '';
           if (this.currentUser.properties.firstName) {

@@ -19,59 +19,66 @@ Example: <nuxeo-article-home-announcement-widget></nuxeo-article-home-announceme
 @element nuxeo-article-home-announcement-widget
 @demo app/index.html
 -->
-
 <dom-module id="nuxeo-article-home-announcement-widget">
 
   <template>
-    <style is="custom-style" include="shared-styles">
 
+    <style>
+      .documentCategory {
+        font-weight: bold;
+      }
+
+      .item-title {
+        font-size: 130%;
+      }
     </style>
 
-    <nuxeo-page-provider auto pageSize="10" query="[[query]]" current-page="{{articles}}"></nuxeo-page-provider>
+    <nuxeo-page-provider auto
+        pageSize="10"
+        query="[[query]]"
+        current-page="{{articles}}"></nuxeo-page-provider>
 
-    <paper-card heading="[[title]]" elevation="1">
-      <div class="card-content">
-        <template is="dom-repeat" items="[[articles]]">
-          <paper-item>
-            <paper-item-body two-line>
-              <div><a href$="[[_href(item)]]">[[item.title]]</a></div>
-              <div>
-                <span class="documentCatego">[[item.properties.announcement:priorityCode]]</span>
-                <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
-              </div>
-            </paper-item-body>
-          </paper-item>
-        </template>
-
-      </div>
-
-
-
-    </paper-card>
+    <paper-menu selected="{{selectedArticle}}"
+        attr-for-selected="display-url">
+      <template is="dom-repeat"
+          items="[[articles]]">
+        <paper-item display-url="/display/[[item.uid]]">
+          <paper-item-body two-line>
+            <div class="item-title">[[item.title]]</div>
+            <div secondary>
+              <span class="documentCategory">[[item.properties.announcement:priorityCode]]</span>
+              <span class="articleInfo">Updated: [[_dateFormat(item.properties.dc:modified)]]</span>
+            </div>
+          </paper-item-body>
+        </paper-item>
+      </template>
+    </paper-menu>
 
   </template>
+
   <script>
     Polymer({
       is: 'nuxeo-article-home-announcement-widget',
       // Expose properties
       properties: {
         query: {
-          type: String,
-          notify: true
+          type: String
         },
-        title: {
+        selectedArticle: {
           type: String,
-          notify: true
-        },
+          observer: '_navigateToPage'
+        }
+      },
 
+      _navigateToPage: function() {
+        // see nuxeo web ui app for info
+        var url = this.selectedArticle;
+        page(url);
+        this.fire('navigation', {
+          page: this.selectedArticle
+        });
       },
-      ready: function() {
-        //When component is ready.
-        //console.log("--search result ready")
-      },
-      _href: function(doc) {
-        return page.base() + '/display/' + doc.uid;
-      },
+
       _dateFormat: function(ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();

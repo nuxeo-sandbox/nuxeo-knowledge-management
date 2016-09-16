@@ -22,109 +22,127 @@ Example: <nuxeo-article-home></nuxeo-article-home>
 <dom-module id="nuxeo-article-home">
 
   <template>
-    <style is="custom-style" include="shared-styles">
-      .olive-background::content paper-card {
-        background: #00a300;
-      }
 
-      .olive-header::content paper-card .header {
-        background: #00a300;
-      }
-
-      .orange-background::content paper-card {
-        background: #cc5c00;
-      }
-
-      .orange-header::content paper-card .header {
-        background: #cc5c00;
-      }
-
-      .red-background::content paper-card {
-        background: #cc0000;
-      }
-
-      .red-header::content paper-card .header {
-        background: #cc0000;
-      }
-
-      .blue-background::content paper-card {
-        background: #007a7a;
-      }
-
-      .blue-header::content paper-card .header {
-        background: #007a7a;
-      }
-
-      ::content paper-card .header.paper-card .title-text.paper-card {
-        color: var(--paper-card-title-color);
-        margin-left: 0.6em;
-      }
-
+    <style>
       .widget-container {
-        margin-left: 1%;
-        margin-right: 1%;
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        padding-left: 10px;
+        padding-top: 10px;
       }
 
-      ::content paper-card {
-        width: 48.5%;
-        margin: 0.5%;
-        vertical-align: top;
+      .olive-header {
+        --paper-card-header: {
+          background: #00a300;
+        }
       }
 
-      ::content a {
-        color: var(--primary-font-color);
-        text-decoration: none;
-        font-size: 130%;
+      .orange-header {
+        --paper-card-header: {
+          background: #cc5c00;
+        }
       }
 
-      ::content paper-item {
-        margin-top: 0.5em;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        padding-top: 0.5em;
+      .red-header {
+        --paper-card-header: {
+          background: #cc0000;
+        }
       }
 
-      ::content paper-item:first-child {
-        border-top: 0;
-        margin-top: 0;
+      .blue-header {
+        --paper-card-header: {
+          background: #007a7a;
+        }
       }
 
-      ::content paper-item-body {
-        width: 100%;
+      paper-card {
+        /* The reason the color is hard-coded instead of using the theme is
+        because the headers are also hard-coded; we always want white text.*/
+        --paper-card-header-color: white;
+        --paper-card-background-color: var(--divider-color);
+        --paper-card-content: {
+          padding: 0;
+        }
+        ;
+        width: 49%;
+        margin-right: 10px;
+        margin-bottom: 10px;
       }
     </style>
 
     <div class="widget-container">
-      <nuxeo-article-home-widget id="RecentlyModified" class="olive-header" title="Recently Modified Articles" color="green-card" query="SELECT * FROM
-			Article WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
-			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' [[_addRegionClause(region,'article')]] ORDER BY dc:modified DESC">
-      </nuxeo-article-home-widget>
 
-      <nuxeo-article-home-widget id="MustRead" class="red-header" title="Must Read" query="SELECT * FROM
-      Article WHERE readConfirm:assigned = 1 AND readConfirm:usernames = '{{currentUser}}' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
-      ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' ORDER BY dc:created">
-      </nuxeo-article-home-widget>
+      <paper-card class="olive-header"
+          heading="Recently Modified Articles">
+        <div class="card-content">
+          <nuxeo-article-home-widget query="SELECT * FROM Article
+            WHERE ecm:mixinType != 'HiddenInNavigation'
+            AND ecm:isProxy = 0
+            AND ecm:isCheckedInVersion = 0
+            AND ecm:currentLifeCycleState = 'approved'
+            [[_addRegionClause(region,'article')]]
+            ORDER BY dc:modified DESC">
+          </nuxeo-article-home-widget>
+        </div>
+      </paper-card>
 
-      <nuxeo-article-home-announcement-widget id="Announcements" class="orange-header" title="Announcements" query="SELECT * FROM
-			Announcement WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
-			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState != 'deleted' [[_addRegionClause(region,'announcement')]] ORDER BY announcement:priorityCode">
-      </nuxeo-article-home-announcement-widget>
+      <paper-card class="red-header"
+          heading="Must Read">
+        <div class="card-content">
+          <nuxeo-article-home-widget query="SELECT * FROM Article
+            WHERE readConfirm:assigned = 1
+            AND readConfirm:usernames = '{{currentUser}}'
+            AND ecm:mixinType != 'HiddenInNavigation'
+            AND ecm:isProxy = 0
+            AND ecm:isCheckedInVersion = 0
+            AND ecm:currentLifeCycleState = 'approved'
+            ORDER BY dc:created"
+              id="MustRead">
+          </nuxeo-article-home-widget>
+        </div>
+      </paper-card>
 
-      <nuxeo-article-home-widget id="DrugDescription" class="blue-header" title="Drug Description Articles" color="green-card" query="SELECT * FROM
-			Article WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND
-			ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState = 'approved' AND
-			article:category='Drug Description' [[_addRegionClause(region,'article')]] ORDER BY dc:modified DESC">
-      </nuxeo-article-home-widget>
+      <paper-card class="orange-header"
+          heading="Announcements">
+        <div class="card-content">
+          <nuxeo-article-home-announcement-widget query="SELECT * FROM Announcement
+            WHERE ecm:mixinType != 'HiddenInNavigation'
+            AND ecm:isProxy = 0
+            AND ecm:isCheckedInVersion = 0
+            AND ecm:currentLifeCycleState != 'deleted'
+            [[_addRegionClause(region,'announcement')]]
+            ORDER BY announcement:priorityCode">
+          </nuxeo-article-home-announcement-widget>
+        </div>
+      </paper-card>
+
+      <paper-card class="blue-header"
+          heading="Drug Description Articles">
+        <div class="card-content">
+          <nuxeo-article-home-widget query="SELECT * FROM Article
+            WHERE ecm:mixinType != 'HiddenInNavigation'
+            AND ecm:isProxy = 0
+            AND ecm:isCheckedInVersion = 0
+            AND ecm:currentLifeCycleState = 'approved'
+            AND article:category='Drug Description'
+            [[_addRegionClause(region,'article')]]">
+          </nuxeo-article-home-widget>
+        </div>
+      </paper-card>
+
     </div>
 
   </template>
+
   <script>
     Polymer({
       is: 'nuxeo-article-home',
+
       // Expose properties
       properties: {
         region: {
           type: String,
-          notify: true,
+          notify: true
         },
         currentUser: {
           type: Object,
@@ -132,11 +150,8 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           observer: '_addUserClause'
         }
       },
-      ready: function () {
-        //When component is ready.
-        //console.log("--search result ready")
-      },
-      _addRegionClause: function (region, type) {
+
+      _addRegionClause: function(region, type) {
         region = region.replace('/', '');
         if (region !== '') {
           if (type === 'article') {
@@ -148,14 +163,16 @@ Example: <nuxeo-article-home></nuxeo-article-home>
           return '';
         }
       },
-      _addUserClause: function () {
+
+      _addUserClause: function() {
         if (this.currentUser) {
           this.currentUser = this.currentUser.replace('/', '');
           //console.log(this.currentUser);
           return this.currentUser;
         }
       },
-      refreshWidgets: function () {
+
+      refreshWidgets: function() {
         this.$.MustRead.refresh();
       }
 

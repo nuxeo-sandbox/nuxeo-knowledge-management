@@ -28,11 +28,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       next();
     }
 
-    //function closeDrawer(ctx, next) {
-    //  app.closeDrawer();
-    //  next();
-    //}
-
     // Routes
     page('*', scrollToTop, function(ctx, next) {
       next();
@@ -60,6 +55,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/search', function() {
       app.page = 'search';
+    });
+
+    page('/theme', function() {
+      app.page = 'theme';
     });
 
     page('/login', function() {
