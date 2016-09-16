@@ -185,8 +185,10 @@ gulp.task('dist:bower', function (cb) {
     '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src/main/app',
     '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src/main/app/images',
     '!' + DIST + '/bower_components/nuxeo-labs-rating/nuxeo-labs-rating-ui/src/main/app/images/rating.png',
+    '!' + DIST + '/bower_components/select2',
+    '!' + DIST + '/bower_components/select2/select2.min.js',
     '!' + DIST + '/bower_components/webcomponentsjs',
-    '!' + DIST + '/bower_components/webcomponentsjs/webcomponents-lite.js'
+    '!' + DIST + '/bower_components/webcomponentsjs/webcomponents-lite.min.js'
   ], cb);
 });
 
