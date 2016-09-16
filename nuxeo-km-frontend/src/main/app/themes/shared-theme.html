@@ -22,7 +22,18 @@ The themes generated from polymerthemes.com don't
 cover all Polymer elements so this file handles styling of extra elements we
 use, but using the colors from the theme.
 -->
-
 <style is="custom-style">
+   :root {
+    --nuxeo-article-display-paper-card-background-color: #ffffff;
+    --nuxeo-article-display-paper-card-color: #000000;
+    --nuxeo-article-display-paper-card-header-color: var(--primary-text-color);
+    --nuxeo-article-display-paper-card-header-color-background: var(--paper-progress-secondary-color);
+  }
 
+  h2 {
+    /* The theme files from polymerthemes.com override the formatting of all header elements.
+       In nuxeo-article-dislpay the background is hard-coded white, so I want the foreground
+       to be the same as the paper-card. */
+    color: var(--nuxeo-article-display-paper-card-color);
+  }
 </style>

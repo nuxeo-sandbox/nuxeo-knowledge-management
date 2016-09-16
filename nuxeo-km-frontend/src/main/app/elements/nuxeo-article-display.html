@@ -22,53 +22,44 @@ Example: <nuxeo-article-display></nuxeo-article-display>
 <dom-module id="nuxeo-article-display">
 
   <template>
-    <style is="custom-style">
+
+    <style>
       paper-card {
-        width: 80%;
-        margin: 1%;
-        padding: 1%
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        --paper-card-background-color: var(--nuxeo-article-display-paper-card-background-color);
+        --paper-card-header-color: var(--nuxeo-article-display-paper-card-header-color);
+        --paper-card-header: {
+          background: var(--nuxeo-article-display-paper-card-header-color-background);
+        };
+        color: var(--nuxeo-article-display-paper-card-color);
       }
 
-      h1 {
-        padding-left: 0;
-        margin-left: 2%;
-        margin-bottom: 0.5em;
-        color: #414141;
-        font-size: 200%;
-        font-weight: 400;
-        font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      }
-
-      .documentInfo {
-        color: #A9A9A9;
-        font-size: 80%;
-        margin-left: 2%;
-        margin-top: 0.5em;
-      }
-
-      .documentCatego {
+      .pill {
         color: #fff;
-        background: #059EBD;
-        border-radius: 0.3em;
-        margin-left: 2%;
-        padding-left: 0.5em;
-        padding-right: 0.5em;
+        border-radius: 3px;
+        padding: 3px;
+        margin-right: 5px;
+        box-shadow: 1px 1px 1px #888888;
         display: inline-block;
+      }
+
+      .documentCategory {
+        background: #059EBD;
       }
 
       .documentRegion {
-        color: #fff;
         background: #7C7C7C;
-        border-radius: 0.3em;
-        margin-left: 0.5%;
-        padding-left: 0.5em;
-        padding-right: 0.5em;
-        display: inline-block;
+      }
+
+      .documentInfo {
+        font-size: 80%;
+        margin-top: 10px;
       }
 
       .documentContent {
-        margin-top: 2em;
-        margin-left: 2%;
+        margin-top: 10px;
       }
 
       .rating {
@@ -80,49 +71,15 @@ Example: <nuxeo-article-display></nuxeo-article-display>
         margin-right: 2em;
       }
 
-      paper-card.mustread {
-        width: 15%;
-        display: inline-block;
-        position: fixed;
-      }
-
       paper-button.mustread {
         background: #ffe5de;
       }
 
-      paper-button {
-        display: block;
-        text-align: center;
-        margin: 1em;
-      }
-
-      paper-card.mustread::content .header.paper-card .title-text.paper-card {
-        color: var(--primary-font-color);
-      }
-
-      #articleToast {
-        --paper-toast-background-color: #8cf491;
-        --paper-toast-color: var(--primary-font-color);
-      }
-
       paper-dialog {
-        background-color: white;
-        position: fixed;
         width: 600px;
-        height: 300px;
+        color: white;
+        background: black;
         overflow: auto;
-      }
-
-      paper-card.feedback {
-        width: 15%;
-        display: inline-block;
-        position: fixed;
-        background: #fafafa;
-        margin-top: 0px;
-      }
-
-      paper-button.feedbackButton {
-        background: #ffffff;
       }
     </style>
 
@@ -140,99 +97,107 @@ Example: <nuxeo-article-display></nuxeo-article-display>
         input="{{documentId}}"
         response="{{confirmReadResponse}}">
     </nuxeo-operation>
+
     <nuxeo-operation id="getCurrentUserNameTest"
         op="javascript.getCurrentUserName"
         input="{{documentId}}">
     </nuxeo-operation>
 
-    <paper-card elevation="3">
-      <div class="card-content">
-        <h1>[[nuxeoDocument.title]]</h1>
-        <template is="dom-if"
-            if="[[_isArticle(nuxeoDocument)]]">
-          <div class="documentCatego">[[nuxeoDocument.properties.article:category]]</div>
-          <template is="dom-repeat"
-              items="[[nuxeoDocument.properties.article:region]]">
-            <div class="documentRegion">[[item]]</div>
-          </template>
-          <div class="documentInfo">Updated: [[_dateFormat(nuxeoDocument.properties.dc:modified)]]</div>
-          <div class="documentInfo">[[_wordsTominutes(nuxeoDocument.properties.article:plainTextContent)]]</div>
+    <div class="vertical layout">
+
+      <paper-card heading="[[nuxeoDocument.title]]">
+        <div class="card-content">
+
+          <div class="pills">
+            <template is="dom-if"
+                if="[[_isArticle(nuxeoDocument)]]">
+              <div class="pill documentCategory">[[nuxeoDocument.properties.article:category]]</div>
+              <template is="dom-repeat"
+                  items="[[nuxeoDocument.properties.article:region]]">
+                <div class="pill documentRegion">[[item]]</div>
+              </template>
+            </template>
+
+            <template is="dom-if"
+                if="[[_isAnnouncement(nuxeoDocument)]]">
+              <div class="pill documentCategory">[[nuxeoDocument.properties.announcement:priorityCode]]</div>
+              <template is="dom-repeat"
+                  items="[[nuxeoDocument.properties.announcement:region]]">
+                <div class="pill documentRegion">[[item]]</div>
+              </template>
+            </template>
+          </div>
+
+          <div class="documentInfo">Updated: [[_dateFormat(nuxeoDocument.properties.dc:modified)]]
+            <template is="dom-if"
+                if="[[_isArticle(nuxeoDocument)]]">
+              <br>[[_wordsTominutes(nuxeoDocument.properties.article:plainTextContent)]]
+            </template>
+          </div>
+
           <div class="documentContent"
               inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
-        </template>
-
-        <template is="dom-if"
-            if="[[_isAnnouncement(nuxeoDocument)]]">
-          <div class="documentCatego">[[nuxeoDocument.properties.announcement:priorityCode]]</div>
-          <template is="dom-repeat"
-              items="[[nuxeoDocument.properties.announcement:region]]">
-            <div class="documentRegion">[[item]]</div>
-          </template>
-          <div class="documentInfo">Updated: [[_dateFormat(nuxeoDocument.properties.dc:modified)]]</div>
-          <div class="documentContent"
-              inner-h-t-m-l="{{nuxeoDocument.properties.note:note}}"></div>
-        </template>
-      </div>
-    </paper-card>
-
-    <paper-dialog id="feedbackDialog"
-        modal>
-      <h2>Feedback</h2>
-      <p>
-        <paper-textarea placeholder="Your Feedback..."></paper-text-area>
-      </p>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm
-            on-tap="_feedbackSent">Send</paper-button>
-      </div>
-    </paper-dialog>
-
-    <paper-card heading=""
-        elevation="0"
-        class="feedback">
-      <template is="dom-if"
-          if="[[mustRead]]">
-        <paper-button class="mustread"
-            raised
-            on-tap="_confirmRead">I Have Read This</paper-button>
-      </template>
-      <paper-button class="feedbackButton"
-          raised
-          on-tap="_openFeedback">Give Feedback</paper-button>
-    </paper-card>
-
-    <template is="dom-if"
-        if="[[_isArticle(nuxeoDocument)]]">
-      <paper-card heading="Popularity"
-          elevation="3">
-        <div class="card-content rating">
-          <nuxeo-star-rating-stats doc-id="[[nuxeoDocument.uid]]"></nuxeo-star-rating-stats>
         </div>
-        <div class="documentContent rating">
-          <span class="label">
-		    My Rating:
-	    </span>
-          <nuxeo-star-rating-document doc-id="[[nuxeoDocument.uid]]"></nuxeo-star-rating-document>
+
+        <div class="card-actions">
+
+          <template is="dom-if"
+              if="[[mustRead]]">
+            <paper-button class="mustread"
+                raised
+                on-tap="_confirmRead">I Have Read This</paper-button>
+          </template>
+          <paper-button class="feedbackButton"
+              raised
+              on-tap="_openFeedback">Give Feedback</paper-button>
+
         </div>
       </paper-card>
-    </template>
 
-    <paper-card heading="Similar Articles"
-        elevation="3">
-      <template is="dom-if"
-          if="[[_isDefined(documentId)]]">
-        <div class="card-content">
-          <nuxeo-article-similar doc-id=[[nuxeoDocument.uid]]></nuxeo-article-similar>
+      <paper-dialog id="feedbackDialog"
+          modal>
+        <h2>Feedback</h2>
+        <div>
+          <paper-textarea placeholder="Your Feedback..."></paper-text-area>
         </div>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm
+              on-tap="_feedbackSent">Send</paper-button>
+        </div>
+      </paper-dialog>
+
+      <template is="dom-if"
+          if="[[_isArticle(nuxeoDocument)]]">
+        <paper-card heading="Popularity">
+          <div class="card-content rating">
+            <nuxeo-star-rating-stats doc-id="[[nuxeoDocument.uid]]"></nuxeo-star-rating-stats>
+          </div>
+          <div class="documentContent rating">
+            <span class="label">My Rating:</span>
+            <nuxeo-star-rating-document doc-id="[[nuxeoDocument.uid]]"></nuxeo-star-rating-document>
+          </div>
+        </paper-card>
       </template>
-    </paper-card>
+
+      <paper-card heading="Similar Articles">
+        <template is="dom-if"
+            if="[[_isDefined(documentId)]]">
+          <div class="card-content">
+            <nuxeo-article-similar doc-id=[[nuxeoDocument.uid]]></nuxeo-article-similar>
+          </div>
+        </template>
+      </paper-card>
+
+    </div>
 
     <paper-toast id="articleToast"
         duration="3000"
-        withBackdrop="true"></paper-toast>
+        withBackdrop="true">
+    </paper-toast>
 
   </template>
+
   <script>
     Polymer({
       is: 'nuxeo-article-display',
@@ -266,10 +231,6 @@ Example: <nuxeo-article-display></nuxeo-article-display>
         '_setMustRead(userforarticle, nuxeoDocument)'
       ],
 
-      ready: function() {
-        //When component is ready.
-        //console.log("--search result ready")
-      },
       _isDefined: function(documentId) {
         if ((typeof documentId !== 'undefined') && (documentId !== '/')) {
           return true;
@@ -277,10 +238,12 @@ Example: <nuxeo-article-display></nuxeo-article-display>
           return false;
         }
       },
+
       _dateFormat: function(ISOStringDate) {
         var date = new Date(ISOStringDate);
         return date.toDateString() + ' ' + date.toLocaleTimeString();
       },
+
       _isArticle: function(nuxeoDocument) {
         if (nuxeoDocument) {
           return nuxeoDocument.type === 'Article';
@@ -288,6 +251,7 @@ Example: <nuxeo-article-display></nuxeo-article-display>
           return false;
         }
       },
+
       _isAnnouncement: function(nuxeoDocument) {
         if (nuxeoDocument) {
           return nuxeoDocument.type === 'Announcement';
@@ -295,12 +259,14 @@ Example: <nuxeo-article-display></nuxeo-article-display>
           return false;
         }
       },
+
       _setMustRead: function() {
         if (this.nuxeoDocument) {
           this.mustRead = this.nuxeoDocument.properties['readConfirm:usernames'].
           indexOf(this.userforarticle.id) !== -1;
         }
       },
+
       _confirmRead: function() {
         //this.$.getCurrentUserNameTest.execute();
         this.$.confirmRead.execute();
@@ -308,22 +274,27 @@ Example: <nuxeo-article-display></nuxeo-article-display>
         this.$.articleToast.text = 'Read Confirmed';
         this.$.articleToast.open();
       },
+
       _ReadResponseReceived: function() {
         if (document.querySelector('#articleHome')) {
           document.querySelector('#articleHome').refreshWidgets();
         }
       },
+
       _printDocId: function() {
         this.documentId = this.documentId.replace('/', '');
       },
+
       _openFeedback: function() {
         //this.$.feedbackDialog.modal = true;
         this.$.feedbackDialog.toggle();
       },
+
       _feedbackSent: function() {
         this.$.articleToast.text = 'Feedback Sent';
         this.$.articleToast.open();
       },
+
       _wordsTominutes: function(words) {
 
         if (words) {
