@@ -29,6 +29,8 @@ import org.nuxeo.ecm.core.api.local.LocalSession;
 import org.nuxeo.ecm.core.model.Document;
 import org.nuxeo.ecm.core.model.Session;
 import org.nuxeo.ecm.platform.dublincore.listener.DublinCoreListener;
+import org.nuxeo.labs.rating.model.RatingImpl;
+import org.nuxeo.labs.rating.service.RatingService;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
 import java.io.BufferedReader;
@@ -43,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Must be run from a container where the articles will be created. WARNING The /CVS/VoteContainer path **MUST** exist
+ * Must be run from a container where the articles will be created.
  */
 @Operation(id = CreateDemoDataOp.ID, category = Constants.CAT_SERVICES, label = "CVS: Create Data Demo", description = "")
 public class CreateDemoDataOp {
@@ -119,6 +121,9 @@ public class CreateDemoDataOp {
 
     @Context
     protected CoreSession session;
+
+    @Context
+    protected RatingService ratingService;
 
     @OperationMethod
     public DocumentModel run(DocumentModel inDoc) throws IOException {
@@ -293,13 +298,8 @@ public class CreateDemoDataOp {
         } while (usersAndVotes.size() < anInt);
 
         for (Map.Entry<String, Integer> entry : usersAndVotes.entrySet()) {
-
-            DocumentModel voteDoc = session.createDocumentModel("/CVS/VoteContainer", "Vote", "Vote");
-            voteDoc.setPropertyValue("vote:docId", inArticle.getId());
-            voteDoc.setPropertyValue("vote:docTitle", inArticle.getTitle());
-            voteDoc.setPropertyValue("vote:username", entry.getKey());
-            voteDoc.setPropertyValue("vote:vote", entry.getValue());
-            session.createDocument(voteDoc);
+            ratingService.rate(session,
+                    new RatingImpl(entry.getValue(),inArticle.getId(),entry.getKey(),""));
         }
 
     }
