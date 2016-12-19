@@ -5,7 +5,7 @@
     <parent>
         <groupId>nuxeo-km</groupId>
         <artifactId>nuxeo-km-parent</artifactId>
-        <version>8.3-SNAPSHOT</version>
+        <version>8.10-SNAPSHOT</version>
     </parent>
     <artifactId>nuxeo-km-mp</artifactId>
     <packaging>zip</packaging>
@@ -14,15 +14,15 @@
 
     <dependencies>
         <!-- Base distribution(s) for the MP -->
-        <!-- Base distribution(s) for the MP -->
         <dependency>
             <groupId>org.nuxeo.ecm.distribution</groupId>
-            <artifactId>nuxeo-distribution-cap</artifactId>
-            <type>pom</type>
+            <artifactId>nuxeo-nxr-server</artifactId>
+            <type>zip</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.nuxeo.ecm.distribution</groupId>
-            <artifactId>nuxeo-distribution-cap</artifactId>
+            <artifactId>nuxeo-nxr-jsf-ui</artifactId>
             <type>zip</type>
             <scope>provided</scope>
         </dependency>

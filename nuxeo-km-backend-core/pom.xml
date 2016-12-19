@@ -5,7 +5,7 @@
   <parent>
     <groupId>nuxeo-km</groupId>
     <artifactId>nuxeo-km-parent</artifactId>
-    <version>8.3-SNAPSHOT</version>
+    <version>8.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>nuxeo-km-backend-core</artifactId>
