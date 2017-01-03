@@ -194,36 +194,36 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
           };
         } else {
           fulltextQuery = {
-             bool: {
-               must: [{
-                 match: {
-                   _all: {
-                     query: this.fulltext,
-                     operator: "OR",
-                     analyzer: "en_search_analyzer",
-                     fuzziness: "AUTO"
-                   }
-                 }
-               }],
-               should: [{
-                 match: {
-                   _all: {
-                     query: this.fulltext,
-                     type: "phrase",
-                     slop: 3,
-                     analyzer: "en_search_analyzer"
-                   }
-                 }
-               }]
-             }
+            bool: {
+              must: [{
+                match: {
+                  _all: {
+                    query: this.fulltext,
+                    operator: "OR",
+                    analyzer: "en_search_analyzer",
+                    fuzziness: "AUTO"
+                  }
+                }
+              }],
+              should: [{
+                match: {
+                  _all: {
+                    query: this.fulltext,
+                    type: "phrase",
+                    slop: 3,
+                    analyzer: "en_search_analyzer"
+                  }
+                }
+              }]
+            }
           };
         }
 
         this.query = {
           function_score: {
             query: {
-              filtered: {
-                query: fulltextQuery,
+              bool: {
+                must: fulltextQuery,
                 filter: {
                   bool: {
                     must: [{
@@ -260,7 +260,21 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
             'article:plainTextContent': {
               fragment_size: 170,
               number_of_fragments: 1,
-              index_options: "offsets"
+              index_options: "offsets",
+              highlight_query: {
+                bool: {
+                  must: {
+                    match: {
+                      'article:plainTextContent': {
+                        query: this.fulltext,
+                        operator: "OR",
+                        analyzer: "en_search_analyzer",
+                        fuzziness: "AUTO"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         };
@@ -273,27 +287,31 @@ Example: <nuxeo-article-search-filter articles={{articles}}></nuxeo-article-sear
               analyzer: 'fulltext'
             }
           },
-          my_phrase_suggest : {
-            text : this.fulltext,
-              phrase : {
-                field : "suggestions",
-                size : 1,
-                real_word_error_likelihood : 0.95,
-                max_errors : 3,
-                collate: {
-                   query: {
-                      match : {
-                        _all : {
-                              query : "{{suggestion}}",
-                              operator: "AND",
-                           }
-                        }
-                     },
-                    params: {field_name : "suggestions"},
-                    prune: false
+          my_phrase_suggest: {
+            text: this.fulltext,
+            phrase: {
+              field: "suggestions",
+              size: 1,
+              real_word_error_likelihood: 0.95,
+              max_errors: 3,
+              collate: {
+                query: {
+                  inline: {
+                    match: {
+                      _all: {
+                        query: "{{suggestion}}",
+                        operator: "AND",
+                      }
+                    }
                   }
-               }
+                },
+                params: {
+                  field_name: "suggestions"
+                },
+                prune: false
+              }
             }
+          }
         };
 
         this.debounce('autoQuery', function() {
