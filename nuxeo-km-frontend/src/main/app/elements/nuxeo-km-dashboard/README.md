@@ -6,6 +6,8 @@ This Polymer application uses [Nuxeo Data Visualzation](https://doc.nuxeo.com/x/
 
 Once installed in the the Knowledge Management demo, there is a bundled Web application at `http://yourserver/nuxeo/km/dashboard.html`.
 
+Note that some widgets require page provider data to be logged in the audit log. This implies using either `nuxeo.pageprovider.track` in `nuxeo.conf` to track the page providers or using the `trackUsage` property in the page provider contribution.
+
 # Resources
 
 ## Reporting issues
